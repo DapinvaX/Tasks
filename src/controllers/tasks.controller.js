@@ -18,7 +18,7 @@ export const obtenerTaks = async (req, res) => {
         //Obtenemos todas las tareas
         const tasks = await Task.find({
           //Buscamos las tareas que pertenezcan al usuario autenticado
-          user: req.user._id,
+          user: req.user.id,
         }).populate("user");
     
         //Si no hay tareas
