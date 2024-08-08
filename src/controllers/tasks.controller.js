@@ -59,7 +59,7 @@ export const obtenerTaskID = async (req, res) => {
 //Crear una tarea
 export const crearTask = async (req, res) => {
   // Extraer los datos de la tarea
-  const { title, description, createDate } = req.body;
+  const { title, description, done, createDate } = req.body;
 
   //Obtenemos el usuario autenticado
   const user = req.user;
@@ -78,6 +78,7 @@ export const crearTask = async (req, res) => {
     title,
     description,
     createDate,
+    done,
     user : user.id
     
     

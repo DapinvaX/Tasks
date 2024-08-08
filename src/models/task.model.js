@@ -24,7 +24,8 @@ const taskSchema = new mongoose.Schema({
     //Estado de la tarea (si está hecha o no) (boolean, no requerido, por defecto false)
     done: {
         type: Boolean,
-        default: true
+        default: false,
+        required: false,
     },
     
     //Usuario al que pertenece la tarea (referencia al modelo de usuarios)

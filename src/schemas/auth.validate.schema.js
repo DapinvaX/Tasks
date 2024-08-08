@@ -74,18 +74,13 @@ export const registerSchema = z.object({
 export const loginSchema = z.object({
 
     //El email debe ser un string y estar en formato email
-    email: z.string({
-        required_error : "Email: Este campo es obligatorio."
-    })
-    .email({
-        message: "Por favor, introduzca un email válido."
-    
-    })
-    /* .regex(/^[^<>$]$/,{
+    user: z.string(
+        
+        {
+            required_error: "Usuario: Este campo es obligatorio."
+        }
 
-        message: "Los caracteres especiales no están permitidos en el email."
-
-    }) */,
+    ).min(3).max(50),
 
 
     //La contraseña debe ser un string y tener una longitud mínima de 6 y máxima de 20 y contener al menos un número, 
@@ -98,9 +93,9 @@ export const loginSchema = z.object({
     }
 
 )
-    .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}[^-<>$]*$/,{
+    /* .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}[^-<>$]*$/,{
         
         required_error : "La contraseña debe tener al menos 6 caracteres, una mayúscula, una minúscula y un número.Los caracteres especiales no están permitidos."
     
-    }),
+    }) */,
 });
