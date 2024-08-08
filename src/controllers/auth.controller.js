@@ -166,6 +166,7 @@ export const login = async (req, res) => {
 
         //Buscamos el usuario en la base de datos con el método findOne de mongoose para ver si existe
         //El método findOne recibe un objeto con el nombre de usuario o email 
+        
         const userFound = await User.findOne({ $or: [{ user: user }, { email: email }] });
 
           //Comparar la contraseña introducida con la contraseña encriptada de la base de datos
@@ -247,7 +248,6 @@ export const login = async (req, res) => {
     } 
 
 }
-
 
 export const profile = async (req, res) => {
     
