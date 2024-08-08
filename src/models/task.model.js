@@ -30,7 +30,8 @@ const taskSchema = new mongoose.Schema({
     //Usuario al que pertenece la tarea (referencia al modelo de usuarios)
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: User
+        ref: User,
+        required: true
     },
 
     //Fecha de creación de la tarea (fecha, requerido)

@@ -25,7 +25,7 @@ export const register = async (req, res) => {
     //console.log(req.body);
 
     //Extraemos los datos del usuario, email y password del request body
-    const {user, email, password} = req.body;
+    //const {user, email, password} = req.body;
    
 
     //Creamos un bloque try-catch para manejar los errores que puedan surgir a la hora de registrar un usuario
@@ -146,27 +146,6 @@ export const register = async (req, res) => {
         res.status(500).json({ mensaje: 'Error interno del servidor' });
 
         }
-        //Si hay un error, lo imprimimos en la consola
-        //Obtenemos el código de estado de respuesta
-        /* const opt = res.status();
-
-        //Filtramos los errores por el código de estado de respuesta erróneo
-        switch(opt){
-            case opt >= 400 && opt < 500:
-                console.log("Error al registrar el usuario", error);
-                res.status(400).json({ mensaje: 'Error de solicitud del cliente.' });
-                break;
-            case opt >= 500 && opt < 600:
-                console.log("Error al registrar el usuario", error);
-                res.status(500).json({ mensaje: 'Error interno del servidor' });
-                break;
-            default:
-                console.log("Error desconocido");
-                throw error;
-                break;
-        } */
-
-        //console.log(opt);
     
     } 
 }

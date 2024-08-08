@@ -41,6 +41,11 @@ export const authRequired = (req, res, next) => {
 
                 //Guardamos el usuario decodificado en una variable user
                 req.user = decoded;
+                console.log("Usuario decodificado:", req.user);
+                
+                req.username = user;
+                console.log("Usuario: ", req.username);
+
 
                 //Se ejecuta la siguiente función
                 next();

@@ -1,6 +1,9 @@
 // Importamos el modelo de tareas
 import Task from "../models/task.model.js";
 
+//Importamos el modelo de usuario para sacar el usuario autenticado
+import User from "../models/user.model.js";
+
 //Importamos jwt
 import jwt from "jsonwebtoken";
 
@@ -41,7 +44,7 @@ export const obtenerTaskID = async (req, res) => {
   const { id } = req.params;
 
   //Buscamos la tarea por id
-  const task = await Task.findById(id);
+  const task = await Task.findById(id).populate("user");
 
   //Si la tarea no existe
   if (!task) {
@@ -61,8 +64,13 @@ export const crearTask = async (req, res) => {
   //Obtenemos el usuario autenticado
   const user = req.user;
 
+ //Obtenemos el nombre del usuario autenticado
+  const username = req.username;
+
+  console.log("**Usuario**: ", username);
+  
   //Mostramos por consola los datos que vienen del req.user
-  console.log(user);
+  console.log("Datos Usuario: "+ user);
 
   // Crear la tarea
   const newTask = new Task({
@@ -72,13 +80,16 @@ export const crearTask = async (req, res) => {
     createDate,
     user : user.id
     
+    
   });
 
   // Guardar la tarea en la base de datos
   const taskSaved = await newTask.save();
 
+  
+
   // Imprimir por consola y enviar la tarea guardada en formato JSON
-  console.log(taskSaved, user);
+  console.log(taskSaved, "Tarea guardada!");
   res.status(201).json(taskSaved);
 };
 
@@ -92,7 +103,7 @@ export const modificarTask = async (req, res) => {
   const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
     //Para que nos devuelva la tarea actualizada
     new: true,
-  });
+  }).populate("user");
 
   //Si la tarea no existe
   if (!task) {
@@ -106,7 +117,7 @@ export const modificarTask = async (req, res) => {
     //Primero por consola y luego en formato JSON
     console.log(`La tarea con id ${req.params.id} ha sido actualizada`);
     console.log(task);
-    res.status(200).json({ message: "La tarea ha sido actualizada", task });
+    res.status(200).json({ message: "La tarea ha sido modificada/actualizada", task });
   }
 }; 
 
@@ -116,7 +127,8 @@ export const eliminarTask = async (req, res) => {
   const { id } = req.params;
 
   //Buscamos la tarea por id y la eliminamos con el metodo findOneAndDelete y le pasamos el id
-  const task = await Task.findByIdAndDelete(id);
+  const task = await Task.findByIdAndDelete(id)
+                                  /* .populate("user") */;
 
   //Si no encontró la tarea
   if (!task) {
