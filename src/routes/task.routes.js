@@ -4,6 +4,10 @@ import { Router } from 'express';
 //Importamos el middleware de autenticación
 import { authRequired } from '../middlewares/validateToken.js';
 
+import {
+    validateSchema
+} from '../middlewares/validateMiddleware.js';
+
 //Importamos las rutas
 import { 
     obtenerTaks, 
@@ -11,6 +15,11 @@ import {
     crearTask, 
     modificarTask, 
     eliminarTask } from '../controllers/tasks.controller.js';
+
+//Importamos el esquema de validación para crear las tasks
+import { crearTaskSchema } from '../schemas/task.schema.js';
+
+
 
 //Inicializamos router
 const router = Router();
@@ -31,7 +40,7 @@ router.get('/tasks', authRequired, obtenerTaks,(req, res) =>{});
 router.get('/tasks/:id', authRequired, obtenerTaskID, (req, res) =>{});
 
 //Crear una tarea
-router.post('/tasks', authRequired, crearTask, (req, res) =>{});
+router.post('/tasks', authRequired, crearTask, validateSchema(crearTaskSchema), (req, res) =>{});
 
 //Actualizar/Modificar una tarea
 router.put('/tasks/:id', authRequired, modificarTask, (req, res) =>{});

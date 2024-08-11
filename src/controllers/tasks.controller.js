@@ -70,7 +70,7 @@ export const crearTask = async (req, res) => {
   console.log("**Usuario**: ", username);
   
   //Mostramos por consola los datos que vienen del req.user
-  console.log("Datos Usuario: "+ user);
+  console.log("Datos Usuario: "+ JSON.stringify(user, null, 2));
 
   // Crear la tarea
   const newTask = new Task({
@@ -79,8 +79,7 @@ export const crearTask = async (req, res) => {
     description,
     createDate,
     done,
-    user : user.id
-    
+    user : user.id,
     
   });
 
