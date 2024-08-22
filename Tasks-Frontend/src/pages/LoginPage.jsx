@@ -39,7 +39,7 @@ function LoginPage() {
         className="bg-zinc-800 max-w-md mx-auto p-4 rounded-md shadow-md formLogin"
         onSubmit={handleSubmit(onSubmit)}
     >
-        {/* Rest of the form */}
+        {/* Resto del form */}
     </form>
 
     return (
