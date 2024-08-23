@@ -1,6 +1,9 @@
 import { useForm } from "react-hook-form";
 import { next } from '../../../node_modules/sucrase/dist/esm/parser/tokenizer/index';
 
+import { Button } from '@nextui-org/react';
+import { Link } from 'react-router-dom';
+
 function RegisterPage() {
   
 
@@ -27,50 +30,29 @@ function RegisterPage() {
 
     // ...
 
-    <form
-        id="registerForm"
-        className="bg-zinc-800 max-w-md mx-auto p-4 rounded-md shadow-md form"
-        onSubmit={handleSubmit(onSubmit)}
-    >
-        {/* Resto del form */}
-    </form>
+    
 
     return (
-    
         <div>
             <form
-            id="registerForm"
-            className="bg-zinc-800 max-w-md mx-auto p-4 rounded-md shadow-md form" 
-            onSubmit={handleSubmit(
-                
-                    //Función que se ejecuta al enviar el formulario
-                (values)=>{
-                    
-                    //Muestra los valores enviados en el formulario por consola
-                    console.log(values);
-                    
-                    }
+                id="registerForm"
+                className="bg-zinc-800 max-w-md mx-auto p-4 rounded-md shadow-md form" 
+                onSubmit={handleSubmit(onSubmit)}
+            >
+                <h1>Registro</h1>
 
-                )}
-                >
-
-                <h1>Register</h1>
-
-                <input id="userInput" type="text" placeholder="Usuario" {...register("username", {required:true})} />
-                <br />
-                <input id="emailInput" type="email" placeholder="Correo electrónico" {...register("email", {required:true})} />
-                <br />
-                <input id="passwordInput" type="password" placeholder="Contraseña" {...register("password", {required:true})} />
-                <br />
+                <input id="userInput" type="text" placeholder="Usuario" {...register("username", {required:true})} /><br />
+                <input id="emailInput" type="email" placeholder="Correo electrónico" {...register("email", {required:true})} /><br />
+                <input id="passwordInput" type="password" placeholder="Contraseña" {...register("password", {required:true})} /><br />
                 <input id="confirmPasswordInput" type="password" placeholder="Confirmar contraseña" {...register("confirmPassword", {required:true})} /><br />
 
-                <button type="submit">Registrarse</button>
-
-
+                <Button type="submit" class="btnPrincipal">Registrar</Button>
+                <Link to="/login">
+                    <a>Volver al Inicio de Sesión</a>
+                </Link>
             </form>
         </div>
-
-  )
+    );
 }
 
 export default RegisterPage;
