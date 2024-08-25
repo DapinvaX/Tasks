@@ -26,7 +26,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Habilitamos CORS
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}));
 
 // Rutas
 //Establecemos la ruta base para las rutas de autenticación "/api"
