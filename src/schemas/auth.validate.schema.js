@@ -1,4 +1,5 @@
 //Importamos la libreria que acabamos de instalar
+//Zod es una librería de validación de esquemas que nos permite validar los datos que se envían desde el cliente
 import {z} from 'zod';
 
 //Creamos el esquema de validación para el registro de usuarios
@@ -12,13 +13,13 @@ export const registerSchema = z.object({
             required_error: "Usuario: Este campo es obligatorio."
         }
 
-    ).min(3).max(50),
+    ).min(3).max(50)
     /* .regex(/^[^-<>$]$/,
         
         { 
         
         required_error: "Los caracteres especiales no están permitidos en el nombre."
-    }) */
+    }) */,
 
 
     //El email debe ser un string y estar en formato email

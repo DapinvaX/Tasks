@@ -10,6 +10,9 @@ import taskRoutes from './routes/task.routes.js';
 // Importamos cookie-parser
 import cookieParser from 'cookie-parser';
 
+//Importamos CORS
+import cors from 'cors';
+
 // Inicialización de express
 const app = express();
 
@@ -21,6 +24,9 @@ app.use(express.json());
 
 // Convierte las cookies a un objeto para que el servidor entienda los datos que se envían desde el cliente
 app.use(cookieParser());
+
+// Habilitamos CORS
+app.use(cors());
 
 // Rutas
 //Establecemos la ruta base para las rutas de autenticación "/api"

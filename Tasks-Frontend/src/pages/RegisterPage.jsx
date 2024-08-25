@@ -64,7 +64,7 @@ function RegisterPage() {
             >
                 <h1>Registro</h1>
 
-                <input id="userInput" type="text" placeholder="Usuario" {...register("username", {required:true})} /><br />
+                <input id="userInput" type="text" placeholder="Usuario" {...register("user", {required:true})} /><br />
                 <input id="emailInput" type="email" placeholder="Correo electrónico" {...register("email", {required:true})} /><br />
                 <input id="passwordInput" type="password" placeholder="Contraseña" {...register("password", {required:true})} /><br />
                 <input id="confirmPasswordInput" type="password" placeholder="Confirmar contraseña" {...register("confirmPassword", {required:true})} /><br />
