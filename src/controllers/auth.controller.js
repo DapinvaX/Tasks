@@ -64,6 +64,7 @@ export const register = async (req, res) => {
         if (existingUser) {
             
             // Si el usuario ya existe, mostrar un mensaje diciendo que ya existe
+            window.alert('El usuario ya existe');
             res.send('El usuario ya existe');
             console.log('El usuario ya existe');
             
@@ -91,6 +92,7 @@ export const register = async (req, res) => {
             //Imprimimos el token en la consola
             console.log('Token generado: ', token);
             console.log('Usuario registrado con éxito!');
+            window.alert('Usuario registrado con éxito!');
 
             // Imprimimos el nuevo usuario en la consola
             res.status(200).json({
