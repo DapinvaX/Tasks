@@ -92,7 +92,7 @@ export const register = async (req, res) => {
             //Imprimimos el token en la consola
             console.log('Token generado: ', token);
             console.log('Usuario registrado con éxito!');
-            window.alert('Usuario registrado con éxito!');
+            
 
             // Imprimimos el nuevo usuario en la consola
             res.status(200).json({
