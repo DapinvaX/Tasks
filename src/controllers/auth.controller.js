@@ -64,9 +64,8 @@ export const register = async (req, res) => {
         if (existingUser) {
             
             // Si el usuario ya existe, mostrar un mensaje diciendo que ya existe
-            window.alert('El usuario ya existe');
-            res.send('El usuario ya existe');
-            console.log('El usuario ya existe');
+            res.send('NODE: El usuario ya existe');
+            console.log('NODE: El usuario ya existe');
             
         } else {
             

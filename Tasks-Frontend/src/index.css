@@ -66,11 +66,17 @@ html, body{
     margin-top: 0px;
 }
 
+.form small {
+    margin-top: 5px;
+    font-size: small;
+    color: red;
+}
+
 a{
     font-size: small;
     text-decoration: none;
     color: #fff;
 }
-
+ 
 
 
