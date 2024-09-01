@@ -184,8 +184,8 @@ export const login = async (req, res) => {
 
             }
             else if (!coincidencia) {
-                console.log('Contraseña incorrecta!');
-                return res.status(400).json({message: 'Contraseña incorrecta'});
+                console.log('Contraseña incorrecta! Intentelo de nuevo.');
+                return res.status(400).json({message: 'Contraseña incorrecta! Intentelo de nuevo.'});
             }else{
                     
                 //JWT
@@ -242,7 +242,7 @@ export const login = async (req, res) => {
 
         //Si hay un error, lo imprimimos en la consola
         console.log("Error al loguear el usuario!", error);
-        res.status(500).json({ mensaje: 'Error interno del servidor' });
+        res.status(500).json({ mensaje: 'Error interno del servidor.' });
 
         }
     

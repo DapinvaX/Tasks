@@ -15,12 +15,6 @@ function RegisterPage() {
     //Se crea una constante que almacena el hook useForm
     const { register, handleSubmit, formState: { errors } } = useForm();
     
-    
-
-    // ...
-
-    
-
     return (
         <div>
             <form
@@ -70,7 +64,7 @@ function RegisterPage() {
                     id="userInput" 
                     type="text" 
                     placeholder="Usuario" 
-                    {...register("user", { required: "Debe ingresar un nombre de usuario" })} 
+                    {...register("user", { required: "Debe ingresar un nombre de usuario." })} 
                 />
                 {errors.user && <small>{errors.user.message}</small>}
                 <br />
@@ -79,7 +73,7 @@ function RegisterPage() {
                     id="emailInput" 
                     type="email" 
                     placeholder="Correo electrónico" 
-                    {...register("email", { required: "Debe ingresar un correo electrónico" })} 
+                    {...register("email", { required: "Debe ingresar un correo electrónico." })} 
                 />
                 {errors.email && <small>{errors.email.message}</small>}
                 <br />
@@ -88,7 +82,7 @@ function RegisterPage() {
                     id="passwordInput" 
                     type="password" 
                     placeholder="Contraseña" 
-                    {...register("password", { required: "Debe ingresar una contraseña" })} 
+                    {...register("password", { required: "Debe ingresar una contraseña." })} 
                 />
                 {errors.password && <small>{errors.password.message}</small>}
                 <br />
@@ -97,7 +91,7 @@ function RegisterPage() {
                     id="confirmPasswordInput" 
                     type="password" 
                     placeholder="Confirmar contraseña" 
-                    {...register("confirmPassword", { required: "Debe confirmar su contraseña" })} 
+                    {...register("confirmPassword", { required: "Debe confirmar su contraseña." })} 
                 />
                 {errors.confirmPassword && <small>{errors.confirmPassword.message}</small>}
                 <br />
