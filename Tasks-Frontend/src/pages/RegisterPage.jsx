@@ -4,7 +4,9 @@ import { useForm } from "react-hook-form";
 
 import { Button } from '@nextui-org/react';
 import { Link } from 'react-router-dom';
-import { registerReq } from './../API/auth.js';
+
+import { registerReq } from '../API/auth.js';
+
 
 
 function RegisterPage() {
@@ -12,8 +14,9 @@ function RegisterPage() {
 
     console.log('RegisterPage');
     
-    //Se crea una constante que almacena el hook useForm
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register,handleSubmit, formState: { errors } } = useForm();
+
+    
     
     return (
         <div>
@@ -21,42 +24,40 @@ function RegisterPage() {
                 id="registerForm"
                 className="bg-zinc-800 max-w-md mx-auto p-4 rounded-md shadow-md form" 
                 onSubmit={handleSubmit(async (values) =>{
-                   try{
-                    console.log(values);
+        
+                    //console.log(values);
+                    
+
+                    //Si las contraseñas son iguales, se procede a registrar al usuario
+                    
+                    //Se llama a la función registerReq con los valores de los inputs
+                    //Esto se hace para enviar los datos al backend 
+                    //y registrar al usuario introduciendolo en la base de datos de datos de MongoDB
                     const res = await registerReq(values);
+
+                    //Muestra en la consola la respuesta del backend
                     console.log(res);
-                    registerReq(values).then((res) => {
-                        
-                            //Recuperar los valores de los campos (password y confirmPassword)
-                            const pass = values.password;
-                            const confirmPass = values.confirmPassword;
 
-                            // Verificar si las contraseñas coinciden
-                            if (pass !== confirmPass) {
-                                console.error("Las contraseñas no coinciden");
-                                window.alert("Las contraseñas no coinciden");
-                                // Mostrar error de que las contraseñas no coinciden
-                                return;
-                            }
-                            console.log("Datos: "+res.data)
+                    //Si la respuesta del backend es exitosa, mostrará un mensaje de éxito en la consola y en la ventana.
+                    if (res.status === 200) {
+                        console.log("Usuario registrado con éxito!");
+                        window.alert("Usuario registrado con éxito!");
+                    }
 
-                            //Limpiar los campos de los inputs si el registro fue exitoso
-                            document.getElementById("userInput").value = "";
-                            document.getElementById("emailInput").value = "";
-                            document.getElementById("passwordInput").value = "";
-                            document.getElementById("confirmPasswordInput").value = "";
+                    if(res.status === 405){
+                        console.error("El usuario ya existe");
+                        window.alert("El usuario ya existe");
+                        return;
+                    }
 
-                        }
-                    );
-                   }catch(err){
-                       console.error(err);
-                       window.alert("¡Ha ocurrido un error desconocido al registrar el usuario!");
-                       
-                   }
+                    console.log("Datos: "+res.data)
+                    
+
+
                 }
             )
         }
-        
+
         >
                 <h1>Registro</h1>
 
@@ -64,7 +65,7 @@ function RegisterPage() {
                     id="userInput" 
                     type="text" 
                     placeholder="Usuario" 
-                    {...register("user", { required: "Debe ingresar un nombre de usuario." })} 
+                    {...register("user", {  required: true, message: "Debe ingresar un nombre de usuario.", pattern: { value: /^[a-zA-Z0-9._-]{3,20}$/, message: "El nombre de usuario debe tener entre 3 y 20 caracteres." } })} 
                 />
                 {errors.user && <small>{errors.user.message}</small>}
                 <br />
@@ -73,7 +74,7 @@ function RegisterPage() {
                     id="emailInput" 
                     type="email" 
                     placeholder="Correo electrónico" 
-                    {...register("email", { required: "Debe ingresar un correo electrónico." })} 
+                    {...register("email", { required: "Debe ingresar un correo electrónico", pattern: { value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/, message: "Ingrese un correo electrónico válido." } })} 
                 />
                 {errors.email && <small>{errors.email.message}</small>}
                 <br />
@@ -82,7 +83,7 @@ function RegisterPage() {
                     id="passwordInput" 
                     type="password" 
                     placeholder="Contraseña" 
-                    {...register("password", { required: "Debe ingresar una contraseña." })} 
+                    {...register("password", { required: true, message: "Ingrese su contraseña.", pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, message: "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número." } })} 
                 />
                 {errors.password && <small>{errors.password.message}</small>}
                 <br />
@@ -91,7 +92,7 @@ function RegisterPage() {
                     id="confirmPasswordInput" 
                     type="password" 
                     placeholder="Confirmar contraseña" 
-                    {...register("confirmPassword", { required: "Debe confirmar su contraseña." })} 
+                    {...register("confirmPassword", { required: true, message: "Ingrese su contraseña nuevamente.", validate: value => value === document.getElementById("passwordInput").value || "Las contraseñas no coinciden."})} 
                 />
                 {errors.confirmPassword && <small>{errors.confirmPassword.message}</small>}
                 <br />

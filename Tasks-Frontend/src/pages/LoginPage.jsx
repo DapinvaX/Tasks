@@ -28,13 +28,13 @@ function LoginPage() {
                     loginReq(values).then((res) => {
                         
                             //Si el mensaje del backend es "message":"Contraseña incorrecta! Intentelo de nuevo.", mostrará un mensaje de error en la consola y en la ventana.
-                            /* if (res.data.message === "Contraseña incorrecta! Intentelo de nuevo.") {
+                            if (res.data.message === "Contraseña incorrecta! Intentelo de nuevo.") {
                               
                               console.error("Contraseña incorrecta! Intentelo de nuevo.");
                               window.alert("Contraseña incorrecta! Intentelo de nuevo.");
                               return;
 
-                              } */
+                              }
 
                             console.log("Usuario Logueado con éxito!");
                             window.alert("Usuario Logueado con éxito!");
@@ -80,7 +80,7 @@ function LoginPage() {
                     id="passwordInput" 
                     type="password" 
                     placeholder="Contraseña" 
-                    {...register("password", { required: "Debe ingresar una contraseña." })} 
+                    {...register("password", { required: "Debe ingresar una contraseña.",  })} 
                 />
                 {errors.password && <small>{errors.password.message}</small>}
                 <br />
