@@ -55,7 +55,7 @@ function LoginPage() {
                        //Si la contraseña es incorrecta, mostrará un mensaje de error en la consola y en la ventana.
 
                         console.error("Usuario o contraseña incorrectos. Inténtelo de nuevo.");
-                        window.alert("Usuario o contraseña. Inténtelo de nuevo.");
+                        window.alert("Usuario o contraseña incorrectos. Inténtelo de nuevo.");
                         
                          //Limpiar los campos de los inputs si el login fue exitoso
                          document.getElementById("userInput").value = "";
