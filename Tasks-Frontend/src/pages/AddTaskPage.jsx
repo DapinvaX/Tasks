@@ -1,11 +1,12 @@
+import TasksForm from "../components/TasksForm";
+
 function AddTaskPage(){
 
     return (
-        
-        <div>
-            <h1>Add Task</h1>
+        <div className="container">
+            <h1 className="text-center">Añadir Task</h1>
+            <TasksForm />
         </div>
-    
     );
 
 }

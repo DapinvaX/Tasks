@@ -1,5 +1,5 @@
 // Importamos desde React createContext
-import { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext, useEffect } from 'react';
 
 //Importamos las funciones de registerReq y loginReq desde la API de autenticación
 import {registerReq, loginReq} from './../API/auth.js';
@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 export const AuthContextProfile = createContext();
 
 // Creamos el hook para usar el contexto
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuthProfile = () => {
 
     // Usamos el hook useContext para usar el contexto y se lo asignamos a la constante context
@@ -38,7 +39,7 @@ export const AuthProviderProfile = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     //Definimos el estado si hay un error
-    const [error, setError] = useState(null);
+    const [errors, setErrors] = useState([]);
 
     //Definimos las funciones para registrar y loguear
     const registrar = async (values) => {
@@ -47,9 +48,14 @@ export const AuthProviderProfile = ({ children }) => {
             console.log(res.data);
             setUser(res.data);
             setIsAuthenticated(true);
-        } catch (error) {
-            console.error('Error al registrar:', error.response);
-            setError(error.response.data);
+        } catch (errors) {
+            
+            if(Array.isArray(errors.response.data)){
+                    
+                console.error('Error al registrar:', errors.response);
+                return setErrors(errors.response.data.message);
+            
+            }
             
         }
     }
@@ -57,24 +63,43 @@ export const AuthProviderProfile = ({ children }) => {
     //Definimos la función para loguear
     //Esta función se encarga de realizar la petición de logueo al servidor
     //Recibe como parámetro un objeto con los datos del usuario
-    const loguear = async (user) => {
+    const loguear = async (values) => {
         //Al ser una petición asíncrona, utilizamos el bloque try-catch para manejar los errores
         try{
 
-           const res =  await loginReq(user);
+           const res =  await loginReq(values);
+
+           setUser(res.data);
+           setIsAuthenticated(true);
 
             //Si la petición es exitosa, mostramos el mensaje en consola
             console.log(res.data);
         
-    }catch(error){
-
-            //En caso de error, mostramos el mensaje en consola
-            console.error('Error al loguear:', error.response);
-            setError(error.response.data);
-            
         }
+        catch (errors) {
+            
+                if(Array.isArray(errors.response.data)){
+                    
+                    console.error('Error al loguearse:', errors.response);
+                    return setErrors(errors.response.data.message);
+                
+                }
+            }
         
     }
+
+    useEffect(() => {
+        
+        if(errors.length > 0){
+            
+            const timer = setTimeout(() => {
+                setErrors([]);
+            }, 5000)
+            return () => clearTimeout(timer);
+
+        }
+
+    }, [errors]);
 
     return (
         //Retornamos el provider con el contexto y las funciones
@@ -85,7 +110,7 @@ export const AuthProviderProfile = ({ children }) => {
             registrar, 
             loguear,
             isAuthenticated,
-            error,
+            errors,
             }}>
 
                 {children}

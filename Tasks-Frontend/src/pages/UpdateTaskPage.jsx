@@ -1,8 +1,11 @@
+import TasksForm from './../components/TasksForm';
+
 function UpdateTaskPage(){
     return(
 
         <div>
-            <h1>Update Task Page</h1>
+            <h1>Modificar Task</h1>
+            <TasksForm/>
         </div>
         
     );

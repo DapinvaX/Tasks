@@ -88,7 +88,15 @@ export const register = async (req, res) => {
 
                 //En vez de enviar el token al cliente (mala práctica), lo guardamos en una cookie
                 //Cookie que guarda el token de sesión
-                res.cookie('token', token);
+                res.cookie('token', token,
+                    //Configuramos la cookie para que se envíe en solicitudes de sitios cruzados y no solo en solicitudes del mismo sitio
+                    //Esto es para que la cookie sea accesible desde cualquier sitio aunque no sea el mismo sitio que la generó
+                    //Configuramos la cookie para que solo se envíe por HTTPS y no por HTTP y aparte que 
+                    //Esto es para que la cookie sea segura y no pueda ser interceptada por un atacante
+                    {
+                        samesite: 'none',
+                        secure: true,
+                });
 
                 //Imprimimos el token en la consola
                 console.log('Token generado: ', token);
@@ -144,8 +152,8 @@ export const register = async (req, res) => {
             
             //Si hay un error, lo imprimimos en la consola
             const err = error;
-            console.log("Error al registrar el usuario!\nError: Error interno del servidor.");
-            res.status(500).json({ Error: 'Error interno del servidor' });
+            console.log("Error al registrar el usuario!\nError: Error interno del servidor.", err);
+            res.status(500).json({ Error: 'Error interno del servidor.' });
         
         } 
     }
@@ -180,12 +188,15 @@ export const login = async (req, res) => {
                 console.log('El usuario no existe');
                 return res.status(400).json({message: 'El usuario no existe'});
                 
-
             }
             else if (!coincidencia) {
+                
                 console.log('Contraseña incorrecta! Intentelo de nuevo.');
                 return res.status(400).json({message: 'Contraseña incorrecta! Intentelo de nuevo.'});
-            }else{
+            
+            }
+
+            else{
                     
                 //JWT
                 //Usamos la función createAccessToken que hemos importado para generar el token y la guardamos en una constante token
@@ -194,7 +205,15 @@ export const login = async (req, res) => {
 
                 //En vez de enviar el token al cliente (mala práctica), lo guardamos en una cookie
                 //Cookie que guarda el token de sesión
-                res.cookie('token', token);
+                res.cookie('token', token,
+                    //Configuramos la cookie para que se envíe en solicitudes de sitios cruzados y no solo en solicitudes del mismo sitio
+                    //Esto es para que la cookie sea accesible desde cualquier sitio aunque no sea el mismo sitio que la generó
+                    //Configuramos la cookie para que solo se envíe por HTTPS y no por HTTP y aparte que 
+                    //Esto es para que la cookie sea segura y no pueda ser interceptada por un atacante
+                    {
+                        samesite: 'none',
+                        secure: true,
+                });
 
                 //Imprimimos el token en la consola
                 console.log('Token generado: ', token);
@@ -230,7 +249,6 @@ export const login = async (req, res) => {
                         updateAt: userFound.updateAt
                     }
                 }, null, 2));
-
 
             }
       

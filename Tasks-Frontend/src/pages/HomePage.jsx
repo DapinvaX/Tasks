@@ -21,6 +21,9 @@ function HomePage() {
         <li>
           <Link to="/add-task">Add Task</Link>
         </li>
+        <li>
+          <Link to="/tasks/:id">Update Task</Link>
+        </li>
       </ul>
 
     
