@@ -200,7 +200,17 @@ export const login = async (req, res) => {
 
                 //En vez de enviar el token al cliente (mala práctica), lo guardamos en una cookie
                 //Cookie que guarda el token de sesión
-                res.cookie('token', token);
+                res.cookie('token', token,
+                     //Configuramos la cookie para que se envíe en solicitudes de sitios cruzados y no solo en solicitudes del mismo sitio
+                    //Esto es para que la cookie sea accesible desde cualquier sitio aunque no sea el mismo sitio que la generó
+                    //Configuramos la cookie para que solo se envíe por HTTPS y no por HTTP y aparte que 
+                    //Esto es para que la cookie sea segura y no pueda ser interceptada por un atacante
+                    {
+                        samesite: 'none',
+                        secure: true,
+                        httpOnly: true,
+                }
+                );
 
                 //Imprimimos el token en la consola
                 console.log('Token generado: ', token);
