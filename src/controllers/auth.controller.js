@@ -10,6 +10,8 @@ import { createAccessToken } from '../libs/jwt.js';
 //Importamos el modelo User
 import User from '../models/user.model.js';
 
+import { TOKEN_SECRET } from '../config.js';
+
 
 
 //Exportamos las funciones de registro y login
@@ -198,7 +200,20 @@ export const login = async (req, res) => {
 
                 //En vez de enviar el token al cliente (mala práctica), lo guardamos en una cookie
                 //Cookie que guarda el token de sesión
+<<<<<<< HEAD
                 res.cookie('token', token);
+=======
+                res.cookie('token', token,
+                    //Configuramos la cookie para que se envíe en solicitudes de sitios cruzados y no solo en solicitudes del mismo sitio
+                    //Esto es para que la cookie sea accesible desde cualquier sitio aunque no sea el mismo sitio que la generó
+                    //Configuramos la cookie para que solo se envíe por HTTPS y no por HTTP y aparte que 
+                    //Esto es para que la cookie sea segura y no pueda ser interceptada por un atacante
+                    {
+                        samesite: 'none',
+                        secure: true,
+                        httpOnly: true,
+                });
+>>>>>>> ed7fc903c030c8b882fea5855b3b8ad3f5f94466
 
                 //Imprimimos el token en la consola
                 console.log('Token generado: ', token);
@@ -250,6 +265,46 @@ export const login = async (req, res) => {
         }
     
     } 
+
+}
+
+export const verifyToken = async (req, res) => {
+
+    //Obtenemos el token de las cookies
+    const { token } = req.cookies;
+
+    //Si no hay token, mostramos un mensaje de error
+    if (!token) {
+        console.log('No hay token');
+        return res.status(401).json({errorMessage: 'No Autorizado'});
+    }
+
+    //JWT
+    //Verificamos el token con el método verify de jwt
+    jwt.verify(token, TOKEN_SECRET, (err, user) => {
+
+        if(err){
+            //Si hay un error, mostramos un mensaje de error y un código de estado 401 con el mensaje "No Autorizado"
+            console.log('Error 401: No Autorizado');
+            return res.status(401).json({errorMessage: 'No Autorizado'});
+        }
+
+        //Declaramos la constante userFound que contendrá el usuario encontrado con el método findById de mongoose
+        const userfound = User.findById(user.id);
+
+        //Si el usuario no ha sido encontrado o no existe, mostramos un mensaje de error
+        if (!userfound) {
+            console.log('Usuario no encontrado o no existe');
+            return res.status(404).json({message: 'Usuario no encontrado o no existe'});
+        }
+
+        //Si el usuario existe, mostrar un mensaje "Perfil de usuario"
+        console.log("Perfil de usuario!");
+        isAuthenticated = true;
+        return res.status(200).json({message: "Perfil de usuario", id:userfound.id, user: userfound.user, email: userfound.email});
+
+        }
+    );
 
 }
 
