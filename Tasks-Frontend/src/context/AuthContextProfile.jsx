@@ -50,7 +50,7 @@ export const AuthProviderProfile = ({ children }) => {
             const res = await registerReq(user);
             console.log(res.data);
             setUser(res.data);
-            setIsAuthenticated(true);
+           
         } catch (errors) {
             
             if(Array.isArray(errors.response.data)){
@@ -70,24 +70,37 @@ export const AuthProviderProfile = ({ children }) => {
         //Al ser una petición asíncrona, utilizamos el bloque try-catch para manejar los errores
         try{
 
-           const res =  await loginReq(user);
-
-           setUser(res.data);
-           setIsAuthenticated(true);
+            //Realizamos la petición de logueo al servidor
+            const res =  await loginReq(user);
+            //Si la petición es exitosa, mostramos el mensaje en consola
+            setIsAuthenticated(true);
+            setUser(res.data);
+           //Verificamos si tiene el token
+            if(res.data.token){
+                //Guardamos el token en una cookie
+                Cookies.set('token', res.data.token);
+            }else{
+                res.status(401).json({message: 'No hay token'});
+                console.error('No hay token');
+            }
 
             //Si la petición es exitosa, mostramos el mensaje en consola
             console.log(res.data);
+
         
         }
         catch (errors) {
-            
-                if(Array.isArray(errors.response.data)){
+
+            setIsAuthenticated(false);
+            //Si hay errores en la respuesta, mostramos el mensaje de error en consola
+            if(Array.isArray(errors.response.data)){
                     
                     console.error('Error al loguearse:', errors.response);
                     return setErrors(errors.response.data.message);
+
                 
-                }
             }
+        }
         
     }
 

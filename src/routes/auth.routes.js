@@ -10,8 +10,6 @@ import { validateSchema } from '../middlewares/validateMiddleware.js';
 //Importamos los esquemas de validación para el registro y el login de usuarios
 import { loginSchema, registerSchema } from '../schemas/auth.validate.schema.js';
 
-import { verifyToken } from '../controllers/auth.controller.js';
-
 
 // Declaramos el router para manejar las rutas de autenticación
 const router = Router();
@@ -32,8 +30,6 @@ router.post('/logout', logout);
 //Ruta protegida con token
 //Ejecutamos antes authRequired para verificar si el token es válido y si lo es, se ejecutará la función profile
 router.get('/profile',authRequired, profile);
-
-router.get('/verify', verifyToken);
 
 // Exportamos el router para poder utilizarlo en otros archivos
 export default router;
