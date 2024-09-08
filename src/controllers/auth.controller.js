@@ -32,12 +32,12 @@ export const register = async (req, res) => {
 
     //Creamos un bloque try-catch para manejar los errores que puedan surgir a la hora de registrar un usuario
     try{
-         //Aquí hacemos la lógica de registro
+        //Aquí hacemos la lógica de registro
 
-          //Extraemos los datos del usuario, email y password del request body
-        const {
-            user, 
-            email, 
+        //Extraemos los datos del usuario, email y password del request body
+        const user = req.body.user.toLowerCase();
+        const email = req.body.email.toLowerCase();
+        const { 
             password
             } = req.body;
 
@@ -168,16 +168,19 @@ export const login = async (req, res) => {
     //console.log(req.body);
 
     //Extraemos los datos del usuario, email y password del request body
-    const {user, email, password} = req.body;
+    const user = req.body.user.toLowerCase();
+
+    const { 
+        password
+        } = req.body;
 
     //Creamos un bloque try-catch para manejar los errores que puedan surgir a la hora de loguear un usuario
     try{
          //Aquí hacemos la lógica de login
 
         //Buscamos el usuario en la base de datos con el método findOne de mongoose para ver si existe
-        //El método findOne recibe un objeto con el nombre de usuario o email 
-        
-        const userFound = await User.findOne({ $or: [{ user: user }, { email: email }] });
+        //El método findOne recibe un objeto con el usuario o email de la persona que ha hecho el login 
+        const userFound = await User.findOne({ $or: [{ user: user }, { email: user }] });
 
           //Comparar la contraseña introducida con la contraseña encriptada de la base de datos
             const coincidencia = await bcrypt.compare(password, userFound.password);
