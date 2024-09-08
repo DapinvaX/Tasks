@@ -5,3 +5,5 @@ const API = 'http://localhost:4000/api';
 export const registerReq = user => axios.post(`${API}/register`, user);
 
 export const loginReq = user => axios.post(`${API}/login`, user);
+
+export const verifyTokenReq = () => axios.get(`${API}/auth/verify`);

@@ -27,7 +27,7 @@ function RegisterPage() {
             <form
                 id="registerForm"
                 className="bg-zinc-800 max-w-md mx-auto p-4 rounded-md shadow-md form" 
-                onSubmit={handleSubmit(async (values) =>{
+                onSubmit={handleSubmit(async (user) =>{
         
                     //console.log(values);
                     
@@ -37,7 +37,7 @@ function RegisterPage() {
                     //Se llama a la función registerReq con los valores de los inputs
                     //Esto se hace para enviar los datos al backend 
                     //y registrar al usuario introduciendolo en la base de datos de datos de MongoDB
-                    const response = await registerReq(values);
+                    const response = await registerReq(user);
 
                     //Muestra en la consola la respuesta del backend
                     console.log(response);

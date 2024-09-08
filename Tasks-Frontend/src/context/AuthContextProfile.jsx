@@ -2,10 +2,13 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 
 //Importamos las funciones de registerReq y loginReq desde la API de autenticación
-import {registerReq, loginReq} from './../API/auth.js';
+import {registerReq, loginReq, verifyTokenReq} from './../API/auth.js';
 
 //Importamos PropTypes para definir el tipo de las propiedades
 import PropTypes from 'prop-types';
+
+//Importamos la librería de Cookies
+import Cookies from 'js-cookie';
 
 
 // Creamos el contexto
@@ -42,9 +45,9 @@ export const AuthProviderProfile = ({ children }) => {
     const [errors, setErrors] = useState([]);
 
     //Definimos las funciones para registrar y loguear
-    const registrar = async (values) => {
+    const registrar = async ( user ) => {
         try {
-            const res = await registerReq(values);
+            const res = await registerReq(user);
             console.log(res.data);
             setUser(res.data);
             setIsAuthenticated(true);
@@ -63,11 +66,11 @@ export const AuthProviderProfile = ({ children }) => {
     //Definimos la función para loguear
     //Esta función se encarga de realizar la petición de logueo al servidor
     //Recibe como parámetro un objeto con los datos del usuario
-    const loguear = async (values) => {
+    const loguear = async ( user ) => {
         //Al ser una petición asíncrona, utilizamos el bloque try-catch para manejar los errores
         try{
 
-           const res =  await loginReq(values);
+           const res =  await loginReq(user);
 
            setUser(res.data);
            setIsAuthenticated(true);
@@ -88,6 +91,7 @@ export const AuthProviderProfile = ({ children }) => {
         
     }
 
+    //Definimos el useEffect para manejar los errores
     useEffect(() => {
         
         if(errors.length > 0){
@@ -100,6 +104,30 @@ export const AuthProviderProfile = ({ children }) => {
         }
 
     }, [errors]);
+    
+    //Definimos el useEffect para verificar si el token es válido
+    useEffect(() => {
+        const cookies = Cookies.get();
+    
+        if(cookies.token){
+           
+            console.log(cookies.token);
+            try{
+                const res = verifyTokenReq(cookies.token);
+                console.log(res.data);
+                if(res.data){
+                   const autenticado = setIsAuthenticated(true); 
+                    console.log("Usuario autenticado: "+ autenticado);
+                }
+            }catch(errors){
+                
+                console.error(errors);
+                setIsAuthenticated(false);
+                setUser(null);
+            }
+    
+        }
+    }, []);
 
     return (
         //Retornamos el provider con el contexto y las funciones
@@ -110,6 +138,7 @@ export const AuthProviderProfile = ({ children }) => {
             registrar, 
             loguear,
             isAuthenticated,
+            verifyTokenReq,
             errors,
             }}>
 

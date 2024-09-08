@@ -26,12 +26,12 @@ function LoginPage() {
         <form
                 id="registerForm"
                 className="bg-zinc-800 max-w-md mx-auto p-4 rounded-md shadow-md form" 
-                onSubmit={handleSubmit(async (values) =>{
+                onSubmit={handleSubmit(async (user) =>{
                    try{
-                    console.log(values);
-                    const res = await loginReq(values);
+                    console.log(user);
+                    const res = await loginReq(user);
                     console.log(res);
-                    loginReq(values).then((res) => {
+                    loginReq(user).then((res) => {
                         
 
                         //Si la respuesta de axios es exitosa, mostrará un mensaje de éxito en la consola y en la ventana.
