@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 //Declaramos la constante API que almacena la URL de la API
-const API = 'http://localhost:4000/api';
+const API = 'https://localhost:4000/api';
 
 //Creamos una instancia de axios con la URL de la API
 const instancia = axios.create({

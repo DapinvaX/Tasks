@@ -5,3 +5,5 @@ _id es para el usuario
 Reparación de proyecto
 
 Min actual: 3:15:30 - https://youtu.be/NmkY4JgS21A?t=11730
+
+Cambiar en authController.js>login()>res.cookie>secure:false a true si se consigue instalar ssl
