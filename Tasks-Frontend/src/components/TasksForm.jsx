@@ -33,7 +33,7 @@ const TasksForm = () => {
     };
 
     return (
-        
+        <h1>Añadir Task</h1>,
         <form 
         className="bg-zinc-800 max-w-md mx-auto p-4 rounded-md shadow-md form" 
         onSubmit={handleSubmit}

@@ -6,8 +6,10 @@ const API = 'http://localhost:4000/api';
 
 //Creamos una instancia de axios con la URL de la API
 const instancia = axios.create({
+    
     //URL de la API
     baseURL: API,
+
     //Cabeceras de la petición
     headers: {
         'Content-Type': 'application/json',

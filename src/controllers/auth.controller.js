@@ -217,12 +217,13 @@ export const login = async (req, res) => {
                     //Esto es para que la cookie sea segura y no pueda ser interceptada por un atacante
                     {
                         samesite: 'none',
-                        secure: true,
+                        secure: false,
                         httpOnly: true,
                 });
 
                 //Imprimimos el token en la consola
                 console.log('Token generado: ', token);
+                
                 console.log('Usuario Logueado con éxito!');
 
                 // Imprimimos el nuevo usuario en la consola

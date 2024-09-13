@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 
 
+
 // Creamos el contexto
 export const AuthContextProfile = createContext();
 
@@ -24,7 +25,7 @@ export const useAuthProfile = () => {
 
     // Si no hay contexto, lanzamos un error
     if(!context){
-        throw new Error('useAuth debe estar dentro del proveedor AuthProvider');
+        throw new Error('useAuthProfile debe estar dentro del proveedor AuthProvider');
     }
 
     // Si hay contexto, lo retornamos
@@ -39,7 +40,7 @@ export const AuthProviderProfile = ({ children }) => {
     const [user, setUser] = useState(null);
 
     //Definimos el estado si el usuario está autenticado
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(true);
 
     //Definimos el estado si hay un error
     const [errors, setErrors] = useState([]);
@@ -50,7 +51,7 @@ export const AuthProviderProfile = ({ children }) => {
             const res = await registerReq(user);
             console.log(res.data);
             setUser(res.data);
-            setIsAuthenticated(true);
+            setIsAuthenticated(false);
         } catch (errors) {
             
             if(Array.isArray(errors.response.data)){
@@ -70,25 +71,31 @@ export const AuthProviderProfile = ({ children }) => {
         //Al ser una petición asíncrona, utilizamos el bloque try-catch para manejar los errores
         try{
 
-           const res =  await loginReq(user);
+            const res =  await loginReq(user);
+            
+            console.log("Respuesta: "+res);
+          
+            //Si la respuesta es correcta, se almacena el usuario en el estado y se establece que el usuario está autenticado
+            setUser(res.data.user);
 
-           setUser(res.data);
-           setIsAuthenticated(true);
-
-            //Si la petición es exitosa, mostramos el mensaje en consola
-            console.log(res.data);
+           
         
         }
         catch (errors) {
             
-                if(Array.isArray(errors.response.data)){
-                    
-                    console.error('Error al loguearse:', errors.response);
-                    return setErrors(errors.response.data.message);
+            //Si en el array de errores hay un mensaje, lo mostramos en consola
+            if(Array.isArray(errors.response.data)){
                 
-                }
+                console.error('Error al loguear:', errors.response.data);
+                return setErrors(errors.response.data);
+               
+                
             }
-        
+            //Si hay un error, mostramos el mensaje en consola
+            const setErrors = setErrors([errors.response.data.message]);
+            console.log("Errores:" + setErrors);
+            setIsAuthenticated(false);
+        } 
     }
 
     //Definimos el useEffect para manejar los errores
