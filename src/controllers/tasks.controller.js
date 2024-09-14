@@ -1,15 +1,6 @@
 // Importamos el modelo de tareas
 import Task from "../models/task.model.js";
 
-//Importamos el modelo de usuario para sacar el usuario autenticado
-import User from "../models/user.model.js";
-
-//Importamos jwt
-import jwt from "jsonwebtoken";
-
-//Importamos mongoose
-import mongoose from "mongoose";
-
 //Creamos las funciones que se ejecutarán en cada ruta
 
 //Obtener todas las tareas

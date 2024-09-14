@@ -1,18 +1,19 @@
-import { useAuthProfile } from "./context/AuthContextProfile.jsx";
-
-import { Navigate, Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useAuthProfile } from './context/AuthContextProfile';
 
 function ProtectedRoute() {
-
-    const { isAuthenticated } = useAuthProfile();
-    console.log(isAuthenticated);
-  
-    if (!isAuthenticated) {
-        
-        return <Navigate to="/login" />;
-        
-    }
     
+    const { isAuthenticated } = useAuthProfile();
+    
+    const navigate = useNavigate();
+    
+    //Comprobamos si el usuario ha iniciado sesión y si no lo redirigimos a la página de login
+    if (!localStorage.getItem('token') || !isAuthenticated) {
+        
+        navigate('/login');
+
+    }
+  
     return (
         <Outlet />
     )

@@ -1,12 +1,36 @@
 
 import { useForm } from "react-hook-form";
-
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Button } from '@nextui-org/react';
-import { Link, useNavigate } from 'react-router-dom';
+
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { registerReq } from '../API/auth.js';
 
+
+// CSS personalizado para el toast
+const customToastStyle = `
+.custom-toast {
+background-color: #4caf50 !important;
+color: white !important;
+font-size: 16px !important;
+}
+
+.custom-toast-error {
+background-color: #f44336 !important;
+color: white !important;
+font-size: 16px !important;
+}
+
+`;
+
+// Añadir el estilo personalizado al documento
+const styleSheet = document.createElement("style");
+styleSheet.type = "text/css";
+styleSheet.innerText = customToastStyle;
+document.head.appendChild(styleSheet);
 
 
 function RegisterPage() {
@@ -20,19 +44,16 @@ function RegisterPage() {
     //Declara una constante navigate que almacena la función useNavigate
     const navigate = useNavigate();
 
+
     
-    
+    //Se crea un formulario con un id "registerForm" que tendrá un input para el usuario, otro para el correo electrónico, otro para la contraseña y otro para confirmar la contraseña
     return (
         <div>
             <form
                 id="registerForm"
                 className="bg-zinc-800 max-w-md mx-auto p-4 rounded-md shadow-md form" 
                 onSubmit={handleSubmit(async (user) =>{
-        
-                    //console.log(values);
-                    
-
-                    //Si las contraseñas son iguales, se procede a registrar al usuario
+                    try{
                     
                     //Se llama a la función registerReq con los valores de los inputs
                     //Esto se hace para enviar los datos al backend 
@@ -45,26 +66,50 @@ function RegisterPage() {
                     //Si la respuesta de axios es exitosa, mostrará un mensaje de éxito en la consola y en la ventana.
                     if(response.headers === "Usuario registrado con éxito"){
                         console.log("Usuario registrado con éxito");
-                        window.alert("Usuario registrado con éxito").setTimeout(3000);
+                        //window.alert("Usuario registrado con éxito").setTimeout(3000);
 
                         //var w = window.open('','','width=100,height=100')
                         //w.document.write('Usuario registrado con exito!')
                         //w.focus()
                         //setTimeout(function() {w.close();}, 2000) 
-                        }
+                    
+                        //Toastify para mostrar un mensaje de éxito
+                    toast.success("Registro exitoso!", {
+                        position: "top-right",
+                        autoClose: 2000, // Duración en milisegundos
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        className: 'custom-toast', // Clase CSS personalizada
+
+                    });
+                        
+                    }
 
 
                     //Si el usuario ya existe, mostrará un mensaje de error en la consola y en la ventana.
                     if(response.message === "El usuario ya existe"){
                         console.error("El usuario ya existe");
                         window.alert("El usuario ya existe").setTimeout(3000);
-                        
+                       
+                        toast.error("El usuario ya existe", {
+                            position: "bottom-center",
+                            autoClose: 2000, // Duración en milisegundos
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            className: 'custom-toast-error', // Clase CSS personalizada
+
+                        });
                     }
 
                     console.log("Datos: "+response.data)
-                    
-                   
 
+                    //Limpiar los campos de los inputs si el registro fue exitoso
                     document.getElementById("userInput").value = "";
                     document.getElementById("emailInput").value = "";
                     document.getElementById("passwordInput").value = "";
@@ -72,6 +117,31 @@ function RegisterPage() {
   
                     //Redirigir al login
                     navigate("/login"); 
+
+                }catch{
+
+                
+                        //Si hay un error al registrar, mostrará un mensaje de error en la consola y en la ventana.
+                        console.error("Error al registrar. Inténtelo de nuevo.");
+                        
+                        toast.error("Error al registrar! Intentelo de nuevo.", {
+                            position: "bottom-center",
+                            autoClose: 2000, // Duración en milisegundos
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            className: 'custom-toast-error', // Clase CSS personalizada
+                        });
+                        
+                        //Limpiar los campos de los inputs si el registro fue exitoso
+                        document.getElementById("userInput").value = "";
+                        document.getElementById("emailInput").value = "";
+                        document.getElementById("passwordInput").value = "";
+                        document.getElementById("confirmPasswordInput").value = "";
+
+                    }
 
                     
                 }

@@ -97,7 +97,8 @@ export const register = async (req, res) => {
                     //Esto es para que la cookie sea segura y no pueda ser interceptada por un atacante
                     {
                         samesite: 'none',
-                        secure: true,
+                        httpOnly: true,
+                        secure: false,
                 });
 
                 //Imprimimos el token en la consola
@@ -304,9 +305,13 @@ export const verifyToken = async (req, res) => {
             return res.status(404).json({message: 'Usuario no encontrado o no existe'});
         }
 
+        //Si el token es válido, mostramos un mensaje de éxito y un código de estado 200
+        
+        isAuthenticated(true);
+
         //Si el usuario existe, mostrar un mensaje "Perfil de usuario"
         console.log("Perfil de usuario!");
-        isAuthenticated = true;
+       
         return res.status(200).json({message: "Perfil de usuario", id:userfound.id, user: userfound.user, email: userfound.email});
 
         }
