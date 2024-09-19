@@ -1,13 +1,19 @@
+// eslint-disable-next-line no-unused-vars
+import React from 'react';
+
+import { useAuthProfile } from '../context/AuthContextProfile.jsx';
 
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Button } from '@nextui-org/react';
 
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { registerReq } from '../API/auth.js';
+import { useEffect } from "react";
+
 
 
 // CSS personalizado para el toast
@@ -36,15 +42,29 @@ document.head.appendChild(styleSheet);
 function RegisterPage() {
   
 
-    console.log('RegisterPage');
+    //console.log('RegisterPage');
     
     //Se crea una constante que almacena el hook useForm con el método register, handleSubmit y formState
     const { register,handleSubmit, formState: { errors } } = useForm();
+
+    //Se crea una constante que almacena el hook useAuthProfile
+    const {  isAuthenticated } = useAuthProfile();
     
     //Declara una constante navigate que almacena la función useNavigate
     const navigate = useNavigate();
 
+    //Función que se ejecuta al enviar el formulario
+     useEffect(() => {
+        if(isAuthenticated){
+            navigate("/profile");
+        }
+     }, [isAuthenticated, navigate]);
 
+     const res = registerReq();
+     console.log(res.data);
+
+
+     
     
     //Se crea un formulario con un id "registerForm" que tendrá un input para el usuario, otro para el correo electrónico, otro para la contraseña y otro para confirmar la contraseña
     return (
@@ -64,7 +84,7 @@ function RegisterPage() {
                     console.log(response);
 
                     //Si la respuesta de axios es exitosa, mostrará un mensaje de éxito en la consola y en la ventana.
-                    if(response.headers === "Usuario registrado con éxito"){
+                    if(response.status === 200 ){
                         console.log("Usuario registrado con éxito");
                         //window.alert("Usuario registrado con éxito").setTimeout(3000);
 
@@ -73,29 +93,60 @@ function RegisterPage() {
                         //w.focus()
                         //setTimeout(function() {w.close();}, 2000) 
                     
-                        //Toastify para mostrar un mensaje de éxito
-                    toast.success("Registro exitoso!", {
-                        position: "top-right",
-                        autoClose: 2000, // Duración en milisegundos
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        className: 'custom-toast', // Clase CSS personalizada
+                        //Lanzamos un toast de éxito antes de redirigir al usuario a la página de login
+                        toast.success("Usuario registrado con éxito", {
+                            
+                            position: "top-center",
+                            autoClose: 2000, // Duración en milisegundos
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            className: 'custom-toast', // Clase CSS personalizada
 
-                    });
+                        });
+
+                        //Redirigimos al usuario a la página de login
+                        //navigate("/login");
+
+
                         
                     }
 
 
-                    //Si el usuario ya existe, mostrará un mensaje de error en la consola y en la ventana.
-                    if(response.message === "El usuario ya existe"){
+                   
+                    console.log("Datos: "+response.data)
+
+                    //Limpiar los campos de los inputs si el registro fue exitoso
+                    document.getElementById("userInput").value = "";
+                    document.getElementById("emailInput").value = "";
+                    document.getElementById("passwordInput").value = "";
+                    document.getElementById("confirmPasswordInput").value = "";
+  
+                    
+
+                }catch{
+
+                    //Recogemos la respuesta de axios
+                    //Si hay un error, mostrará un mensaje de error en la consola
+                    //y en la ventana.
+                    
+                    const res = registerReq(user);
+                    
+
+                    console.log(res);
+                
+                        //Si hay un error al registrar, mostrará un mensaje de error en la consola y en la ventana.
+                        console.error("Error al registrar. Inténtelo de nuevo.");
+                        
+                         //Si el usuario ya existe, mostrará un mensaje de error en la consola y en la ventana.
+                    if(res.status === 505 ){
                         console.error("El usuario ya existe");
-                        window.alert("El usuario ya existe").setTimeout(3000);
+                        //window.alert("El usuario ya existe").setTimeout(3000);
                        
                         toast.error("El usuario ya existe", {
-                            position: "bottom-center",
+                            position: "top-center",
                             autoClose: 2000, // Duración en milisegundos
                             hideProgressBar: false,
                             closeOnClick: true,
@@ -106,24 +157,7 @@ function RegisterPage() {
 
                         });
                     }
-
-                    console.log("Datos: "+response.data)
-
-                    //Limpiar los campos de los inputs si el registro fue exitoso
-                    document.getElementById("userInput").value = "";
-                    document.getElementById("emailInput").value = "";
-                    document.getElementById("passwordInput").value = "";
-                    document.getElementById("confirmPasswordInput").value = "";
-  
-                    //Redirigir al login
-                    navigate("/login"); 
-
-                }catch{
-
-                
-                        //Si hay un error al registrar, mostrará un mensaje de error en la consola y en la ventana.
-                        console.error("Error al registrar. Inténtelo de nuevo.");
-                        
+                    else{
                         toast.error("Error al registrar! Intentelo de nuevo.", {
                             position: "bottom-center",
                             autoClose: 2000, // Duración en milisegundos
@@ -134,6 +168,10 @@ function RegisterPage() {
                             progress: undefined,
                             className: 'custom-toast-error', // Clase CSS personalizada
                         });
+                    }
+
+
+                       
                         
                         //Limpiar los campos de los inputs si el registro fue exitoso
                         document.getElementById("userInput").value = "";
@@ -192,7 +230,10 @@ function RegisterPage() {
                    Volver a Iniciar Sesión
                 </Link>
             </form>
+            <ToastContainer />
+
         </div>
+        
     );
 }
 

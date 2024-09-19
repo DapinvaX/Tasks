@@ -2,14 +2,13 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 
 //Importamos las funciones de registerReq y loginReq desde la API de autenticación
-import {registerReq, loginReq, verifyTokenReq} from './../API/auth.js';
+import {registerReq, loginReq, logoutReq, verifyTokenReq} from './../API/auth.js';
 
 //Importamos PropTypes para definir el tipo de las propiedades
 import PropTypes from 'prop-types';
 
 //Importamos la librería de Cookies
 import Cookies from 'js-cookie';
-
 
 
 
@@ -47,19 +46,27 @@ export const AuthProviderProfile = ({ children }) => {
     //Definimos el estado si hay un error
     const [errors, setErrors] = useState([]);
 
+    
+
     //Definimos las funciones para registrar y loguear
     const registrar = async ( user ) => {
         try {
+            
             const res = await registerReq(user);
             console.log(res.data);
+
+            //res.data contiene el usuario registrado
             setUser(res.data);
-            setIsAuthenticated(false);
+
+
+            setIsAuthenticated(true);
+
         } catch (errors) {
             
             if(Array.isArray(errors.response.data)){
                     
-                console.error('Error al registrar:', errors.response);
-                return setErrors(errors.response.data.message);
+                console.error('Error al registrar:', errors.response.data);
+                return setErrors(errors.response.data);
             
             }
             
@@ -70,57 +77,84 @@ export const AuthProviderProfile = ({ children }) => {
     //Esta función se encarga de realizar la petición de logueo al servidor
     //Recibe como parámetro un objeto con los datos del usuario
     const loguear = async ( user ) => {
-        //Al ser una petición asíncrona, utilizamos el bloque try-catch para manejar los errores
+       
         try{
 
-            const res =  await loginReq(user);
+            //Realizamos la petición de login a la api con los datos del usuario
+            const res = await loginReq(user);
 
-            //Si el usuario y la contraseña son correctos, se cambiará el estado de autenticación a true
-            setIsAuthenticated(true);
-
-            const autenticado = isAuthenticated;
-
-            console.log("Usuario autenticado: "+ autenticado);
-
-            //Si la respuesta es correcta, mostramos en consola la respuesta
+            //Mostramos la respuesta en consola
             console.log(res.data);
 
-            //Si la respuesta es correcta, mostramos en consola el token
-            console.log(res.data.token);
+            setIsAuthenticated(true);
+            setUser(user);
 
-            //Almacenamos el token en una constante
-            const token = res.data.token;
+            console.log("Usuario de login autenticado: "+user);
+            console.log("Usuario autenticado: "+isAuthenticated);
 
-            //res.status(200).json({token: token, user: userLogged});
-
-            //Almacenamos el usuario logueado en una constante
-            const userLogged = res.data.user;
-
-            //Almacenamos el usuario logueado en el localStorage
-            localStorage.setItem("user", JSON.stringify(userLogged));
-
-            //Almacenamos el token en el localStorage
-            localStorage.setItem("token", token);
-
-           
-        
-        }
-        catch (errors) {
+            //Guardamos el token en el localStorage
+            localStorage.setItem('token', res.data.token);
             
-            //Si en el array de errores hay un mensaje, lo mostramos en consola
-            if(Array.isArray(errors.response.data)){
-                
-                console.error('Error al loguear:', errors.response.data);
+            //Guardamos el usuario en el localStorage
+            localStorage.setItem('user', JSON.stringify(user));
+            
+            //Guardamos el token en las cookies
+            Cookies.set('token', res.data.token);
+
+
+
+        }catch(errors){
+            
+            if(Array.isArray(errors.response)){
+                    
+                console.error('Error al loguearse:', errors.response);
                 return setErrors(errors.response.data);
-               
-                
+            
             }
-            //Si hay un error, mostramos el mensaje en consola
-            const setErrors = setErrors([errors.response.data.message]);
-            console.log("Errores:" + setErrors);
-            setIsAuthenticated(false);
-        } 
+            
+        }
+        
     }
+
+    //Definimos la función para cerrar sesión
+    const logout = async () => {
+        
+        try {
+            //Realizamos la petición de logout la api
+            const res = await logoutReq();
+            console.log(res.data);
+
+            //Limpiamos el localStorage
+            //Eliminamos el item que se llama token con el token del usuario
+            localStorage.removeItem('token');
+            
+            //Eliminamos el item que se llama user con el usuario logueado
+            localStorage.removeItem('user');
+            
+            //Limpiamos las cookies
+            Cookies.remove('token');
+            Cookies.remove('user');
+
+            //Cambiamos el estado de autenticación a false
+            setIsAuthenticated(false);
+
+            //Cambiamos el estado del usuario a null
+            setUser(null);
+
+        } catch (errors) {
+            //Si hay un error, lo mostramos en consola
+            console.error(errors);
+            
+            //Cambiamos el estado de autenticación a false por si acaso
+            setIsAuthenticated(false);
+
+            //Y también cambiamos el estado del usuario a null
+            setUser(null);
+
+            
+        }
+
+    };
 
     //Definimos el useEffect para manejar los errores
     useEffect(() => {
@@ -168,6 +202,7 @@ export const AuthProviderProfile = ({ children }) => {
             user, 
             registrar, 
             loguear,
+            logout,
             isAuthenticated,
             verifyTokenReq,
             errors,

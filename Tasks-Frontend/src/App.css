@@ -44,6 +44,33 @@ html, body{
 
 }
 
+.navbar .btnAddTask{
+  margin-right: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #5a5a5a;
+  color: #fff;
+  cursor: pointer;
+
+}
+
+.navbar .userLabel{
+
+  font-size: 17px;
+  font-family: Helvetica, sans-serif;
+  margin-right: 10px;
+  padding: 5px 10px;
+  color: #fff;
+  cursor: pointer;
+
+}
+
+.navbar .userLabel:hover{
+  color: #b1b1b1;
+  transition: color 0.15s 0.15s ; /* Añadir transición de color */
+}
+
 .navbar .btnRegister{
   margin-right: 10px;
   padding: 5px 10px;
@@ -63,6 +90,13 @@ html, body{
 .navbar .btnRegister:hover {
   background-color: #656565;
   transition: background-color 0.25s ease-in-out;
+}
+
+.navbar .btnAddTask:hover{
+
+  background-color: #656565;
+  transition: background-color 0.25s ease-in-out;
+
 }
 
 .navbar .btnLogout:hover {

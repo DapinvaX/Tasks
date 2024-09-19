@@ -67,7 +67,7 @@ export const register = async (req, res) => {
                 
                 // Si el usuario ya existe, mostrar un mensaje diciendo que ya existe
                 console.log('NODE: El usuario ya existe');
-                res.status(405).json({ Error: 'NODE: El usuario ya existe' });
+                res.status(505).json({ Error: 'NODE: El usuario ya existe' });
                 return;
                 
                 
@@ -183,8 +183,8 @@ export const login = async (req, res) => {
         //El método findOne recibe un objeto con el usuario o email de la persona que ha hecho el login 
         const userFound = await User.findOne({ $or: [{ user: user }, { email: user }] });
 
-          //Comparar la contraseña introducida con la contraseña encriptada de la base de datos
-            const coincidencia = await bcrypt.compare(password, userFound.password);
+        //Comparar la contraseña introducida con la contraseña encriptada de la base de datos
+        const coincidencia = await bcrypt.compare(password, userFound.password);
 
 
             //Si el usuario no existe, mostramos un mensaje diciendo que no existe
@@ -192,13 +192,13 @@ export const login = async (req, res) => {
 
                 // Si el usuario no existe, mostrar un mensaje diciendo que no existe
                 console.log('El usuario no existe');
-                return res.status(400).json({message: 'El usuario no existe'});
+                return res.status(501).json({message: 'El usuario no existe'});
                 
             }
             else if (!coincidencia) {
                 
                 console.log('Contraseña incorrecta! Intentelo de nuevo.');
-                return res.status(400).json({message: 'Contraseña incorrecta! Intentelo de nuevo.'});
+                return res.status(505).json({message: 'Contraseña incorrecta! Intentelo de nuevo.'});
             
             }
 
@@ -229,7 +229,7 @@ export const login = async (req, res) => {
 
                 // Imprimimos el nuevo usuario en la consola
                 res.status(200).json({
-                    message : "Usuario Logueado con éxito!",
+                    message : "Usuario Logueado con éxito!!!!",
                     userdata: {
                     _id: userFound._id,
                     user: userFound.user,
@@ -265,9 +265,9 @@ export const login = async (req, res) => {
         
         if(res.status(500)){
 
-        //Si hay un error, lo imprimimos en la consola
-        console.log("Error al loguear el usuario!", error);
-        res.status(500).json({ mensaje: 'Error interno del servidor.' });
+            //Si hay un error, lo imprimimos en la consola
+            console.log("Error al loguear el usuario!", error);
+            res.status(500).json({ mensaje: 'Error interno del servidor.' });
 
         }
     

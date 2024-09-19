@@ -4,6 +4,11 @@ import { useForm } from "react-hook-form";
 //Importamos el componente Link y useNavigate de React Router Dom para manejar la navegación y redirecciones.
 import { Link, useNavigate } from "react-router-dom";
 
+//Importamos el hook useAuthProfile desde el contexto de autenticación
+import { useAuthProfile } from "../context/AuthContextProfile.jsx";
+
+//Importamos la función loginReq desde la API de autenticación
+import { loginReq } from "../API/auth.js";
 
 //Importamos el componente Button de NextUI
 import { Button } from "@nextui-org/react";
@@ -15,7 +20,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 //Importamos la función loginReq desde la API de autenticación
-import { loginReq } from "../API/auth.js";
+//import { loginReq } from "../API/auth.js";
+
 
 
     // CSS personalizado para el toast
@@ -25,6 +31,13 @@ import { loginReq } from "../API/auth.js";
     color: white !important;
     font-size: 16px !important;
     }
+
+    .custom-toast-error {
+    background-color: #f44336 !important;
+    color: white !important;
+    font-size: 16px !important;
+    }import AddTaskPage from './AddTaskPage';
+
     `;
 
     // Añadir el estilo personalizado al documento
@@ -35,14 +48,76 @@ import { loginReq } from "../API/auth.js";
 
 
 function LoginPage() {
-  console.log("LoginPage");
-
+    //console.log("LoginPage");
 
     //Se crea una constante que almacena el hook useForm
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
-    //Se crea una constante que almacena la función navigate
     const navigate = useNavigate();
+    
+    //Se crea una constante que almacena el valor del input del usuario y de la contraseña con el hook watch
+    //El hook watch permite observar los cambios en los inputs del formulario
+    const userValue = watch("user");
+    const passwordValue = watch("password");
+
+    //Se crea una constante que almacena el hook useAuthProfile
+    const { loguear } = useAuthProfile();
+
+    const onSubmit = handleSubmit(async (user) => {
+            try { 
+                
+                
+                
+                //const res = await loginReq(user);
+
+                const res = await loginReq(user);
+                console.log(res);
+
+                if (res.status === 200) 
+                    //LLamamos a la función loguear con los valores de los inputs
+                    loguear(user);
+                    toast.success('Inicio de sesión exitoso', {
+                       className: 'custom-toast',   
+                   });
+
+                   navigate("/tasks");
+                   
+
+                //Redirigimos al usuario a la página de tareas
+                return;
+                
+            }
+
+            catch(errors){
+                
+                console.error(errors);
+                
+                const res = errors.response;
+
+                if(res.status === 501)
+                    
+                    return toast.error('El usuario no existe.', {
+                        className: 'custom-toast-error',
+                    });
+                    
+
+                if(res.status === 505)
+                    return toast.error('La contraseña es incorrecta.', {
+                        className: 'custom-toast-error',
+                    });
+
+                    return res.status === 500 && toast.error('Error interno del servidor.', {
+                        className: 'custom-toast-error',
+                    });
+            }
+
+        }
+    );
+    
+
+
+
+
 
     //Se crea un formulario con un id "registerForm" que tendrá un input para el usuario y otro para la contraseña
     return (
@@ -50,79 +125,17 @@ function LoginPage() {
             <form
                     id="loginForm"
                     className="bg-zinc-800 max-w-md mx-auto p-4 rounded-md shadow-md form" 
-                    onSubmit={handleSubmit(async (user) =>{
-                    try{
-                        console.log(user);
-
-                        //Se llama a la función loginReq con el objeto user como parámetro.
-                        //Esta función se encarga de realizar la petición de logueo al servidor.
-                        const res = await loginReq(user);
-
-                        //Se muestra en la consola la respuesta del servidor.
-                        console.log(res);
-
-                        // Mostrar toast de éxito
-                        // Mostrar toast de éxito con opciones personalizadas
-                        toast.success("Login exitoso!", {
-                            position: "top-right",
-                            autoClose: 2000, // Duración en milisegundos
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            className: 'custom-toast', // Clase CSS personalizada
-                        });
-                        
-                        //Redirigir al usuario a la página de tareas
-                        navigate('/profile');
-    0    
-                        //Si el login es exitoso, se redirige al usuario a la página de tareas.
-                        //console.log(res);"{\"hello\":\"world\"}"
-
-                        //Limpiar los campos de los inputs si el login fue exitoso
-                        //document.getElementById("userInput").value = "";
-                        //document.getElementById("passwordInput").value = "";
-                                                
-                        
-                    }catch{
-
-                        //Si la contraseña es incorrecta, mostrará un mensaje de error en la consola y en la ventana.
-
-                            console.error("Usuario o contraseña incorrectos. Inténtelo de nuevo.");
-                            //window.alert("Usuario o contraseña incorrectos. Inténtelo de nuevo.");
-
-                            toast.error("Error al loguear! Intentelo de nuevo.", {
-                                position: "bottom-center",
-                                autoClose: 2000, // Duración en milisegundos
-                                hideProgressBar: false,
-                                closeOnClick: true,
-                                pauseOnHover: true,
-                                draggable: true,
-                                progress: undefined,
-                                className: 'custom-toast-error', // Clase CSS personalizada
-                            });
-                            
-                            //Limpiar los campos de los inputs si el login fue exitoso
-                            document.getElementById("userInput").value = "";
-                            document.getElementById("passwordInput").value = "";
-
-                            return;
-
-                    }
-                    }
-                )
-            }
+                    onSubmit = {onSubmit}
             
-            >
+    >
                     <h1>Login</h1>
                     <input 
                         id="userInput" 
                         type="text" 
                         placeholder="Usuario" 
-                        {...register("user", { required: "Debe ingresar un nombre de usuario." })} 
+                        {...register("user", { required: "Debe ingresar un nombre de usuario o email." })} 
                     />
-                    {errors.user && <small>{errors.user.message}</small>}
+                    {errors.user && <small>{errors.user.message}</small> && userValue.length < 3 && <small>El usuario debe tener al menos 3 caracteres.</small>}
                     <br />
 
                     <input 
@@ -134,7 +147,7 @@ function LoginPage() {
                         {...register("password", { required: "Debe ingresar una contraseña." })}
                         
                     />
-                    {errors.password && <small>{errors.password.message}</small>}
+                    {errors.password && <small>{errors.password.message}</small> && passwordValue.length < 8 && <small>La contraseña debe tener al menos 8 caracteres.</small>}
                     <br />
 
                     <Button type="submit" className="btnPrincipal">Iniciar Sesión</Button>
@@ -148,9 +161,7 @@ function LoginPage() {
             </div>
     
         );
-
-  
-}
+    }
 
 export default LoginPage;
 
