@@ -15,9 +15,6 @@ function Navbar() {
             </Link>
             <div className="divLogin">
                 
-                {/* <Link to="/register" className="btn btn-primary btnRegister">Registrar</Link>
-                <Link to="/login" className="btn btn-primary btnLogin">Login</Link>
-                <Link className="btn btn-secondary btnLogout">Logout</Link> */}
 
                 <ul className="flex gap-x-2">
         {isAuthenticated ? (

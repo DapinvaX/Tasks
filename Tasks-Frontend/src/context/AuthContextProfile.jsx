@@ -13,6 +13,7 @@ import Cookies from 'js-cookie';
 
 
 
+
 // Creamos el contexto
 export const AuthContextProfile = createContext();
 
@@ -77,37 +78,35 @@ export const AuthProviderProfile = ({ children }) => {
     //Esta función se encarga de realizar la petición de logueo al servidor
     //Recibe como parámetro un objeto con los datos del usuario
     const loguear = async ( user ) => {
-       
+        //Al ser una petición asíncrona, utilizamos el bloque try-catch para manejar los errores
         try{
 
-            //Realizamos la petición de login a la api con los datos del usuario
-            const res = await loginReq(user);
-
-            //Mostramos la respuesta en consola
-            console.log(res.data);
-
-            setIsAuthenticated(true);
+            const res =  await loginReq(user);
+            
+            console.log("Respuesta: "+res);
+          
+            //Si la respuesta es correcta, se almacena el usuario en el estado y se establece que el usuario está autenticado
             setUser(user);
+            setIsAuthenticated(true);
 
-            console.log("Usuario de login autenticado: "+user);
-            console.log("Usuario autenticado: "+isAuthenticated);
-
-            //Guardamos el token en el localStorage
+            //Se almacena el token en el localStorage
             localStorage.setItem('token', res.data.token);
-            
-            //Guardamos el usuario en el localStorage
+
+            //Se almacena el usuario en el localStorage
             localStorage.setItem('user', JSON.stringify(user));
-            
-            //Guardamos el token en las cookies
+
+            //Se almacena el token en las cookies
             Cookies.set('token', res.data.token);
-
-
-
-        }catch(errors){
             
-            if(Array.isArray(errors.response)){
-                    
-                console.error('Error al loguearse:', errors.response);
+           
+        
+        }
+        catch (errors) {
+            
+            //Si en el array de errores hay un mensaje, lo mostramos en consola
+            if(Array.isArray(errors.response.data)){
+                
+                console.error('Error al loguear:', errors.response.data);
                 return setErrors(errors.response.data);
             
             }
