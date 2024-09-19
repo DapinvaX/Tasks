@@ -35,9 +35,7 @@ function UpdateTaskPage(){
             <h1>Modificar Task</h1>
             <TasksForm/>
             <ul>
-                <li>
-                    <Link to="/profile">Profile</Link>
-                </li>
+                <Link to="/profile" className="btn btn-primary btnInput">Profile</Link>
             </ul>
         </div>
         

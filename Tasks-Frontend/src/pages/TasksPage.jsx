@@ -5,17 +5,15 @@ function TasksPage(){
     return(
         <div>
             <h1>Tasks Page</h1>
-            <ul>
-                <li>
-                    <Link to="/profile">Profile</Link>
-                </li>
-                <li>
-                    <Link to="/add-task">Add Task</Link>
-                </li>
-                <li>
-                    <Link to="/tasks/:id">Update Task</Link>
-                </li>
-            </ul>
+           
+                    <Link to="/profile"    className="btn btn-primary btnInput">Profile</Link>
+                
+                    <Link to="/add-task"   className="btn btn-primary btnInput">Add Task</Link>
+               
+                    <Link to="/tasks/:id"  className="btn btn-primary btnInput">Update Task</Link>
+
+                    
+               
         </div>
         
     )

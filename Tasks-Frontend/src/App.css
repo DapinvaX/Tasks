@@ -82,12 +82,13 @@ html, body{
 
 }
 
-.navbar .btnLogin:hover {
+
+.navbar .btnRegister:hover {
   background-color: #656565;
   transition: background-color 0.25s ease-in-out;
 }
 
-.navbar .btnRegister:hover {
+.navbar .btnLogin:hover {
   background-color: #656565;
   transition: background-color 0.25s ease-in-out;
 }
@@ -100,6 +101,54 @@ html, body{
 }
 
 .navbar .btnLogout:hover {
+  background-color: #656565;
+  transition: background-color 0.25s ease-in-out;
+}
+
+.navbar .btnInput{
+  margin-right: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #5a5a5a;
+  color: #fff;
+  cursor: pointer;
+
+}
+
+
+.navbar .btnInput:hover {
+  background-color: #656565;
+  transition: background-color 0.25s ease-in-out;
+}
+
+.btnProfile{
+  
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #5a5a5a;
+  color: #fff;
+  cursor: pointer;
+}
+
+.btnProfile:hover {
+  background-color: #656565;
+  transition: background-color 0.25s ease-in-out;
+}
+
+.btnInput{
+  margin-right: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #5a5a5a;
+  color: #fff;
+  cursor: pointer;
+
+}
+
+.btnInput:hover {
   background-color: #656565;
   transition: background-color 0.25s ease-in-out;
 }

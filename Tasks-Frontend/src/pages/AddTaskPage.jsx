@@ -7,13 +7,15 @@ function AddTaskPage(){
     return (
         
         <div>
+
             <h1>Añadir Task</h1>
-            <TasksForm/>
+                <TasksForm/>
+            
             <ul>
-                <li>
-                    <Link to="/profile">Profile</Link>
-                </li>
+                <Link to="/profile" className="btn btn-primary btnInput">Perfil</Link>
             </ul>
+            
+
         </div>
        
     );

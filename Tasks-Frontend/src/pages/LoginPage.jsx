@@ -73,17 +73,19 @@ function LoginPage() {
                 const res = await loginReq(user);
                 console.log(res);
 
-                if (res.status === 200) 
+                if (res.status === 200) {
+                    
                     //LLamamos a la función loguear con los valores de los inputs
                     loguear(user);
-                    toast.success('Inicio de sesión exitoso', {
-                       className: 'custom-toast',   
-                   });
+                        
+                    //Redirigimos al usuario a la página de tareas
+                    navigate("/profile");
 
-                   navigate("/tasks");
-                   
+                    return;
 
-                //Redirigimos al usuario a la página de tareas
+
+                }
+
                 return;
                 
             }

@@ -13,8 +13,10 @@ function ProtectedRoute() {
 
     useEffect(() => {
         // Comprobamos si el usuario ha iniciado sesión y si no lo redirigimos a la página de login
-        if ( !isAuthenticated ) {
+        if ( isAuthenticated === false ) {
+
             navigate('/login');
+            
         }
     }, [isAuthenticated, navigate]);
 
