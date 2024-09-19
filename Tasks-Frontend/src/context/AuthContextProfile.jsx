@@ -12,6 +12,8 @@ import Cookies from 'js-cookie';
 
 
 
+
+
 // Creamos el contexto
 export const AuthContextProfile = createContext();
 
@@ -40,7 +42,7 @@ export const AuthProviderProfile = ({ children }) => {
     const [user, setUser] = useState(null);
 
     //Definimos el estado si el usuario está autenticado
-    const [isAuthenticated, setIsAuthenticated] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     //Definimos el estado si hay un error
     const [errors, setErrors] = useState([]);
@@ -72,11 +74,33 @@ export const AuthProviderProfile = ({ children }) => {
         try{
 
             const res =  await loginReq(user);
-            
-            console.log("Respuesta: "+res);
-          
-            //Si la respuesta es correcta, se almacena el usuario en el estado y se establece que el usuario está autenticado
-            setUser(res.data.user);
+
+            //Si el usuario y la contraseña son correctos, se cambiará el estado de autenticación a true
+            setIsAuthenticated(true);
+
+            const autenticado = isAuthenticated;
+
+            console.log("Usuario autenticado: "+ autenticado);
+
+            //Si la respuesta es correcta, mostramos en consola la respuesta
+            console.log(res.data);
+
+            //Si la respuesta es correcta, mostramos en consola el token
+            console.log(res.data.token);
+
+            //Almacenamos el token en una constante
+            const token = res.data.token;
+
+            //res.status(200).json({token: token, user: userLogged});
+
+            //Almacenamos el usuario logueado en una constante
+            const userLogged = res.data.user;
+
+            //Almacenamos el usuario logueado en el localStorage
+            localStorage.setItem("user", JSON.stringify(userLogged));
+
+            //Almacenamos el token en el localStorage
+            localStorage.setItem("token", token);
 
            
         
@@ -134,7 +158,7 @@ export const AuthProviderProfile = ({ children }) => {
             }
     
         }
-    }, []);
+    }, [isAuthenticated]);
 
     return (
         //Retornamos el provider con el contexto y las funciones

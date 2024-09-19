@@ -61,18 +61,6 @@ function LoginPage() {
                         //Se muestra en la consola la respuesta del servidor.
                         console.log(res);
 
-                        //
-                        const token = res.data.token;
-
-                        //Se almacena el usuario logueado en una constante
-                        //const userLogged = res.data.user;
-
-                        //Se almacena el usuario logueado en el localStorage
-                        //localStorage.setItem("user", JSON.stringify(userLogged));
-
-                        //Se almacena el token en el localStorage
-                        localStorage.setItem("token", token);
-                        
                         // Mostrar toast de éxito
                         // Mostrar toast de éxito con opciones personalizadas
                         toast.success("Login exitoso!", {
@@ -90,7 +78,7 @@ function LoginPage() {
                         navigate('/profile');
     0    
                         //Si el login es exitoso, se redirige al usuario a la página de tareas.
-                        //console.log(res);
+                        //console.log(res);"{\"hello\":\"world\"}"
 
                         //Limpiar los campos de los inputs si el login fue exitoso
                         //document.getElementById("userInput").value = "";

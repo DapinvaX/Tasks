@@ -1,5 +1,6 @@
 
 
+import { Link } from 'react-router-dom';
 import TasksForm from './../components/TasksForm';
 
 //Importamos la librería de Toastify
@@ -33,6 +34,11 @@ function UpdateTaskPage(){
         <div>
             <h1>Modificar Task</h1>
             <TasksForm/>
+            <ul>
+                <li>
+                    <Link to="/profile">Profile</Link>
+                </li>
+            </ul>
         </div>
         
     );

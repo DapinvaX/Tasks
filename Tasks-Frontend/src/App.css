@@ -22,6 +22,17 @@ html, body{
   width: 100%;
 }
 
+.navbar .btnLogout{
+  margin-right: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #5a5a5a;
+  color: #fff;
+  cursor: pointer;
+
+}
+
 .navbar .btnLogin{
   margin-right: 10px;
   padding: 5px 10px;
@@ -42,6 +53,21 @@ html, body{
   color: #fff;
   cursor: pointer;
 
+}
+
+.navbar .btnLogin:hover {
+  background-color: #656565;
+  transition: background-color 0.25s ease-in-out;
+}
+
+.navbar .btnRegister:hover {
+  background-color: #656565;
+  transition: background-color 0.25s ease-in-out;
+}
+
+.navbar .btnLogout:hover {
+  background-color: #656565;
+  transition: background-color 0.25s ease-in-out;
 }
 
 .form{
@@ -156,3 +182,4 @@ a{
   transition: color 0.25s 0.25s ; /* Añadir transición de color */
 
 }
+
