@@ -1,7 +1,6 @@
-
-
-import { Link } from 'react-router-dom';
 import TasksForm from './../components/TasksForm';
+
+import { useAuthProfile } from '../context/AuthContextProfile.jsx';
 
 //Importamos la librería de Toastify
 //import { toast } from 'react-toastify';
@@ -28,15 +27,26 @@ document.head.appendChild(styleSheet);
 
 function UpdateTaskPage(){
    
+    const { isAuthenticated } = useAuthProfile();
+
     //Una vez que tenemos el id, necesitamos obtener la tarea de la base de datos.
     return(
 
         <div>
-            <h1>Modificar Task</h1>
-            <TasksForm/>
-            <ul>
-                <Link to="/profile" className="btn btn-primary btnInput">Profile</Link>
-            </ul>
+            
+            
+            {isAuthenticated ? (
+                <>
+                   <h1>Modificar Task</h1>
+                    <TasksForm/>                    
+                </>
+            ) : (
+                <>
+                    <h1>Modificar Task</h1>
+                    <p>Debes estar autenticado para ver esta página</p>
+                </>
+            )}
+
         </div>
         
     );

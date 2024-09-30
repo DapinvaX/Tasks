@@ -13,6 +13,7 @@ import { AuthProviderProfile } from './context/AuthContextProfile.jsx';
 import UpdateTaskPage from './pages/UpdateTaskPage.jsx';
 import Navbar from './components/Navbar.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
+import { TaskProvider } from './context/taskContext.jsx';
 
 
 
@@ -24,33 +25,33 @@ function App() {
   return (
    
     <AuthProviderProfile>
+      <TaskProvider>
+        <BrowserRouter>
 
-      <BrowserRouter>
-
-        <Navbar />
-       <div className="container"> 
-          
-          <Routes>
-            <Route path="/" element={ <HomePage /> } />
-            <Route path="*" element={ <NotFoundPage /> } />
-            <Route path="/register" element={ <RegisterPage /> } />
-            <Route path="/login" element={ <LoginPage />} />
+          <Navbar />
+          <div className="container"> 
             
-            <Route element={<ProtectedRoute/>}>
+            <Routes>
+              <Route path="/" element={ <HomePage /> } />
+              <Route path="*" element={ <NotFoundPage /> } />
+              <Route path="/register" element={ <RegisterPage /> } />
+              <Route path="/login" element={ <LoginPage />} />
               
-              <Route path="/profile" element={ <ProfilePage /> } />
-              <Route path="/tasks" element={ <TasksPage /> } />
-              <Route path="/add-task" element={ <AddTaskPage /> } />
-              <Route path="/tasks/:id" element={ <UpdateTaskPage /> } />
+              <Route element={<ProtectedRoute/>}>
+                
+                <Route path="/profile" element={ <ProfilePage /> } />
+                <Route path="/tasks" element={ <TasksPage /> } />
+                <Route path="/add-task" element={ <AddTaskPage /> } />
+                <Route path="/tasks/:id" element={ <UpdateTaskPage /> } />
 
-            </Route>
-            
-          </Routes>
+              </Route>
+              
+            </Routes>
 
-        </div>
+          </div>
 
-      </BrowserRouter>
-
+        </BrowserRouter>
+      </TaskProvider>
     </AuthProviderProfile>
 
   )

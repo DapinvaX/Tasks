@@ -12,8 +12,6 @@ import Cookies from 'js-cookie';
 
 
 
-
-
 // Creamos el contexto
 export const AuthContextProfile = createContext();
 
@@ -47,6 +45,7 @@ export const AuthProviderProfile = ({ children }) => {
     //Definimos el estado si hay un error
     const [errors, setErrors] = useState([]);
 
+   
     
 
     //Definimos las funciones para registrar y loguear
@@ -78,6 +77,7 @@ export const AuthProviderProfile = ({ children }) => {
     //Esta función se encarga de realizar la petición de logueo al servidor
     //Recibe como parámetro un objeto con los datos del usuario
     const loguear = async ( user ) => {
+        
         //Al ser una petición asíncrona, utilizamos el bloque try-catch para manejar los errores
         try{
 
@@ -98,8 +98,10 @@ export const AuthProviderProfile = ({ children }) => {
             //Se almacena el token en las cookies
             Cookies.set('token', res.data.token);
             
-           
-        
+            console.log(setUser);
+            console.log(setIsAuthenticated);
+
+
         }
         catch (errors) {
             
@@ -112,6 +114,8 @@ export const AuthProviderProfile = ({ children }) => {
             }
             
         }
+
+        
         
     }
 
@@ -192,6 +196,8 @@ export const AuthProviderProfile = ({ children }) => {
     
         }
     }, [isAuthenticated]);
+
+
 
     return (
         //Retornamos el provider con el contexto y las funciones

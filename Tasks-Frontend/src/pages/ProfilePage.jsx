@@ -22,9 +22,8 @@ function ProfilePage() {
                 </>
             ) : (
                 <>
-                    <h1>Perfil</h1>
-                    <Link to="/login" className="btn btn-primary btnLogin">Login</Link>
-                    <Link to="/register" className="btn btn-primary btnRegister">Registrar</Link>
+                    <h1>Perfil de Usuario</h1>
+                    <p>Debes estar autenticado para ver tu perfil</p>
                 </>
             )}
 
