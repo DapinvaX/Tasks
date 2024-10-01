@@ -28,17 +28,20 @@ import 'react-toastify/dist/ReactToastify.css';
 
     // CSS personalizado para el toast
     const customToastStyle = `
+    
     .custom-toast {
     background-color: #4caf50 !important;
     color: white !important;
     font-size: 16px !important;
+    position: top-center !important;
     }
 
     .custom-toast-error {
     background-color: #f44336 !important;
     color: white !important;
     font-size: 16px !important;
-    }import AddTaskPage from './AddTaskPage';
+    position: top-center !important;
+    }
 
     `;
 
@@ -47,6 +50,7 @@ import 'react-toastify/dist/ReactToastify.css';
     styleSheet.type = "text/css";
     styleSheet.innerText = customToastStyle;
     document.head.appendChild(styleSheet);
+
 
 
 function LoginPage() {
@@ -93,18 +97,20 @@ function LoginPage() {
                 const res = errors.response;
 
                 if(res.status === 501)
-                    
                     return toast.error('El usuario no existe.', {
+                        position: "top-center",
                         className: 'custom-toast-error',
                     });
                     
 
                 if(res.status === 505)
                     return toast.error('La contraseña es incorrecta.', {
+                        position: "top-center",
                         className: 'custom-toast-error',
                     });
 
                     return res.status === 500 && toast.error('Error interno del servidor.', {
+                        position: "top-center",
                         className: 'custom-toast-error',
                     });
             }   

@@ -33,10 +33,10 @@ const router = Router();
 //A estas riuas solo se puede acceder si se está autenticado
 
 
-//Obtener todas las tareas
+//Obtener todas las tareas de un usuario
 router.get('/tasks', authRequired, obtenerTaks,(req, res) =>{});
 
-//Obtener una tarea por id
+//Obtener una tarea por id de un usuario
 router.get('/tasks/:id', authRequired, obtenerTaskID, (req, res) =>{});
 
 //Crear una tarea

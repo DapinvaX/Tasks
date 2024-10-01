@@ -4,6 +4,7 @@ import React from 'react';
 
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from 'react-router-dom';
+
 import bcrypt from 'bcryptjs';
 
 import { registerReq } from '../API/auth.js';
@@ -19,12 +20,15 @@ import 'react-toastify/dist/ReactToastify.css';
 // CSS personalizado para el toast
 const customToastStyle = `
 .custom-toast {
+position: top-center !important;
+
 background-color: #4caf50 !important;
 color: white !important;
 font-size: 16px !important;
 }
 
 .custom-toast-error {
+position: top-center !important;
 background-color: #f44336 !important;
 color: white !important;
 font-size: 16px !important;
@@ -160,7 +164,7 @@ function RegisterPage() {
                 }
                 else{
                     toast.error("Error al registrar! Intentelo de nuevo.", {
-                        position: "bottom-center",
+                        position: "top-center",
                         autoClose: 2000, // Duración en milisegundos
                         hideProgressBar: false,
                         closeOnClick: true,

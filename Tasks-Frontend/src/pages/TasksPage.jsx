@@ -14,18 +14,28 @@ function TasksPage(){
 
 
     return(
-        <div>
+        <div className="tasksPage">
 
         {isAuthenticated ? (
 
                         <>
-                        <h1>Tareas de {user.user}</h1>
-                            <Link to="/profile"    className="btn btn-primary btnInput">Profile</Link>
-                            <Link to="/add-task"   className="btn btn-primary btnInput">Add Task</Link>
-                            <Link to="/tasks/:id"  className="btn btn-primary btnInput">Update Task</Link> {/* PROVISIONAL  */}
+                            <style>{`
+                                .buttonsContainer {
+                                    margin-bottom: 50px;
+
+                                }
+                            `}</style>
+
+                            <div className="buttonsContainer">
+                                <h1>Tareas de {user.user}</h1>
+                                <Link to="/profile"    className="btn btn-primary btnInput">Perfil</Link>
+                                <Link to="/add-task"   className="btn btn-primary btnInput">Añadir Tarea</Link>
+                                <Link to="/tasks/:id"  className="btn btn-primary btnInput">Modificar Tarea</Link> {/* PROVISIONAL  */}
+
+                            </div> 
                             <div className="tasksContainer">
                                 {/* Aquí se mostrarán las tareas (Se replicará el componente TaskCard tantas veces como tareas haya, cada uno asociado a un ID de su tarea) */}
-                                <TaskCard/>                            
+                                        <TaskCard/>             
                             </div>
                         </>
                     ) : (
