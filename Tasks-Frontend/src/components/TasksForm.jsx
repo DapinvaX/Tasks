@@ -93,6 +93,7 @@ const TasksForm = () => {
             //Mostrar un toast de éxito
             toast.success("Tarea añadida correctamente.", {
                 className: "custom-toast",
+                position: "top-center",
             });
 
             //Limpiar los campos del formulario
@@ -104,6 +105,7 @@ const TasksForm = () => {
             console.error(errors);
             toast.error("Ha ocurrido un error al añadir la tarea.", {
                 className: "custom-toast-error",
+                position: "top-center",
             });
         }
         
