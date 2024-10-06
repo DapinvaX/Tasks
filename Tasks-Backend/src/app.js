@@ -13,6 +13,9 @@ import cookieParser from 'cookie-parser';
 //Importamos CORS
 import cors from 'cors';
 
+//Importamos CSRF
+import csrf from 'csurf';
+
 // Inicialización de express
 const app = express();
 
@@ -25,6 +28,11 @@ app.use(express.json());
 // Convierte las cookies a un objeto para que el servidor entienda los datos que se envían desde el cliente
 app.use(cookieParser());
 
+// Middleware de protección CSRF
+const csrfProtection = csrf({ cookie: true });
+app.use(csrfProtection);
+
+
 // Habilitamos CORS
 app.use(cors({
     origin: 'http://localhost:5173',
@@ -34,6 +42,12 @@ app.use(cors({
 // Rutas
 //Establecemos la ruta base para las rutas de autenticación "/api"
 app.use("/api",authRoutes);
+
+// Ruta para obtener el token CSRF
+app.get('/api/csrf-token', (req, res) => {
+    res.cookie('XSRF-TOKEN', req.csrfToken());
+    res.json({ csrfToken: req.csrfToken() });
+  });
 
 //Establecemos la ruta base para las rutas de tareas "/api" para  todos los taksroutes
 app.use("/api",taskRoutes);
