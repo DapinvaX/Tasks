@@ -78,12 +78,19 @@ function RegisterPage() {
                 const hash = bcrypt.hashSync(user.password, salt);
                 const passHash = hash;
 
-                console.log("Contraseña cifrada: "+passHash);
+
+                // Crear un nuevo objeto de usuario con la contraseña cifrada
+                const userHashedPass = {
+                    ...user,
+                    password: passHash
+                };
+
+                //console.log("Contraseña cifrada: "+passHash);
 
                  //Se llama a la función registerReq con los valores de los inputs
                 //Esto se hace para enviar los datos al backend 
                 //y registrar al usuario introduciendolo en la base de datos de datos de MongoDB
-                const response = await registerReq(user); 
+                const response = await registerReq(userHashedPass); 
                     //await registerReq(user);
                 //Muestra en la consola la respuesta del backend
                 console.log(response);

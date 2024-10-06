@@ -11,7 +11,6 @@ import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 
 
-
 // Creamos el contexto
 export const AuthContextProfile = createContext();
 
@@ -52,8 +51,11 @@ export const AuthProviderProfile = ({ children }) => {
     const registrar = async ( user ) => {
         try {
             
+            //Realizamos la petición de registro al servidor
             const res = await registerReq(user);
             console.log(res.data);
+
+            //Si la respuesta es correcta, se almacena el usuario en el estado y se establece que el usuario está autenticado
 
             //res.data contiene el usuario registrado
             setUser(res.data);

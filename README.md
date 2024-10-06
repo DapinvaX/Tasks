@@ -12,6 +12,7 @@ Author: @DapinvaX
 - Mongoose
 - JWT (JsonWebToken)
 - Bcrypt
+- CSURF (Cross-Site Request Forgery) en app.js
 
 ### Guía para el Programador
 1. **Instalación de Dependencias**:
@@ -21,7 +22,7 @@ Author: @DapinvaX
 2. **Configuración del Entorno**:
     - Crear un archivo `.env` con las siguientes variables:
         ```
-        PORT=5000
+        PORT=5173
         MONGO_URI=your_mongo_uri
         JWT_SECRET=your_jwt_secret
         ```
@@ -40,6 +41,7 @@ Author: @DapinvaX
 ### Dependencias
 - React
 - Axios
+- CSURF (Cross-Site Request Forgery)
 - React Router
 - Redux
 - Redux Thunk
@@ -52,7 +54,7 @@ Author: @DapinvaX
 2. **Configuración del Entorno**:
     - Crear un archivo `.env` con las siguientes variables:
         ```
-        REACT_APP_API_URL=http://localhost:5000/api
+        REACT_APP_API_URL=http://localhost:4000/api
         ```
 3. **Ejecución de la Aplicación**:
     ```bash
@@ -64,7 +66,5 @@ Author: @DapinvaX
 - **Gestión de Tareas**: Crear, editar y eliminar tareas desde la interfaz de usuario.
 - **Autenticación**: Registrarse e iniciar sesión para acceder a las funcionalidades protegidas.
 
-## Frontend
 
-### Dependencias
 
