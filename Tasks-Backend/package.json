@@ -12,14 +12,16 @@
   "author": "DapinvaX Becquer Gates",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^5.0.0",
     "nodemon": "^3.1.4"
   },
   "dependencies": {
     "@nextui-org/react": "^2.4.6",
     "bcryptjs": "^2.4.3",
-    "cookie-parser": "^1.4.6",
+    "cookie-parser": "^1.0.0",
     "cors": "^2.8.5",
-    "express": "^4.19.2",
+    "csurf": "^1.10.0",
+    "express": "^4.21.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.4",
     "morgan": "^1.10.0",
