@@ -122,6 +122,13 @@ const TasksForm = () => {
 
     };
 
+    // Estado para almacenar la previsualización de la tarea
+    const [preview, setPreview] = useState({ title: "", description: "", done: false });
+
+    useEffect(() => {
+        setPreview({ title: titleValue, description: descriptionValue, done });
+    }, [titleValue, descriptionValue, done]);
+
     // CSS personalizado para el toast
     const customToastStyle = `
     .custom-toast {
@@ -133,7 +140,6 @@ const TasksForm = () => {
     .custom-toast-error {
     background-color: #f44336 !important;
     color: white !important;
-    font-size: 16px !important;
     }import AddTaskPage from './AddTaskPage';
 
     `;
@@ -145,67 +151,72 @@ const TasksForm = () => {
     document.head.appendChild(styleSheet);
 
     return (
-
         <div className="container">
-            <form 
-                className="bg-zinc-800 max-w-md mx-auto p-4 rounded-md shadow-md form" 
-                onSubmit={onSubmit}
-            >
-                <label>
-                    <a>Título:</a>
-                    <input 
-                        type="text" 
-                        name="titulo" 
-                        {...register('title', 
-                            {   
-                                required: "El título es obligatorio.",
-                                maxLength: { value: 50, message: "El título solo puede contener como máximo 50 caracteres." },
-                                validate: validateTitle 
-                            } 
-                        )} 
-                    />
-                    {errors.title && <small>{errors.title.message}</small>}
-                    {titleError && <small>{titleError}</small>}
-                            
-                    </label>
-                    <br />
+            <div className="form-section">
+                <form 
+                    className="bg-zinc-800 max-w-md mx-auto p-4 rounded-md shadow-md form" 
+                    onSubmit={onSubmit}
+                >
                     <label>
-                        <a>Descripción:</a>
-                        <input
-                            
-                            id="inputDescripcion" 
-                            type="text" name="description" 
-                            {...register('description', 
-                                {   required: "La descripción es obligatoria.",
-                                    maxLength: { value: 280, message: "La descripción solo puede contener como máximo 280 caracteres." },
-                                    validate: validateDescription
-                                }
-                            )}
-
+                        <a>Título:</a>
+                        <input 
+                            type="text" 
+                            name="titulo" 
+                            {...register('title', 
+                                {   
+                                    required: "El título es obligatorio.",
+                                    maxLength: { value: 50, message: "El título solo puede contener como máximo 50 caracteres." },
+                                    validate: validateTitle 
+                                } 
+                            )} 
                         />
-                        {errors.description && <small>{errors.description.message}</small>}
-                        {descriptionError && <small>{descriptionError}</small>}
+                        {errors.title && <small>{errors.title.message}</small>}
+                        {titleError && <small>{titleError}</small>}
+                                
                         </label>
                         <br />
                         <label>
-                            <a>Hecho:</a>
+                            <a>Descripción:</a>
                             <input
+                                
+                                id="inputDescripcion" 
+                                type="text" name="description" 
+                                {...register('description', 
+                                    {   required: "La descripción es obligatoria.",
+                                        maxLength: { value: 280, message: "La descripción solo puede contener como máximo 280 caracteres." },
+                                        validate: validateDescription
+                                    }
+                                )}
 
-                                type="checkbox" 
-                                name="done" 
-                                onChange={handleCheckboxChange}
-                                {...register('done')}
-                                />
-                        </label>
-                        <br />
+                            />
+                            {errors.description && <small>{errors.description.message}</small>}
+                            {descriptionError && <small>{descriptionError}</small>}
+                            </label>
+                            <br />
+                            <label>
+                                <a>Hecho:</a>
+                                <input
 
-                        <button type="submit">Guardar</button>
-                        <Link to="/profile" className="btn btn-primary btnInput">Volver</Link>
-                </form>
+                                    type="checkbox" 
+                                    name="done" 
+                                    onChange={handleCheckboxChange}
+                                    {...register('done')}
+                                    />
+                            </label>
+                            <br />
+
+                            <button type="submit">Guardar</button>
+                            <Link to="/profile" className="btn btn-primary btnInput">Volver</Link>
+                    </form>
+                </div>
                 <ToastContainer />
-
+                <div className="bg-zinc-800 max-w-md mx-auto p-4 rounded-md shadow-md form">
+                        <h2 className="text-white">Previsualización:</h2>
+                        <h3 className="text-white">{preview.title}</h3>
+                        <p className="text-white">{preview.description}</p>
+                        <p className="text-white">{preview.done ? "Realizado" : "No Realizado" }</p>
+                </div>
         </div>
-
     );
 };
 
