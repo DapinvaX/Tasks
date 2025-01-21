@@ -1,17 +1,47 @@
+import { useEffect } from "react";
 
+import { Link, useParams } from "react-router-dom";
 
-import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+
+import dayjs from "dayjs";
+
 
 
 import { useAuthProfile } from '../context/AuthContextProfile.jsx';
 
-import TaskCard from "../components/TaskCard.jsx";
+import { useTaskContext } from '../context/TaskContext.jsx';
+
+
 
 
 function TasksPage(){
 
     const { user, isAuthenticated } = useAuthProfile();
 
+    const params = useParams();
+
+    const { getTask, deleteTask, updateTask } = useTaskContext();
+
+    const {
+        setValue,
+      } = useForm()
+
+    useEffect(() => {
+        const loadTask = async () => {
+          if (params.id) {
+            const task = await getTask(params.id);
+            setValue("title", task.title);
+            setValue("description", task.description);
+            setValue(
+              "date",
+              task.date ? dayjs(task.date).utc().format("YYYY-MM-DD") : ""
+            );
+            setValue("completed", task.completed);
+          }
+        };
+        loadTask();
+      }, [getTask, deleteTask, updateTask, setValue, params.id]);
 
     return(
         <div className="tasksPage">
@@ -35,7 +65,34 @@ function TasksPage(){
                             </div> 
                             <div className="tasksContainer">
                                 {/* Aquí se mostrarán las tareas (Se replicará el componente TaskCard tantas veces como tareas haya, cada uno asociado a un ID de su tarea) */}
-                                        <TaskCard/>             
+                                <Card>
+                                    <form onSubmit={handleSubmit(onSubmit)}>
+                                        <Label htmlFor="title">Title</Label>
+                                        <Input
+                                        type="text"
+                                        name="title"
+                                        placeholder="Title"
+                                        {...register("title")}
+                                        autoFocus
+                                        />
+                                        {errors.title && (
+                                        <p className="text-red-500 text-xs italic">Please enter a title.</p>
+                                        )}
+
+                                        <Label htmlFor="description">Description</Label>
+                                        <Textarea
+                                        name="description"
+                                        id="description"
+                                        rows="3"
+                                        placeholder="Description"
+                                        {...register("description")}
+                                        ></Textarea>
+
+                                        <Label htmlFor="date">Date</Label>
+                                        <Input type="date" name="date" {...register("date")} />
+                                        <Button>Save</Button>
+                                    </form>
+                                </Card>                 
                             </div>
                         </>
                     ) : (
