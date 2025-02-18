@@ -1,145 +1,134 @@
-# Gestión de Tareas - Documentación
+# Gestión de Tareas - Documentación Técnica
 
 ## Índice
-1. [Guía de Usuario](#guía-de-usuario)
-2. [Guía del Desarrollador](#guía-del-desarrollador)
+1. [Arquitectura del Sistema](#arquitectura-del-sistema)
+2. [Componentes Principales](#componentes-principales)
+3. [API y Servicios](#api-y-servicios)
+4. [Seguridad](#seguridad)
+5. [Guía de Desarrollo](#guía-de-desarrollo)
 
-## Guía de Usuario
+## Arquitectura del Sistema
 
-### Introducción
-Gestión de Tareas es una aplicación web que te permite organizar y gestionar tus tareas diarias de manera eficiente. Con una interfaz intuitiva y moderna, podrás crear, editar y realizar un seguimiento de tus tareas fácilmente.
+### Frontend
+- **Framework**: React con JavaScript
+- **Estilos**: Tailwind CSS
+- **Iconografía**: Lucide React
+- **Estado Global**: Context API
+- **Enrutamiento**: React Router DOM
+- **Cliente HTTP**: Axios
 
-### Características Principales
-- **Tema Claro/Oscuro**: Personaliza la apariencia de la aplicación según tus preferencias
-- **Gestión de Tareas**: Crea, edita y elimina tareas
-- **Autenticación**: Sistema seguro de registro e inicio de sesión
-- **Interfaz Responsiva**: Funciona en dispositivos móviles y de escritorio
+### Backend
+- **Runtime**: Node.js
+- **Framework**: Express
+- **Base de Datos**: MongoDB
+- **Autenticación**: JWT
+- **Validación**: Zod
 
-### Cómo Usar la Aplicación
+## Componentes Principales
 
-#### 1. Inicio de Sesión y Registro
-- Haz clic en "Registrarse" para crear una nueva cuenta
-- Si ya tienes una cuenta, usa "Iniciar sesión"
-- Ingresa tu correo electrónico y contraseña
+### Autenticación (`AuthContext.jsx`)
+- Gestión de estado de autenticación
+- Verificación de tokens
+- Persistencia de sesión
 
-#### 2. Navegación
-- **Barra de Navegación**:
-  - Logo y título central que te lleva a la página principal
-  - Botón de cambio de tema (sol/luna)
-  - Enlaces a diferentes secciones
-  - Botón de cerrar sesión
+### Gestión de Temas (`ThemeContext.jsx`)
+- Alternancia entre temas claro/oscuro
+- Persistencia de preferencias
+- Transiciones suaves
 
-#### 3. Gestión de Tareas
-- **Ver Tareas**: Accede a través del botón "Tareas" en la navegación
-- **Crear Tarea**: Usa el botón "Nueva Tarea"
-- **Editar Tarea**: 
-  - Haz clic en el icono de lápiz
-  - Modifica título, descripción o estado
-  - Guarda los cambios
-- **Eliminar Tarea**: Usa el icono de papelera
+### Componentes de UI
+- **Navbar**: Navegación principal y controles de usuario
+- **TaskCard**: Visualización y edición de tareas
+- **ProtectedRoute**: Control de acceso a rutas privadas
 
-#### 4. Personalización
-- **Cambiar Tema**:
-  - Haz clic en el icono de sol/luna en la barra de navegación
-  - El tema se guardará para futuras visitas
+## API y Servicios
 
-## Guía del Desarrollador
+### Autenticación (`api/auth.js`)
+```javascript
+register(credentials)    // Registro de usuarios
+login(credentials)      // Inicio de sesión
+logout()               // Cierre de sesión
+verifyToken()          // Verificación de token
+```
 
-### Estructura del Proyecto
+### Gestión de Tareas (`api/tasks.js`)
+```javascript
+fetchUserTasks()       // Obtener todas las tareas
+getTaskById(id)        // Obtener tarea específica
+addTaskReq(task)       // Crear nueva tarea
+updateTaskReq(id, task) // Actualizar tarea
+deleteTaskReq(id)      // Eliminar tarea
+```
 
+## Seguridad
+
+### Medidas Implementadas
+1. **Autenticación JWT**
+   - Tokens seguros
+   - Renovación automática
+   - Almacenamiento en cookies httpOnly
+
+2. **Protección de Rutas**
+   - Middleware de autenticación
+   - Validación de permisos
+   - Redirección automática
+
+3. **Validación de Datos**
+   - Esquemas Zod
+   - Sanitización de entradas
+   - Manejo de errores consistente
+
+## Guía de Desarrollo
+
+### Estructura de Carpetas
 ```
 src/
-├── components/          # Componentes reutilizables
-├── context/            # Contextos de React
-├── pages/              # Páginas de la aplicación
-├── api/                # Servicios y llamadas API
-├── types/              # Definiciones de TypeScript
-└── main.tsx           # Punto de entrada
+├── api/          # Servicios y llamadas API
+├── components/   # Componentes reutilizables
+├── context/     # Contextos globales
+└── pages/       # Componentes de página
 ```
 
-### Tecnologías Utilizadas
-- **Frontend**:
-  - React 18
-  - TypeScript
-  - Tailwind CSS
-  - React Router DOM
-  - Lucide React (iconos)
+### Convenciones de Código
+1. **Nombrado**
+   - PascalCase para componentes
+   - camelCase para funciones y variables
+   - UPPER_CASE para constantes
 
-### Componentes Principales
+2. **Organización**
+   - Un componente por archivo
+   - Imports agrupados por tipo
+   - Exports nombrados preferidos
 
-#### 1. Sistema de Temas
-```typescript
-// context/ThemeContext.tsx
-- Gestiona el tema claro/oscuro
-- Usa localStorage para persistencia
-- Proporciona hook useTheme()
-```
+3. **Estilos**
+   - Clases Tailwind organizadas por categoría
+   - Preferir utilidades sobre CSS personalizado
+   - Mantener consistencia en espaciado
 
-#### 2. Autenticación
-```typescript
-// context/AuthContext.tsx
-- Maneja el estado de autenticación
-- Proporciona hook useAuth()
-- Gestiona sesiones de usuario
-```
+### Flujo de Trabajo
+1. **Desarrollo Local**
+   ```bash
+   npm install    # Instalar dependencias
+   npm run dev    # Iniciar servidor de desarrollo
+   ```
 
-#### 3. Navegación
-```typescript
-// components/Navbar.tsx
-- Barra de navegación responsive
-- Integración con sistema de temas
-- Manejo de autenticación
-```
+2. **Construcción**
+   ```bash
+   npm run build  # Generar build de producción
+   ```
 
-### Estilos y Temas
+### Mejores Prácticas
+1. **Rendimiento**
+   - Usar React.memo para componentes pesados
+   - Implementar lazy loading
+   - Optimizar re-renders
 
-#### Configuración de Tailwind
-```javascript
-// tailwind.config.js
-- darkMode: 'class' para temas
-- Contenido configurado para archivos React
-```
+2. **Accesibilidad**
+   - Mantener estructura semántica
+   - Incluir atributos ARIA
+   - Asegurar contraste de colores
 
-#### Clases de Tema
-- Uso de prefijo `dark:` para estilos oscuros
-- Transiciones suaves con `transition-colors`
-- Sistema de colores consistente
-
-### Buenas Prácticas Implementadas
-
-1. **Tipado Fuerte**
-   - Interfaces TypeScript para todos los modelos
-   - Props tipadas en componentes
-
-2. **Componentes Reutilizables**
-   - Separación de responsabilidades
-   - Props bien definidas
-   - Documentación inline
-
-3. **Gestión de Estado**
-   - Uso de Context API
-   - Estados locales cuando es apropiado
-   - Persistencia en localStorage
-
-4. **Seguridad**
-   - Rutas protegidas
-   - Validación de formularios
-   - Manejo seguro de autenticación
-
-### Mantenimiento y Desarrollo
-
-#### Añadir Nuevas Características
-1. Crear componentes en `src/components`
-2. Definir tipos en `src/types`
-3. Implementar lógica de negocio
-4. Integrar con el sistema de temas
-
-#### Modificar Temas
-1. Actualizar `tailwind.config.js`
-2. Añadir clases dark: en componentes
-3. Probar en ambos temas
-
-### Despliegue
-1. Construir la aplicación: `npm run build`
-2. Verificar la build en `/dist`
-3. Desplegar en el servidor
+3. **Mantenimiento**
+   - Documentar componentes complejos
+   - Mantener código limpio y organizado
+   - Seguir principios SOLID

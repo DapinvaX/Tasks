@@ -1,24 +1,54 @@
-import axios from './axios.js';
+/**
+ * Módulo que maneja las operaciones CRUD para las tareas.
+ * Proporciona funciones para interactuar con el backend de tareas.
+ */
+import axios from './axios';
 
-// Obtener el token CSRF desde el servidor
-axios.get('http://localhost:4000/api/csrf-token', { withCredentials: true })
-  .then(response => {
-    const csrfToken = response.data.csrfToken;
+/**
+ * Obtiene todas las tareas del usuario actual.
+ * @returns {Promise<Array>} Lista de tareas
+ */
+export const fetchUserTasks = async () => {
+  const response = await axios.get('/api/tasks');
+  return Array.isArray(response.data) ? response.data : [];
+};
 
-    // Configurar Axios para incluir el token CSRF en los encabezados de las solicitudes
-    axios.defaults.headers.common['X-CSRF-Token'] = csrfToken;
-     
-    }
-);
+/**
+ * Obtiene una tarea específica por su ID.
+ * @param {string} id - ID de la tarea
+ * @returns {Promise<Object>} Datos de la tarea
+ */
+export const getTaskById = async (id) => {
+  const response = await axios.get(`/api/tasks/${id}`);
+  return response.data;
+};
 
-//Creamos una función que se encargará de hacer la petición a la API para registrar un usuario
-export const getTasksReq = () => axios.get(`/tasks`);
+/**
+ * Crea una nueva tarea.
+ * @param {Object} task - Datos de la tarea a crear
+ * @returns {Promise<Object>} Tarea creada
+ */
+export const addTaskReq = async (task) => {
+  const response = await axios.post('/api/tasks', task);
+  return response.data;
+};
 
-export const getTaskIdReq = () => axios.get(`/tasks/:id`);
+/**
+ * Actualiza una tarea existente.
+ * @param {string} id - ID de la tarea
+ * @param {Object} task - Nuevos datos de la tarea
+ * @returns {Promise<Object>} Tarea actualizada
+ */
+export const updateTaskReq = async (id, task) => {
+  const response = await axios.put(`/api/tasks/${id}`, task);
+  return response.data;
+};
 
-export const addTaskReq = task => axios.post(`/tasks`, task);
-
-export const updateTaskReq = (id, task) => axios.put(`/tasks/${id}`, task);
-
-export const deleteTaskReq = id => axios.delete(`/tasks/${id}`);
-
+/**
+ * Elimina una tarea.
+ * @param {string} id - ID de la tarea a eliminar
+ * @returns {Promise<void>}
+ */
+export const deleteTaskReq = async (id) => {
+  await axios.delete(`/api/tasks/${id}`);
+};
