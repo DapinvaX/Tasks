@@ -1,5 +1,5 @@
 //Importamos el modulo bcrypt para encriptar las contraseñas
-import bcrypt from 'bcryptjs';
+//import bcrypt from 'bcryptjs';
 
 //Importamos el módulo jsonwebtoken para generar tokens
 //import jwt from 'jsonwebtoken';
@@ -22,6 +22,13 @@ import { TOKEN_SECRET } from '../config.js';
 //El response es la respuesta que se envía al cliente
 //La función es asincrona, por lo que utilizamos async
 export const register = async (req, res) => {
+    console.log('Datos recibidos en el backend:', req.body);
+    
+    // Validar que todos los campos necesarios estén presentes
+    if (!req.body.user || !req.body.email || !req.body.password) {
+        console.log('Error: Faltan campos requeridos', req.body);
+        return res.status(400).json({ Error: 'Todos los campos son obligatorios' });
+    }
    
     //res.send('Registro');
     //console.log(req.body);
@@ -39,6 +46,8 @@ export const register = async (req, res) => {
         const email =    req.body.email.toLowerCase();
         const password = req.body.password;
        
+        // Imprimimos los datos en la consola
+        console.log('Datos procesados:', { user, email, password: '********' });
 
         //Encriptamos la contraseña con el método hash de bcrypt
         //El método hash recibe la contraseña y un número que es el número de veces que se va a encriptar la contraseña
@@ -47,7 +56,7 @@ export const register = async (req, res) => {
 
 
             //Imprimimos los datos en la consola
-            //console.log(user, email, passhash);
+            console.log(user, email, password);
 
 
             //Instanciamos un nuevo usuario con los datos extraidos
@@ -111,7 +120,7 @@ export const register = async (req, res) => {
                     _id: userSaved._id,
                     user: userSaved.user,
                     email: userSaved.email,
-                    //passhash: userSaved.password,
+                    password: userSaved.password,
                     createdAt: userSaved.createdAt,
                     updateAt: userSaved.updateAt
                     },
@@ -142,7 +151,7 @@ export const register = async (req, res) => {
                     _id: userSaved._id,
                     user: userSaved.user,
                     email: userSaved.email,
-                    //passhash: userSaved.password,
+                    passhash: userSaved.password,
                     createdAt: userSaved.createdAt,
                     updateAt: userSaved.updateAt
                 }, null, 2));
@@ -182,7 +191,10 @@ export const login = async (req, res) => {
         const userFound = await User.findOne({ $or: [{ user: user }, { email: user }] });
 
         //Comparar la contraseña introducida con la contraseña encriptada de la base de datos
-        const coincidencia = await bcrypt.compare(password, userFound.password);
+        //const coincidencia = await bcrypt.compare(password, userFound.password);
+        
+        //Comparamos las contraseña que me llega desde el frontend con la que está en la base de datos pero será el frontend quien se encargue de hashear la contraseña
+        const coincidencia = password === userFound.password;
 
 
             //Si el usuario no existe, mostramos un mensaje diciendo que no existe
@@ -232,7 +244,7 @@ export const login = async (req, res) => {
                     _id: userFound._id,
                     user: userFound.user,
                     email: userFound.email,
-                    //passhash: userFound.password,
+                    passhash: userFound.password,
                     createdAt: userFound.createdAt,
                     updateAt: userFound.updateAt,
                     //headers: req.headers
@@ -250,7 +262,7 @@ export const login = async (req, res) => {
                         _id: userFound._id,
                         user: userFound.user,
                         email: userFound.email,
-                        //passhash: userFound.password,
+                        passhash: userFound.password,
                         createdAt: userFound.createdAt,
                         updateAt: userFound.updateAt
                     }
@@ -305,7 +317,7 @@ export const verifyToken = async (req, res) => {
 
         //Si el token es válido, mostramos un mensaje de éxito y un código de estado 200
         
-        isAuthenticated(true);
+        // Update authentication state logic here if needed, or remove this line if unnecessary
 
         //Si el usuario existe, mostrar un mensaje "Perfil de usuario"
         console.log("Perfil de usuario!");

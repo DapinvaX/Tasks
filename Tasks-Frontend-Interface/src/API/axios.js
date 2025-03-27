@@ -3,12 +3,17 @@
  */
 import axios from 'axios';
 
+//Declaramos la constante API que almacena la URL de la API
+const API = 'http://localhost:4000/api';
+
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true,
+  baseURL: API,
   headers: {
     'Content-Type': 'application/json'
-  }
+  },
+
+  withCredentials: true,
+
 });
 
 // Interceptor para manejar errores de autenticación

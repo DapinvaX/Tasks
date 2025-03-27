@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { addTaskReq } from '../api/tasks';
+import { createTaskReq } from '../api/tasks';
 import { Plus } from 'lucide-react';
 
 export function AddTaskPage() {
@@ -17,7 +17,7 @@ export function AddTaskPage() {
     setError(null);
 
     try {
-      await addTaskReq({ title, description, completed });
+      await createTaskReq({ title, description, completed });
       navigate('/tasks');
     } catch (err) {
       setError('Error al crear la tarea. Por favor, intenta de nuevo.');

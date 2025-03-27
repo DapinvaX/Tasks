@@ -3,7 +3,7 @@
  * Proporciona información sobre el usuario autenticado y métodos relacionados.
  */
 import { createContext, useContext, useState, useEffect } from 'react';
-import { getProfile } from '../api/auth';
+import { getProfileReq } from '../API/auth';
 
 const AuthContext = createContext();
 
@@ -26,7 +26,7 @@ export function AuthProvider({ children }) {
    */
   const checkAuth = async () => {
     try {
-      const userData = await getProfile();
+      const userData = await getProfileReq();
       setUser(userData);
     } catch (error) {
       setUser(null);
@@ -51,7 +51,7 @@ export function AuthProvider({ children }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error('El useAuth debe usarse dentro del AuthProvider');
   }
   return context;
 }

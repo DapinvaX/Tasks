@@ -1,0 +1,118 @@
+/* Estilos base para todos los toasts */
+.toast-container {
+  position: fixed;
+  z-index: 9999;
+  top: 16px;
+  right: 16px;
+  max-width: 350px;
+}
+
+.toast {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 12px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: #fff;
+  animation: toast-in-right 0.7s;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  align-items: center;
+}
+
+/* Variantes de color para diferentes tipos de notificaciones */
+.toast-success {
+  background-color: #28a745;
+  border-left: 6px solid #1e7e34;
+}
+
+.toast-error {
+  background-color: #dc3545;
+  border-left: 6px solid #bd2130;
+}
+
+.toast-info {
+  background-color: #17a2b8;
+  border-left: 6px solid #138496;
+}
+
+.toast-warning {
+  background-color: #ffc107;
+  border-left: 6px solid #d39e00;
+  color: #333;
+}
+
+/* Iconos para los toast */
+.toast-icon {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.toast-content {
+  flex: 1;
+}
+
+.toast-title {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.toast-message {
+  font-size: 0.9rem;
+}
+
+.toast-close {
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: 16px;
+  margin-left: 10px;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.toast-close:hover {
+  opacity: 1;
+}
+
+/* Animaciones */
+@keyframes toast-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-out-right {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Estilos responsivos */
+@media (max-width: 480px) {
+  .toast-container {
+    width: 100%;
+    top: auto;
+    bottom: 0;
+    right: 0;
+    max-width: none;
+  }
+  
+  .toast {
+    margin-bottom: 0;
+    border-radius: 0;
+    width: 100%;
+  }
+}

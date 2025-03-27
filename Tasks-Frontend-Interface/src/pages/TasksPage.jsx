@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchUserTasks, updateTaskReq, deleteTaskReq } from '../api/tasks';
+import { getTasksReq, updateTaskReq, deleteTaskReq } from '../api/tasks';
 import { TaskCard } from '../components/TaskCard';
 import { Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -15,7 +15,7 @@ export function TasksPage() {
 
   const loadTasks = async () => {
     try {
-      const userTasks = await fetchUserTasks();
+      const userTasks = await getTasksReq();
       setTasks(Array.isArray(userTasks) ? userTasks : []);
       setError(null);
     } catch (err) {

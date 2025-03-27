@@ -18,9 +18,8 @@
   "dependencies": {
     "@nextui-org/react": "^2.4.6",
     "bcryptjs": "^2.4.3",
-    "cookie-parser": "^1.0.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "csurf": "^1.10.0",
     "express": "^4.21.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.4",

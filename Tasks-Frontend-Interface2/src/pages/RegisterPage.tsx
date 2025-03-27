@@ -70,7 +70,7 @@ export function RegisterPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
-                required
+                {...register('name', { required: true })}
               />
             </div>
             <div>
@@ -80,10 +80,11 @@ export function RegisterPage() {
               <input
                 type="text"
                 id="lastName"
-                value={lastName}
+                
                 onChange={(e) => setLastName(e.target.value)}
                 className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
-                required
+                {...register('lastName', { required: true })}
+
               />
             </div>
             <div>
@@ -93,10 +94,10 @@ export function RegisterPage() {
               <input
                 type="text"
                 id="username"
-                value={username}
+                
                 onChange={(e) => setUsername(e.target.value)}
                 className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
-                required
+                {...register('username', { required: true })}
               />
             </div>
             <div>
@@ -106,10 +107,10 @@ export function RegisterPage() {
               <input
                 type="email"
                 id="email"
-                value={email}
+                
                 onChange={(e) => setEmail(e.target.value)}
                 className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
-                required
+                {...register('email', { required: true })}
               />
             </div>
             <div>
@@ -120,10 +121,9 @@ export function RegisterPage() {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   id="password"
-                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
-                  required
+                  {...register('password', { required: true })}
                 />
                 <button
                   type="button"
@@ -146,10 +146,9 @@ export function RegisterPage() {
                 <input
                   type={showConfirmPassword ? 'text' : 'password'}
                   id="confirmPassword"
-                  value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
-                  required
+                  {...register('confirmPassword', { required: true })}
                 />
                 <button
                   type="button"

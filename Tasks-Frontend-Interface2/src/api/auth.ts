@@ -1,7 +1,7 @@
 import axios from './axios';
 import { LoginCredentials, RegisterCredentials, User } from '../types';
 
-// Configurar el token CSRF
+/* // Configurar el token CSRF
 export const setupCSRFToken = async (): Promise<void> => {
   try {
     const response = await axios.get('/csrf-token');
@@ -10,7 +10,7 @@ export const setupCSRFToken = async (): Promise<void> => {
   } catch (error) {
     console.error('Error obteniendo token CSRF:', error);
   }
-};
+}; */
 
 export const register = async (user: RegisterCredentials): Promise<User> => {
   const response = await axios.post('/register', user);

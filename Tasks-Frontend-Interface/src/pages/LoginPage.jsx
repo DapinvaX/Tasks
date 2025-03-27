@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { login } from '../api/auth';
+import { loginReq } from '../API/auth';
 import { useAuth } from '../context/AuthContext';
 import { LogIn } from 'lucide-react';
 
@@ -12,7 +12,7 @@ export function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const user = await login({ email, password });
+      const user = await loginReq({ email, password });
       setUser(user);
     } catch (err) {
       setError('Error al iniciar sesión. Por favor, verifica tus credenciales.');

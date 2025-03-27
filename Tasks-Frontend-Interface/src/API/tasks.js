@@ -8,7 +8,7 @@ import axios from './axios';
  * Obtiene todas las tareas del usuario actual.
  * @returns {Promise<Array>} Lista de tareas
  */
-export const fetchUserTasks = async () => {
+export const getTasksReq = async () => {
   const response = await axios.get('/api/tasks');
   return Array.isArray(response.data) ? response.data : [];
 };
@@ -18,7 +18,7 @@ export const fetchUserTasks = async () => {
  * @param {string} id - ID de la tarea
  * @returns {Promise<Object>} Datos de la tarea
  */
-export const getTaskById = async (id) => {
+export const getTaskReq = async (id) => {
   const response = await axios.get(`/api/tasks/${id}`);
   return response.data;
 };
@@ -28,7 +28,7 @@ export const getTaskById = async (id) => {
  * @param {Object} task - Datos de la tarea a crear
  * @returns {Promise<Object>} Tarea creada
  */
-export const addTaskReq = async (task) => {
+export const createTaskReq = async (task) => {
   const response = await axios.post('/api/tasks', task);
   return response.data;
 };

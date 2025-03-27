@@ -2,41 +2,39 @@
  * Módulo de autenticación que maneja las operaciones de registro, inicio de sesión y perfil de usuario.
  * Utiliza Axios para las peticiones HTTP.
  */
-import axios from './axios';
+import axios from 'axios';
 
-/**
- * Registra un nuevo usuario en el sistema.
- * @param {Object} credentials - Datos del usuario (nombre, email, contraseña)
- * @returns {Promise<Object>} Datos del usuario registrado
- */
-export const register = async (credentials) => {
-  const response = await axios.post('/register', credentials);
-  return response.data;
-};
+const API = 'http://localhost:4000/api';
 
-/**
- * Inicia sesión con las credenciales proporcionadas.
- * @param {Object} credentials - Credenciales de inicio de sesión (email, contraseña)
- * @returns {Promise<Object>} Datos del usuario autenticado
- */
-export const login = async (credentials) => {
-  const response = await axios.post('/login', credentials);
-  return response.data;
-};
+// Remove standalone call that doesn't do anything
+// axios.get('http://localhost:4000/api');
 
-/**
- * Cierra la sesión del usuario actual.
- * @returns {Promise<void>}
- */
-export const logout = async () => {
-  await axios.post('/logout');
-};
+export const registerReq = user => axios.post(`${API}/register`, user);
 
-/**
- * Obtiene el perfil del usuario actual.
- * @returns {Promise<Object>} Datos del perfil del usuario
- */
-export const getProfile = async () => {
-  const response = await axios.get('/profile');
-  return response.data;
-};
+export const loginReq = user => axios.post(`${API}/login`, user);
+
+export const getProfileReq = () =>{ 
+
+  //Obtenemos el token del localStorage
+  const token = localStorage.getItem('token');
+
+  //Si no se encuentra el token, se lanza un error
+  if(!token){
+    throw new Error('Token no encontrado. Acceso denegado.');
+  }
+  
+  //Si se encuentra el token, se realiza la petición a la API
+  return axios.get(`${API}/profile`, {
+    //Se añade el token a los headers de la petición
+    headers: {
+      //Se añade el token al header de Authorization
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+}
+
+
+export const logoutReq = () => axios.post(`${API}/logout`);
+
+export const verifyTokenReq = () => axios.get(`${API}/auth/verify`);

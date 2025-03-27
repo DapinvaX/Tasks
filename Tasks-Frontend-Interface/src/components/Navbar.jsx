@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
-import { logout } from '../api/auth';
+import { logoutReq } from '../API/auth.js';
 import { LogOut, Home, List, UserPlus, LogIn, User, Sun, Moon, ClipboardList } from 'lucide-react';
 
 export function Navbar() {
@@ -12,7 +12,7 @@ export function Navbar() {
 
   const handleLogout = async () => {
     try {
-      await logout();
+      await logoutReq();
       setUser(null);
       navigate('/login');
     } catch (err) {
