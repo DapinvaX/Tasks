@@ -11,3 +11,5 @@ Pasar hasheo de contraseñas (intercambiarlo) entre el backend y el frontend (de
 Pendiente: 
 
 Arreglar Axios en la pantalla de login.
+
+Crear validaciones en formulario de registro (contraseñas robustas y evitar caracteres especiales).
