@@ -26,7 +26,8 @@ export function Navbar() {
         closeOnClick: true,
         pauseOnHover: true,
         progress: undefined,
-        className: 'custom-toast'
+        className: theme === 'dark' ? 'custom-toast-dark' : 'custom-toast-light',
+        progressClassName: 'custom-progress-neutral'
       });
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
@@ -112,9 +113,13 @@ export function Navbar() {
                 <Menu className="h-6 w-6" />
               )}
             </button>
+            {/* Botón toggle de tema modificado para usar los mismos estilos de rotación */}
             <button
               onClick={toggleTheme}
-              className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-yellow-500 p-2 rounded-full transition-all duration-300 bg-transparent"
+              className={`text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-yellow-500 p-2 rounded-full transition-all duration-300 bg-transparent
+                ${theme !== 'dark' 
+                  ? 'hover:scale-125 hover:rotate-12 hover:drop-shadow-[0_0_15px_rgba(59,130,246,0.8)]' 
+                  : 'hover:scale-125 hover:rotate-12 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.7)]'}`}
               aria-label="Toggle dark mode"
             >
               {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}

@@ -10,9 +10,11 @@ Author: @DapinvaX
 - Express
 - MongoDB
 - Mongoose
+- Morgan
 - JWT (JsonWebToken)
 - Bcrypt
-- CSURF (Cross-Site Request Forgery) en app.js
+- Cookie Parser
+- CSURF (Cross-Site Request Forgery)
 
 ### Guía para el Programador
 1. **Instalación de Dependencias**:
@@ -45,6 +47,18 @@ Author: @DapinvaX
 - React Router
 - Redux
 - Redux Thunk
+## Actualización del Frontend
+
+### Dependencias y Librerías Utilizadas
+
+- React: Librería para construir interfaces de usuario.
+- Axios: Cliente HTTP para realizar peticiones.
+- CSURF: Protección contra ataques de falsificación de solicitudes.
+- React Router: Manejo de rutas en la aplicación.
+- Redux: Gestión del estado global.
+- Redux Thunk: Middleware para acciones asíncronas en Redux.
+- Lucide: Librería de componentes para iconos
+- React Toastify: Librería para notificaciones en React
 
 ### Guía para el Programador
 1. **Instalación de Dependencias**:
@@ -65,6 +79,12 @@ Author: @DapinvaX
 - **Navegación**: Utilizar la barra de navegación para acceder a las diferentes secciones de la aplicación.
 - **Gestión de Tareas**: Crear, editar y eliminar tareas desde la interfaz de usuario.
 - **Autenticación**: Registrarse e iniciar sesión para acceder a las funcionalidades protegidas.
+
+### Servicio de Hasheado
+
+El servicio de hasheado (hashService.js) para el frontend utiliza la API Web Crypto para generar un hash SHA-256 de las contraseñas de forma asincrónica.  
+El resultado es una cadena hexadecimal que representa el hash de la contraseña.  
+Se recomienda emplear este servicio junto con medidas de seguridad en el backend para proteger la autenticidad y confidencialidad de las contraseñas.
 
 ## Cambios Recientes
 - Se optimizó el Navbar para mejorar las transiciones y la experiencia en dispositivos móviles.

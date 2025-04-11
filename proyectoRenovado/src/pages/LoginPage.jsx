@@ -6,6 +6,7 @@ import { hashPassword } from '../services/hashService';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { TextInput, PasswordInput } from '../components/UI/TextInput';
+import { useTheme } from '../context/ThemeContext'; // Nueva importación
 
 // Importamos el CSS de toastify con los estilos personalizados
 import '../styles/toast.css';
@@ -18,6 +19,7 @@ export function LoginPage() {
   const [showPassword, setShowPassword] = useState(false); // Nuevo estado para controlar la visibilidad de la contraseña
   const { setUser } = useAuth();
   const navigate = useNavigate();
+  const { theme } = useTheme(); // Usar el tema actual
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,7 +59,7 @@ export function LoginPage() {
         console.error("setUser no es una función o no está disponible");
       }
       
-      // Mostrar toast de éxito
+      // Mostrar toast de éxito con estilos acorde a la temática
       toast.success("Sesión iniciada correctamente", {
         position: "top-center",
         autoClose: 2000,
@@ -65,7 +67,9 @@ export function LoginPage() {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined
+        progress: undefined,
+        className: theme === 'dark' ? 'custom-toast-dark' : 'custom-toast-light',
+        progressClassName: 'custom-progress-neutral'
       });
       
       // Redireccionar a la página de tareas en lugar de /profile
@@ -102,7 +106,7 @@ export function LoginPage() {
       
       setError(errorMessage);
       
-      // Mostrar toast de error
+      // Mostrar toast de error con estilos acorde a la temática
       toast.error(errorMessage, {
         position: "top-center",
         autoClose: 4000, // Más tiempo para leer errores complejos
@@ -110,7 +114,9 @@ export function LoginPage() {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined
+        progress: undefined,
+        className: theme === 'dark' ? 'custom-toast-dark' : 'custom-toast-light',
+        progressClassName: 'custom-progress-neutral'
       });
     }
   };
