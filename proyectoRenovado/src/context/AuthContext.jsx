@@ -1,123 +1,73 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-
-//Importamos PropTypes para definir el tipo de las propiedades
-import PropTypes from 'prop-types';
-
-//Importamos la librería de Cookies
+import { createContext, useState, useContext, useEffect } from 'react';
+import { getProfileReq } from '../api/auth';
 import Cookies from 'js-cookie';
 
+// Crear el contexto
+export const AuthContext = createContext();
 
-import { 
-  registerReq,
-  loginReq,
-  logoutReq,
-  verifyTokenReq
- } from '../api/auth';
-
-
-const AuthContext = createContext();
-
+// Hook personalizado para facilitar el acceso al contexto
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used within a AuthProvider");
+  if (!context) {
+    throw new Error('useAuth debe usarse dentro de un AuthProvider');
+  }
   return context;
 };
 
+// Proveedor del contexto
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState([]);
-  
 
-  // Limpiar errores cada 5 segundos
-  useEffect(() => {
-    if (errors.length > 0) {
-      const timer = setTimeout(() => {
-        setErrors([]);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [errors]);
-
-  const signup = async (user) => {
-    try {
-      const res = await registerReq(user);
-      if (res.status === 200) {
-        setUser(res.data);
-        setIsAuthenticated(true);
-      }
-    } catch (error) {
-      console.log(error.response.data);
-      setErrors(error.response.data.message);
-    }
-  };
-
-  const signin = async (user) => {
-    try {
-      const res = await loginReq(user);
-      setUser(res.data);
-      setIsAuthenticated(true);
-    } catch (error) {
-      console.log(error);
-      // setErrors(error.response.data.message);
-    }
-  };
-
-  const logout = async () => {
-    try{
-      const res = await logoutReq(); // Hacemos la petición al servidor para cerrar la sesión
-      console.log(res); // Imprimimos la respuesta del servidor
-      Cookies.remove("token");
-      setUser(null); // Eliminamos el usuario del estado
-      setIsAuthenticated(false); // Cambiamos el estado de autenticado a false
-    }catch(error){
-      console.log(error);
-    }
-  };
-
+  // Verificar si el usuario ya está autenticado al cargar la aplicación
   useEffect(() => {
     const checkLogin = async () => {
       const cookies = Cookies.get();
+      
       if (!cookies.token) {
         setIsAuthenticated(false);
+        setLoading(false);
         return;
       }
-
+      
       try {
-        const res = await verifyTokenReq(cookies.token);
-        console.log(res);
-        if (!res.data) return setIsAuthenticated(false);
-        setIsAuthenticated(true);
-        setUser(res.data);
-       
+        const res = await getProfileReq();
+        if (res.data) {
+          setUser(res.data);
+          setIsAuthenticated(true);
+        }
       } catch (error) {
+        console.error(error);
         setIsAuthenticated(false);
-        setErrors(["No estás autorizado para ver esta página"]); 
+        setUser(null);
+      } finally {
+        setLoading(false);
       }
     };
+    
     checkLogin();
   }, []);
 
-  // Retornar el Provider con todos los valores que queremos compartir
+  // Función para limpiar errores
+  const clearErrors = () => setErrors([]);
+
+  // Objeto con los valores que se compartirán a través del contexto
+  const contextValue = {
+    user,
+    setUser, // Aseguramos que setUser esté disponible en el contexto
+    isAuthenticated,
+    setIsAuthenticated,
+    loading,
+    errors,
+    setErrors,
+    clearErrors
+  };
+
   return (
-    <AuthContext.Provider 
-      value={{
-        user,
-        isAuthenticated,
-        errors,
-        signup,
-        signin,
-        logout,
-        setErrors
-      }}
-    >
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );
 }
-
-//Definimos el provider
- //Este provider se encarga de manejar el estado de autenticación del usuario
- AuthProvider.propTypes = {
-    children: PropTypes.node.isRequired
-};

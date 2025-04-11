@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { loginReq } from '../api/auth';
 import { useAuth } from '../context/AuthContext';
-import { LogIn, Eye, EyeOff } from 'lucide-react';
+import { LogIn } from 'lucide-react';
 import { hashPassword } from '../services/hashService';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { TextInput, PasswordInput } from '../components/UI/TextInput';
 
 // Importamos el CSS de toastify con los estilos personalizados
 import '../styles/toast.css';
@@ -33,19 +34,30 @@ export function LoginPage() {
       // Muestra los datos que se enviarán al backend (sin mostrar la contraseña en texto plano)
       console.log('Datos enviados:', { 
         user: identifier, 
-        password: useHashedPassword ? '********' : '(sin hashear, solo para pruebas)' 
+        password: useHashedPassword ? '********' : passwordToSend // Mostrar la contraseña real en modo desarrollo
       });
 
       // Envía el identificador y la contraseña al backend
-      const user = await loginReq({ 
+      // Intentar diferentes formatos de datos para mayor compatibilidad
+      const loginData = { 
         user: identifier, 
+        username: identifier, // Añadir campo alternativo
+        email: identifier.includes('@') ? identifier : undefined, // Añadir email si parece ser uno
         password: passwordToSend 
-      });
+      };
+
+      const response = await loginReq(loginData);
       
-      console.log('Respuesta del servidor:', user);
-      setUser(user);
+      console.log('Respuesta del servidor:', response);
       
-      // Mostrar toast de éxito usando la clase personalizada existente
+      // Actualiza el contexto de autenticación de manera segura
+      if (typeof setUser === 'function') {
+        setUser(response);
+      } else {
+        console.error("setUser no es una función o no está disponible");
+      }
+      
+      // Mostrar toast de éxito
       toast.success("Sesión iniciada correctamente", {
         position: "top-center",
         autoClose: 2000,
@@ -53,40 +65,59 @@ export function LoginPage() {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
-        className: 'custom-toast'
+        progress: undefined
       });
       
-      // Redireccionar a la página de perfil después de un login exitoso
-      navigate('/profile');
+      // Redireccionar a la página de tareas en lugar de /profile
+      console.log('Redirigiendo a la página de tareas...');
+      navigate('/tasks'); // Cambiado de /profile a /tasks
       
     } catch (err) {
       console.error('Error de login:', err);
       
-      // Capturar detalles específicos del error
-      const errorMessage = err.response ? 
-        `Error ${err.response.status}: ${err.response.data?.message || JSON.stringify(err.response.data)}` : 
-        'Error al conectar con el servidor';
+      // Mejorar el mensaje de error para mostrar información más útil
+      let errorMessage;
+      
+      // Usar el mensaje personalizado si está disponible
+      if (err.userMessage) {
+        errorMessage = err.userMessage;
+      } else if (err.response) {
+        // El servidor respondió con un código de estado fuera del rango 2xx
+        if (err.response.status === 404) {
+          errorMessage = 'La URL de login no existe. Verifica la configuración del backend.';
+        } else if (err.response.status === 401) {
+          errorMessage = 'Usuario o contraseña incorrectos';
+        } else {
+          errorMessage = `Error ${err.response.status}: ${err.response.data?.message || JSON.stringify(err.response.data) || 'Error del servidor'}`;
+        }
+      } else if (err.request) {
+        // La petición fue hecha pero no se recibió respuesta
+        errorMessage = 'No se recibió respuesta del servidor. Verifica que el backend esté funcionando.';
+      } else if (err.code === 'ERR_NETWORK') {
+        errorMessage = 'Error de conexión. No se pudo conectar al servidor. Verifica que el backend esté funcionando.';
+      } else {
+        // Error en la configuración de la petición
+        errorMessage = `Error al configurar la petición: ${err.message}`;
+      }
       
       setError(errorMessage);
       
-      // Mostrar toast de error usando la clase personalizada existente
+      // Mostrar toast de error
       toast.error(errorMessage, {
         position: "top-center",
-        autoClose: 2000,
+        autoClose: 4000, // Más tiempo para leer errores complejos
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
-        className: 'custom-toast-error'
+        progress: undefined
       });
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-4 transition-colors duration-200">
-      <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
+    <div className="flex items-center justify-center pt-16 md:pt-20 lg:pt-24 px-4 min-h-[calc(100vh-64px)] bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
+      <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 my-8">
         <div className="flex justify-center mb-6">
           <LogIn className="h-12 w-12 text-blue-500 dark:text-blue-400" />
         </div>
@@ -103,45 +134,25 @@ export function LoginPage() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="identifier" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Usuario o Correo Electrónico
-            </label>
-            <input
-              type="text"
-              id="identifier"
-              value={identifier}
-              onChange={(e) => setIdentifier(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
-              required
-            />
-          </div>
+          <TextInput
+            id="identifier"
+            label="Usuario o Correo Electrónico"
+            placeholder="Introduce tu usuario o email"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
+            required
+          />
 
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Contraseña
-            </label>
-            <div className="mt-1 relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200 pr-10"
-                required
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? 
-                  <EyeOff className="h-5 w-5" aria-hidden="true" /> : 
-                  <Eye className="h-5 w-5" aria-hidden="true" />
-                }
-              </button>
-            </div>
-          </div>
+          <PasswordInput
+            id="password"
+            label="Contraseña"
+            placeholder="Introduce tu contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
+            required
+          />
 
           {/* Opción para probar sin hasheo (solo para depuración) */}
           <div className="flex items-center">

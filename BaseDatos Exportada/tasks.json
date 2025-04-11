@@ -1,0 +1,261 @@
+[{
+  "_id": {
+    "$oid": "66fbe8eab3155d2825a06895"
+  },
+  "title": "Primera tarea usuario1",
+  "description": "Esto es una del usuario1 y es la primera",
+  "done": true,
+  "user": {
+    "$oid": "66fb1582b655e0e296a7641e"
+  },
+  "createDate": {
+    "$date": "2024-10-01T12:19:54.412Z"
+  },
+  "createdAt": {
+    "$date": "2024-10-01T12:19:54.416Z"
+  },
+  "updatedAt": {
+    "$date": "2024-10-01T12:19:54.416Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "66fbef343550d2a29c252e25"
+  },
+  "title": "Esto es una Tarea del usuario1",
+  "description": "asdfwerfqwerf",
+  "done": true,
+  "user": {
+    "$oid": "66fb1582b655e0e296a7641e"
+  },
+  "createDate": {
+    "$date": "2024-10-01T12:46:44.015Z"
+  },
+  "createdAt": {
+    "$date": "2024-10-01T12:46:44.018Z"
+  },
+  "updatedAt": {
+    "$date": "2024-10-01T12:46:44.018Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "66fbf1aed44723202d523736"
+  },
+  "title": "Tareas X usuario1",
+  "description": "Esto es otra tarea: lkwsjhfpwjerhg",
+  "done": true,
+  "user": {
+    "$oid": "66fb1582b655e0e296a7641e"
+  },
+  "createDate": {
+    "$date": "2024-10-01T12:57:18.432Z"
+  },
+  "createdAt": {
+    "$date": "2024-10-01T12:57:18.435Z"
+  },
+  "updatedAt": {
+    "$date": "2024-10-01T12:57:18.435Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "66fbf557d44723202d523740"
+  },
+  "title": "Esto es otra tarea",
+  "description": "Otra Tareas",
+  "done": true,
+  "user": {
+    "$oid": "66fb1582b655e0e296a7641e"
+  },
+  "createDate": {
+    "$date": "2024-10-01T13:12:55.597Z"
+  },
+  "createdAt": {
+    "$date": "2024-10-01T13:12:55.597Z"
+  },
+  "updatedAt": {
+    "$date": "2024-10-01T13:12:55.597Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "66fc4f9c2e1fcf487d4c3c82"
+  },
+  "title": "Esto es otra tarea",
+  "description": "taread",
+  "done": true,
+  "user": {
+    "$oid": "66fb1582b655e0e296a7641e"
+  },
+  "createDate": {
+    "$date": "2024-10-01T19:38:04.117Z"
+  },
+  "createdAt": {
+    "$date": "2024-10-01T19:38:04.119Z"
+  },
+  "updatedAt": {
+    "$date": "2024-10-01T19:38:04.119Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "66fc4fbe2e1fcf487d4c3c84"
+  },
+  "title": "Numero tarea",
+  "description": "tarea tarea",
+  "done": false,
+  "user": {
+    "$oid": "66fb1582b655e0e296a7641e"
+  },
+  "createDate": {
+    "$date": "2024-10-01T19:38:38.821Z"
+  },
+  "createdAt": {
+    "$date": "2024-10-01T19:38:38.822Z"
+  },
+  "updatedAt": {
+    "$date": "2024-10-01T19:38:38.822Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "66fc51be2e1fcf487d4c3c88"
+  },
+  "title": "Tarea123423",
+  "description": "Esto es una Tarea",
+  "done": true,
+  "user": {
+    "$oid": "66fb1582b655e0e296a7641e"
+  },
+  "createDate": {
+    "$date": "2024-10-01T19:47:10.172Z"
+  },
+  "createdAt": {
+    "$date": "2024-10-01T19:47:10.172Z"
+  },
+  "updatedAt": {
+    "$date": "2024-10-01T19:47:10.172Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "66fc52882e1fcf487d4c3c8a"
+  },
+  "title": "otra torarea",
+  "description": "aoisdhfq",
+  "done": true,
+  "user": {
+    "$oid": "66fb1582b655e0e296a7641e"
+  },
+  "createDate": {
+    "$date": "2024-10-01T19:50:32.678Z"
+  },
+  "createdAt": {
+    "$date": "2024-10-01T19:50:32.679Z"
+  },
+  "updatedAt": {
+    "$date": "2024-10-01T19:50:32.679Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "671f4b1568d8861af140b184"
+  },
+  "title": "Primera Tarea",
+  "description": "Esto es la primera Tarea",
+  "done": false,
+  "user": {
+    "$oid": "66fb1582b655e0e296a7641e"
+  },
+  "createDate": {
+    "$date": "2024-10-28T08:28:05.345Z"
+  },
+  "createdAt": {
+    "$date": "2024-10-28T08:28:05.347Z"
+  },
+  "updatedAt": {
+    "$date": "2024-10-28T08:28:05.347Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "67587e8fdcefc3a466d10efc"
+  },
+  "title": "123",
+  "description": "qwerqwer",
+  "done": false,
+  "user": {
+    "$oid": "66fb1582b655e0e296a7641e"
+  },
+  "createDate": {
+    "$date": "2024-12-10T17:46:55.690Z"
+  },
+  "createdAt": {
+    "$date": "2024-12-10T17:46:55.693Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-10T17:46:55.693Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "677fba96798e094c4deed527"
+  },
+  "title": "Tarea1",
+  "description": "Esto es una tarea",
+  "done": true,
+  "user": {
+    "$oid": "66fb1582b655e0e296a7641e"
+  },
+  "createDate": {
+    "$date": "2025-01-09T12:01:26.260Z"
+  },
+  "createdAt": {
+    "$date": "2025-01-09T12:01:26.263Z"
+  },
+  "updatedAt": {
+    "$date": "2025-01-09T12:01:26.263Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "677fc1df5131fb04091976f0"
+  },
+  "title": "usuario1",
+  "description": "esto es una comentario",
+  "done": true,
+  "user": {
+    "$oid": "66fb1582b655e0e296a7641e"
+  },
+  "createDate": {
+    "$date": "2025-01-09T12:32:31.316Z"
+  },
+  "createdAt": {
+    "$date": "2025-01-09T12:32:31.320Z"
+  },
+  "updatedAt": {
+    "$date": "2025-01-09T12:32:31.320Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "67850ec39f2ce4912f15c96f"
+  },
+  "title": "Esto es una Tarea del usuario1",
+  "description": "owihsfdoiwehfo",
+  "done": false,
+  "user": {
+    "$oid": "66fb1582b655e0e296a7641e"
+  },
+  "createDate": {
+    "$date": "2025-01-13T13:01:55.478Z"
+  },
+  "createdAt": {
+    "$date": "2025-01-13T13:01:55.481Z"
+  },
+  "updatedAt": {
+    "$date": "2025-01-13T13:01:55.481Z"
+  },
+  "__v": 0
+}]

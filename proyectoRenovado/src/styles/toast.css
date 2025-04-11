@@ -116,3 +116,103 @@
     width: 100%;
   }
 }
+
+/* Estilos base para todos los toasts */
+.Toastify__toast {
+  border-radius: 8px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+/* Estilos para el contenedor de toast en modo claro */
+.toast-container-light .Toastify__toast {
+  background-color: #fff;
+  color: #333;
+  border-left: 4px solid #3b82f6;
+}
+
+/* Estilos para el contenedor de toast en modo oscuro */
+.toast-container-dark .Toastify__toast {
+  background-color: #1f2937;
+  color: #e5e7eb;
+  border-left: 4px solid #3b82f6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Toast de éxito - modo claro */
+.toast-container-light .Toastify__toast--success {
+  background-color: #f0fdf4;
+  border-left-color: #22c55e;
+}
+
+/* Toast de éxito - modo oscuro */
+.toast-container-dark .Toastify__toast--success {
+  background-color: #064e3b;
+  border-left-color: #22c55e;
+}
+
+/* Toast de error - modo claro */
+.toast-container-light .Toastify__toast--error {
+  background-color: #fef2f2;
+  border-left-color: #ef4444;
+}
+
+/* Toast de error - modo oscuro */
+.toast-container-dark .Toastify__toast--error {
+  background-color: #7f1d1d;
+  border-left-color: #ef4444;
+}
+
+/* Barra de progreso - modo claro */
+.toast-container-light .Toastify__progress-bar {
+  background-color: rgba(59, 130, 246, 0.7);
+}
+
+/* Barra de progreso - modo oscuro */
+.toast-container-dark .Toastify__progress-bar {
+  background-color: rgba(59, 130, 246, 0.7);
+}
+
+/* Barra de progreso para toast de éxito - modo claro */
+.toast-container-light .Toastify__toast--success .Toastify__progress-bar {
+  background-color: rgba(34, 197, 94, 0.7);
+}
+
+/* Barra de progreso para toast de éxito - modo oscuro */
+.toast-container-dark .Toastify__toast--success .Toastify__progress-bar {
+  background-color: rgba(34, 197, 94, 0.7);
+}
+
+/* Barra de progreso para toast de error - modo claro */
+.toast-container-light .Toastify__toast--error .Toastify__progress-bar {
+  background-color: rgba(239, 68, 68, 0.7);
+}
+
+/* Barra de progreso para toast de error - modo oscuro */
+.toast-container-dark .Toastify__toast--error .Toastify__progress-bar {
+  background-color: rgba(239, 68, 68, 0.7);
+}
+
+/* Botón de cierre - modo claro */
+.toast-container-light .Toastify__close-button {
+  color: #6b7280;
+  opacity: 0.7;
+}
+
+/* Botón de cierre - modo oscuro */
+.toast-container-dark .Toastify__close-button {
+  color: #9ca3af;
+  opacity: 0.7;
+}
+
+/* Efectos hover para botón de cierre */
+.Toastify__close-button:hover {
+  opacity: 1;
+}
+
+/* Iconos en los toasts */
+.Toastify__toast-icon {
+  margin-right: 12px;
+}

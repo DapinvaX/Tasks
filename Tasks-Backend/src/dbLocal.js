@@ -4,9 +4,9 @@ import mongoose from "mongoose";
 
 const cnx = async () => {
     
-        const password = "DapinvaX77MongoDB";
+
         //Conectamos a la base de datos
-        await mongoose.connect(`mongodb+srv://dapinvax:${password}@cluster0.rksw4bm.mongodb.net/Tasks?retryWrites=true&w=majority&appName=Cluster0`)
+        await mongoose.connect("mongodb://localhost:27017/taskdb")
             .then(() => console.log("¡Conectado a la base de datos!"))
             .catch((err) => console.error("Error al conectar con la base de datos de MongoDB: \n" + err));
 

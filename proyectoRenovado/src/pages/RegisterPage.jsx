@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { registerReq } from '../api/auth';
 import { useAuth } from '../context/AuthContext';
-import { UserPlus, Eye, EyeOff } from 'lucide-react';
+import { UserPlus } from 'lucide-react';
 import { hashPassword } from '../services/hashService';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { TextInput, PasswordInput } from '../components/UI/TextInput';
 
 export function RegisterPage() {
   const [name, setName] = useState('');
@@ -14,7 +15,8 @@ export function RegisterPage() {
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { user, setUser } = useAuth();
+  const [useHashedPassword, setUseHashedPassword] = useState(true); // Nuevo estado para hasheo
+  const auth = useAuth(); // Obtenemos todo el objeto de contexto para mayor seguridad
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -27,17 +29,23 @@ export function RegisterPage() {
     }
     
     try {
-      // Hashear la contraseña con SHA-256 en lugar de bcrypt
-      const hashedPassword = await hashPassword(password);
+      // Hashear la contraseña solo si la opción está activada
+      let passwordToSend = password;
+      if (useHashedPassword) {
+        passwordToSend = await hashPassword(password);
+      }
       
       // Crear objeto de usuario con los campos correctos que espera el backend
       const userData = {
         user: name,        // Cambiado de username a user para que coincida con el backend
         email: email,
-        password: hashedPassword
+        password: passwordToSend
       };
       
-      console.log('Datos que se envían al backend:', { ...userData, password: '********' });
+      console.log('Datos que se envían al backend:', { 
+        ...userData, 
+        password: useHashedPassword ? '********' : '(sin hashear, solo para pruebas)' 
+      });
       
       // Enviar los datos al backend
       const response = await registerReq(userData);
@@ -54,25 +62,34 @@ export function RegisterPage() {
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          progress: undefined,
-          className: 'custom-toast',
+          progress: undefined
         });
         
-        // Establecer el usuario en el contexto de autenticación
-        setUser(response.data);
+        // Establecer el usuario en el contexto de autenticación de manera segura
+        if (auth && typeof auth.setUser === 'function') {
+          auth.setUser(response);
+          
+          // También actualizar el estado de autenticación si está disponible
+          if (typeof auth.setIsAuthenticated === 'function') {
+            auth.setIsAuthenticated(true);
+          }
+        } else {
+          console.error("No se pudo acceder a setUser del contexto de autenticación");
+          // Continuar con el registro aunque no se pueda establecer el usuario en el contexto
+        }
         
         // Limpiar los campos
         setName('');
         setEmail('');
         setPassword('');
         setConfirmPassword('');
-        
-        // Redirigir a la página de inicio
+       
+        // Si no ha habido errores, redirigir al usuario a la página de inicio
         setTimeout(() => {
-          navigate('/');
-          console.log("Redirigido a la página de inicio");
-        }, 1500); // Reducido el tiempo para mejor experiencia de usuario
-      }
+          navigate('/'); // Redirigir a la página de inicio
+        }, 2000); // Esperar 2 segundos antes de redirigir
+        
+       }
     } catch (error) {
       console.error("Error completo:", error);
       
@@ -89,8 +106,7 @@ export function RegisterPage() {
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          progress: undefined,
-          className: 'custom-toast-error',
+          progress: undefined
         });
       } else {
         toast.error("Error al registrar! Inténtelo de nuevo.", {
@@ -100,16 +116,16 @@ export function RegisterPage() {
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          progress: undefined,
-          className: 'custom-toast-error',
+          progress: undefined
         });
       }
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-4 transition-colors duration-200">
-      <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
+    <div className="flex items-center justify-center pt-16 md:pt-20 lg:pt-24 px-4 min-h-[calc(100vh-64px)] bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
+      <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 my-8">
+        
         <div className="flex justify-center mb-6">
           <UserPlus className="h-12 w-12 text-blue-500 dark:text-blue-400" />
         </div>
@@ -124,93 +140,54 @@ export function RegisterPage() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Nombre
-            </label>
+          <TextInput
+            id="name"
+            label="Nombre"
+            placeholder="Introduce tu nombre"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <TextInput
+            id="email"
+            label="Correo electrónico"
+            placeholder="Introduce tu correo"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <PasswordInput
+            id="password"
+            label="Contraseña"
+            placeholder="Introduce tu contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
+            required
+          />
+          <PasswordInput
+            id="confirmPassword"
+            label="Confirmar Contraseña"
+            placeholder="Confirma tu contraseña"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            showPassword={showConfirmPassword}
+            setShowPassword={setShowConfirmPassword}
+            required
+          />
+          {/* Opción para probar sin hasheo (solo para depuración) */}
+          <div className="flex items-center">
             <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
-              required
+              id="hashPassword"
+              type="checkbox"
+              checked={useHashedPassword}
+              onChange={() => setUseHashedPassword(!useHashedPassword)}
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
-          </div>
-
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Correo electrónico
+            <label htmlFor="hashPassword" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+              Usar contraseña hasheada (desmarcar solo para pruebas)
             </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Contraseña
-            </label>
-            <div className="relative mt-1">
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200 pr-10"
-                required
-              />
-              <button 
-                type="button"
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <EyeOff className="h-5 w-5" />
-                ) : (
-                  <Eye className="h-5 w-5" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Confirmar Contraseña
-            </label>
-            <div className="relative mt-1">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                id="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className={`block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200 pr-10 ${
-                  confirmPassword && password !== confirmPassword ? 'border-red-500 dark:border-red-500' : ''
-                }`}
-                required
-              />
-              <button 
-                type="button"
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              >
-                {showConfirmPassword ? (
-                  <EyeOff className="h-5 w-5" />
-                ) : (
-                  <Eye className="h-5 w-5" />
-                )}
-              </button>
-            </div>
-            {confirmPassword && password !== confirmPassword && (
-              <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                Las contraseñas no coinciden
-              </p>
-            )}
           </div>
 
           <button

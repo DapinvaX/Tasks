@@ -66,5 +66,10 @@ Author: @DapinvaX
 - **Gestión de Tareas**: Crear, editar y eliminar tareas desde la interfaz de usuario.
 - **Autenticación**: Registrarse e iniciar sesión para acceder a las funcionalidades protegidas.
 
+## Cambios Recientes
+- Se optimizó el Navbar para mejorar las transiciones y la experiencia en dispositivos móviles.
+- Se ajustaron estilos y se mejoró el comportamiento del toggle de modo oscuro.
+- Se actualizaron las animaciones y sombras en botones y enlaces para una interacción más fluida.
+
 
 
