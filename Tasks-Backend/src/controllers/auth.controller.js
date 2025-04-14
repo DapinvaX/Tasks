@@ -120,28 +120,12 @@ export const register = async (req, res) => {
                     _id: userSaved._id,
                     user: userSaved.user,
                     email: userSaved.email,
-                    password: userSaved.password,
+                    //password: userSaved.password,
+                    password: "*************",
                     createdAt: userSaved.createdAt,
                     updateAt: userSaved.updateAt
                     },
                 });
-
-                // Imprimimos el nuevo usuario en la consola
-                //console.log(userSaved);
-
-                // Enviamos una respuesta al cliente con los datos del usuario guardado
-                //Imprimimos el usuario guardado en la consola (ahora sin la contraseña)
-                //createdAt es un método de mongoose que nos da la fecha de creación del usuario
-                /* res.status(200).json({
-                    _id: userSaved._id,
-                    user: userSaved.user,
-                    email: userSaved.email,
-                    //passhash: userSaved.password,
-                    createdAt: userSaved.createdAt,
-                    updateAt: userSaved.updateAt
-                }); */
-                    
-                //console.log("Usuario registrado");
 
                 //Imprimimos el usuario guardado en la consola
                 //En vez de llamar a userSaved directamente, 
@@ -151,7 +135,8 @@ export const register = async (req, res) => {
                     _id: userSaved._id,
                     user: userSaved.user,
                     email: userSaved.email,
-                    passhash: userSaved.password,
+                    //passhash: userSaved.password,
+                    passhash: "*************",
                     createdAt: userSaved.createdAt,
                     updateAt: userSaved.updateAt
                 }, null, 2));
@@ -239,12 +224,13 @@ export const login = async (req, res) => {
 
                 // Imprimimos el nuevo usuario en la consola
                 res.status(200).json({
-                    message : "Usuario Logueado con éxito!!!!",
+                    message : "Usuario Logueado con éxito!",
                     userdata: {
                     _id: userFound._id,
                     user: userFound.user,
                     email: userFound.email,
-                    passhash: userFound.password,
+                    //passhash: userFound.password,
+                    passhash: "*************",
                     createdAt: userFound.createdAt,
                     updateAt: userFound.updateAt,
                     //headers: req.headers
@@ -262,7 +248,8 @@ export const login = async (req, res) => {
                         _id: userFound._id,
                         user: userFound.user,
                         email: userFound.email,
-                        passhash: userFound.password,
+                        //passhash: userFound.password,
+                        passhash: "*************",
                         createdAt: userFound.createdAt,
                         updateAt: userFound.updateAt
                     }

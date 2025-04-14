@@ -141,9 +141,9 @@ export function RegisterPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <TextInput
-            id="name"
-            label="Nombre"
-            placeholder="Introduce tu nombre"
+            id="username"
+            label="Usuario"
+            placeholder="Introduce tu nombre de usuario"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
