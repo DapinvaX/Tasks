@@ -161,3 +161,20 @@ export const verifyTokenReq = async () => {
     throw error;
   }
 };
+
+// Agregar función para verificar existencia de usuario
+/* export const checkUserExists = async (data) => {
+  try {
+    if (DEV_MODE) {
+      if ((data.user && data.user === 'usuario_prueba') || (data.email && data.email === 'usuario@ejemplo.com')) {
+        return true;
+      }
+      return false;
+    }
+    const response = await api.post('/checkUserExists', data);
+    return response.data.exists; // se asume que el backend devuelve { exists: boolean }
+  } catch (error) {
+    console.error('Error en checkUserExists:', error);
+    throw error;
+  }
+}; */

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { registerReq } from '../api/auth';
+//import { checkUserExists } from '../api/auth';
 import { useAuth } from '../context/AuthContext';
 import { UserPlus } from 'lucide-react';
 import { hashPassword } from '../services/hashService';
@@ -18,6 +19,40 @@ export function RegisterPage() {
   const [useHashedPassword, setUseHashedPassword] = useState(true); // Nuevo estado para hasheo
   const auth = useAuth(); // Obtenemos todo el objeto de contexto para mayor seguridad
   const navigate = useNavigate();
+
+ /*  // Función para verificar si el usuario ya existe al terminar de escribir en el campo Usuario
+  const handleUserBlur = async () => {
+    if (name) {
+      try {
+        const exists = await checkUserExists({ user: name });
+        if (exists) {
+          toast.info('El usuario ya existe', {
+            position: "top-center",
+            autoClose: 2000
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  // Función para verificar si el usuario ya existe al terminar de escribir en el campo Correo electrónico
+  const handleEmailBlur = async () => {
+    if (email) {
+      try {
+        const exists = await checkUserExists({ email: email });
+        if (exists) {
+          toast.info('El usuario ya existe', {
+            position: "top-center",
+            autoClose: 2000
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }; */
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -146,6 +181,7 @@ export function RegisterPage() {
             placeholder="Introduce tu nombre de usuario"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            //onBlur={handleUserBlur}
             required
           />
           <TextInput
@@ -154,6 +190,7 @@ export function RegisterPage() {
             placeholder="Introduce tu correo"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            //onBlur={handleEmailBlur}
             required
           />
           <PasswordInput
@@ -171,7 +208,15 @@ export function RegisterPage() {
             label="Confirmar Contraseña"
             placeholder="Confirma tu contraseña"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              setConfirmPassword(value);
+              if (password && value !== password) {
+                setError('Las contraseñas no coinciden');
+              } else {
+                setError(null);
+              }
+            }}
             showPassword={showConfirmPassword}
             setShowPassword={setShowConfirmPassword}
             required
