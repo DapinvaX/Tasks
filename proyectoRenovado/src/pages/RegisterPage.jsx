@@ -159,7 +159,7 @@ export function RegisterPage() {
 
   return (
     <div className="flex items-center justify-center pt-16 md:pt-20 lg:pt-24 px-4 min-h-[calc(100vh-64px)] bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
-      <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 my-8">
+      <div className="max-w-xl w-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 my-8">
         
         <div className="flex justify-center mb-6">
           <UserPlus className="h-12 w-12 text-blue-500 dark:text-blue-400" />
@@ -175,54 +175,78 @@ export function RegisterPage() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <TextInput
-            id="username"
-            label="Usuario"
-            placeholder="Introduce tu nombre de usuario"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            //onBlur={handleUserBlur}
-            required
-          />
-          <TextInput
-            id="email"
-            label="Correo electrónico"
-            placeholder="Introduce tu correo"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            //onBlur={handleEmailBlur}
-            required
-          />
-          <PasswordInput
-            id="password"
-            label="Contraseña"
-            placeholder="Introduce tu contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            showPassword={showPassword}
-            setShowPassword={setShowPassword}
-            required
-          />
-          <PasswordInput
-            id="confirmPassword"
-            label="Confirmar Contraseña"
-            placeholder="Confirma tu contraseña"
-            value={confirmPassword}
-            onChange={(e) => {
-              const value = e.target.value;
-              setConfirmPassword(value);
-              if (password && value !== password) {
-                setError('Las contraseñas no coinciden');
-              } else {
-                setError(null);
-              }
-            }}
-            showPassword={showConfirmPassword}
-            setShowPassword={setShowConfirmPassword}
-            required
-          />
-          {/* Opción para probar sin hasheo (solo para depuración) */}
-          <div className="flex items-center">
+          {/* Contenedor que cambia a layout de columnas en pantallas bajas */}
+          <div className="@container">
+            {/* Primera fila: Usuario y Correo electrónico */}
+            <div className="@[670px]:grid @[670px]:grid-cols-2 @[670px]:gap-4">
+              <div>
+                <TextInput
+                  id="username"
+                  label="Usuario"
+                  placeholder="Introduce tu nombre de usuario"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="mt-6 @[670px]:mt-0">
+                <TextInput
+                  id="email"
+                  label="Correo electrónico"
+                  placeholder="Introduce tu correo"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+            
+            {/* Segunda fila: Contraseña y Confirmación */}
+            <div className="@[670px]:grid @[670px]:grid-cols-2 @[670px]:gap-4 mt-6">
+              <div>
+                <PasswordInput
+                  id="password"
+                  label="Contraseña"
+                  placeholder="Introduce tu contraseña"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  showPassword={showPassword}
+                  setShowPassword={setShowPassword}
+                  required
+                />
+              </div>
+              <div className="mt-6 @[670px]:mt-0">
+                <PasswordInput
+                  id="confirmPassword"
+                  label="Confirmar Contraseña"
+                  placeholder="Confirma tu contraseña"
+                  value={confirmPassword}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setConfirmPassword(value);
+                    if (password && value !== password) {
+                      setError('Las contraseñas no coinciden');
+                    } else {
+                      setError(null);
+                    }
+                  }}
+                  showPassword={showConfirmPassword}
+                  setShowPassword={setShowConfirmPassword}
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 mt-6"
+          >
+            Registrarse
+          </button>
+          
+          {/* Opción para probar sin hasheo (movida debajo del botón) */}
+          <div className="flex items-center justify-center mt-4">
             <input
               id="hashPassword"
               type="checkbox"
@@ -234,13 +258,6 @@ export function RegisterPage() {
               Usar contraseña hasheada (desmarcar solo para pruebas)
             </label>
           </div>
-
-          <button
-            type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
-          >
-            Registrarse
-          </button>
         </form>
       </div>
     </div>
