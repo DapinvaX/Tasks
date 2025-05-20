@@ -1,3 +1,5 @@
+// Archivo obsoleto. Puede ser eliminado. El contexto de perfil se gestiona en AuthContext.jsx.
+
 // Importamos desde React createContext
 import { createContext, useState, useContext, useEffect } from 'react';
 

@@ -17,7 +17,7 @@ export function LoginPage() {
   const [error, setError] = useState(null);
   const [useHashedPassword, setUseHashedPassword] = useState(true); // Nueva opción para probar sin hasheo
   const [showPassword, setShowPassword] = useState(false); // Nuevo estado para controlar la visibilidad de la contraseña
-  const { setUser } = useAuth();
+  const { setUser, setIsAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { theme } = useTheme(); // Usar el tema actual
 
@@ -55,6 +55,9 @@ export function LoginPage() {
       // Actualiza el contexto de autenticación de manera segura
       if (typeof setUser === 'function') {
         setUser(response);
+        if (typeof setIsAuthenticated === 'function') {
+          setIsAuthenticated(true);
+        }
       } else {
         console.error("setUser no es una función o no está disponible");
       }

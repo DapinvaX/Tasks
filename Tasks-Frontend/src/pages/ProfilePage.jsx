@@ -1,3 +1,5 @@
+// Archivo obsoleto. Puede ser eliminado. Ahora el perfil y las tareas del usuario están en TasksPage.
+
 import { Link } from "react-router-dom";
 
 import { useAuthProfile } from '../context/AuthContextProfile.jsx';

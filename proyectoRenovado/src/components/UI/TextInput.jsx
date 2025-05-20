@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 export function TextInput({
   id,
@@ -11,13 +11,16 @@ export function TextInput({
   error,
   ...props
 }) {
-  // Si no se proporciona un placeholder, usar la etiqueta como placeholder
+  const [focused, setFocused] = useState(false);
   const inputPlaceholder = placeholder || (label ? label : '');
 
   return (
     <div className="mb-4">
       {label && (
-        <label htmlFor={id} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        <label
+          htmlFor={id}
+          className={`block font-medium text-gray-700 dark:text-gray-300 mb-1 transition-all duration-200 ${focused ? 'text-xs text-blue-600 dark:text-blue-400' : 'text-sm'}`}
+        >
           {label}
         </label>
       )}
@@ -28,6 +31,8 @@ export function TextInput({
         onChange={onChange}
         placeholder={inputPlaceholder}
         required={required}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
         className="w-full bg-transparent border-0 border-b-2 border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none focus:ring-0 transition-all duration-300 ease-in-out pb-1 px-1 text-gray-800 dark:text-white text-sm focus:text-base focus:pb-2 focus:border-b-3 focus:drop-shadow-sm"
         {...props}
       />

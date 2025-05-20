@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addTaskReq } from '../api/tasks';
 import { Plus } from 'lucide-react';
+import { TextInput } from '../components/UI/TextInput';
+import { TextArea } from '../components/UI/TextArea';
 
 export function AddTaskPage() {
   const navigate = useNavigate();
@@ -17,7 +19,10 @@ export function AddTaskPage() {
     setError(null);
 
     try {
-      await addTaskReq({ title, description, completed });
+      const now = new Date();
+      const createdAt = now.toISOString();
+      const date = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0') + ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ':' + String(now.getSeconds()).padStart(2, '0');
+      await addTaskReq({ title, description, completed, createdAt, date });
       navigate('/tasks');
     } catch (err) {
       setError('Error al crear la tarea. Por favor, intenta de nuevo.');
@@ -43,30 +48,24 @@ export function AddTaskPage() {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Título
-              </label>
-              <input
-                type="text"
+              <TextInput
                 id="title"
+                label="Título"
+                placeholder="Introduce el título de la tarea"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
                 required
               />
             </div>
-
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Descripción
-              </label>
-              <textarea
+              <TextArea
                 id="description"
+                label="Descripción"
+                placeholder="Introduce la descripción de la tarea"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                rows={4}
-                className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
                 required
+                rows={4}
               />
             </div>
 

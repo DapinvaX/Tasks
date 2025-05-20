@@ -58,10 +58,14 @@ export function TasksPage() {
   return (
     <div className="max-w-3xl mx-auto py-8 px-4">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Mis Tareas</h1>
+        <h1 className="text-3xl font-bold transition-colors duration-200 text-blue-600 dark:text-white">Mis Tareas</h1>
         <Link
           to="/add-task"
-          className="flex items-center gap-2 px-4 py-2 bg-green-600 dark:bg-green-500 text-white rounded-md hover:bg-green-700 dark:hover:bg-green-600 transition-colors duration-200"
+          className="flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-500
+            bg-blue-600 dark:bg-gray-800 text-white dark:text-white
+            hover:bg-blue-600 hover:text-white hover:drop-shadow-[0_0_16px_rgba(59,130,246,0.8)]
+            dark:hover:bg-gray-800 dark:hover:text-white dark:hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.7)]
+            focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
           <Plus size={20} />
           Nueva Tarea

@@ -17,7 +17,7 @@ export function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [useHashedPassword, setUseHashedPassword] = useState(true); // Nuevo estado para hasheo
-  const auth = useAuth(); // Obtenemos todo el objeto de contexto para mayor seguridad
+  const { setUser, setIsAuthenticated } = useAuth(); // Obtenemos todo el objeto de contexto para mayor seguridad
   const navigate = useNavigate();
 
  /*  // Función para verificar si el usuario ya existe al terminar de escribir en el campo Usuario
@@ -89,7 +89,6 @@ export function RegisterPage() {
       
       if(response.status === 200) {
         console.log("Usuario registrado con éxito");
-        
         toast.success("Usuario registrado con éxito. Redirigiendo a la página de inicio...", {
           position: "top-center",
           autoClose: 1500,
@@ -99,32 +98,23 @@ export function RegisterPage() {
           draggable: true,
           progress: undefined
         });
-        
-        // Establecer el usuario en el contexto de autenticación de manera segura
-        if (auth && typeof auth.setUser === 'function') {
-          auth.setUser(response);
-          
-          // También actualizar el estado de autenticación si está disponible
-          if (typeof auth.setIsAuthenticated === 'function') {
-            auth.setIsAuthenticated(true);
-          }
-        } else {
-          console.error("No se pudo acceder a setUser del contexto de autenticación");
-          // Continuar con el registro aunque no se pueda establecer el usuario en el contexto
+        // Autenticar y logear directamente tras registro
+        if (typeof setUser === 'function') {
+          setUser(response);
         }
-        
+        if (typeof setIsAuthenticated === 'function') {
+          setIsAuthenticated(true);
+        }
         // Limpiar los campos
         setName('');
         setEmail('');
         setPassword('');
         setConfirmPassword('');
-       
-        // Si no ha habido errores, redirigir al usuario a la página de inicio
+        // Redirigir a la página de tareas
         setTimeout(() => {
-          navigate('/'); // Redirigir a la página de inicio
-        }, 2000); // Esperar 2 segundos antes de redirigir
-        
-       }
+          navigate('/tasks');
+        }, 2000);
+      }
     } catch (error) {
       console.error("Error completo:", error);
       

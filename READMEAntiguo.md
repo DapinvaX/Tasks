@@ -212,3 +212,6 @@ src/
    - Documentar componentes complejos
    - Mantener código limpio y organizado
    - Seguir principios SOLID
+
+# Archivo obsoleto
+Este archivo READMEAntiguo.md ha quedado obsoleto y puede ser eliminado.
