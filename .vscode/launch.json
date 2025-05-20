@@ -6,29 +6,10 @@
     "configurations": [
         {
             "type": "msedge",
-            "name": "Launch Microsoft Edge",
             "request": "launch",
-            "runtimeArgs": [
-                "--remote-debugging-port=9222"
-            ]
-        },
-        {
-            "type": "msedge",
-            "name": "Launch Edge DevTools",
-            "request": "launch",
-            "runtimeArgs": [
-                "--remote-debugging-port=9222"
-            ],
-            "url": "http://localhost:3000",
+            "name": "Launch Edge against localhost",
+            "url": "http://localhost:8080",
             "webRoot": "${workspaceFolder}"
-        }
-
-
-    ],
-    "compounds": [
-        {
-            "name": "Launch Edge with Extension",
-            "configurations": ["Launch Microsoft Edge", "Launch Edge DevTools"]
         }
     ]
 }
