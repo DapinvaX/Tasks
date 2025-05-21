@@ -7,8 +7,8 @@ const cnx = async () => {
         const password = "DapinvaX77MongoDB";
         //Conectamos a la base de datos
         await mongoose.connect(`mongodb+srv://dapinvax:${password}@cluster0.rksw4bm.mongodb.net/Tasks?retryWrites=true&w=majority&appName=Cluster0`)
-            .then(() => console.log("¡Conectado a la base de datos!"))
-            .catch((err) => console.error("Error al conectar con la base de datos de MongoDB: \n" + err));
+            .then(() => console.log("¡Conectado a la base de datos de MongoDB Atlas!"))
+            .catch((err) => console.error("Error al conectar con la base de datos de MongoDB Atlas: \n" + err));
 
     
 }
