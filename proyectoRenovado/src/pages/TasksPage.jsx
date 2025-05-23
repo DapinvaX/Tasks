@@ -16,7 +16,15 @@ export function TasksPage() {
   const loadTasks = async () => {
     try {
       const userTasks = await getTasksReq();
-      setTasks(Array.isArray(userTasks) ? userTasks : []);
+      console.log('Respuesta de getTasksReq:', userTasks);
+      // Si la respuesta es { tasks: [...] } o un array directo
+      if (Array.isArray(userTasks)) {
+        setTasks(userTasks);
+      } else if (userTasks && Array.isArray(userTasks.tasks)) {
+        setTasks(userTasks.tasks);
+      } else {
+        setTasks([]);
+      }
       setError(null);
     } catch (err) {
       setError('Error al cargar las tareas');

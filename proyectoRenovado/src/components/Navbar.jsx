@@ -36,6 +36,8 @@ export function Navbar() {
     }
   };
 
+  console.log('Usuario en Navbar:', user); // Agregado para depuración
+
   return (
     <nav className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -54,9 +56,11 @@ export function Navbar() {
           <div className="hidden md:flex items-center space-x-4">
             {isAuthenticated ? (
               <>
-                <Link to="/tasks" className="text-blue-600 dark:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center hover:text-blue-600 dark:hover:text-white hover:underline group">
-                  <UserCircle className="h-5 w-5 mr-1 text-blue-600 dark:text-white transition-all duration-200 group-hover:text-blue-600 dark:group-hover:text-white group-hover:scale-125 group-hover:drop-shadow-[0_0_18px_rgba(59,130,246,0.9)] dark:group-hover:drop-shadow-[0_0_16px_rgba(255,255,255,0.8)]" />
-                  <span className="ml-1">{user?.user || user?.username || user?.email || ''}</span>
+                <Link to="/tasks" className="text-blue-600 dark:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center gap-1 group group/user">
+                  <UserCircle className="h-5 w-5 text-blue-600 dark:text-white transition-all duration-300 group-hover/user:scale-110 group-hover/user:drop-shadow-[0_0_12px_rgba(59,130,246,0.7)] dark:group-hover/user:drop-shadow-[0_0_10px_rgba(255,255,255,0.6)] align-middle" />
+                  <span className="font-semibold transition-all duration-300 align-middle group-hover/user:scale-110 group-hover/user:drop-shadow-[0_0_12px_rgba(59,130,246,0.7)] dark:group-hover/user:drop-shadow-[0_0_10px_rgba(255,255,255,0.6)] group-hover/user:translate-x-1">
+                    {user?.user || (typeof user === 'object' && user?.userdata?.user) || ''}
+                  </span>
                 </Link>
                 <button
                   onClick={handleLogout}
@@ -128,9 +132,9 @@ export function Navbar() {
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {isAuthenticated ? (
               <>
-                <Link to="/tasks" className="text-blue-600 dark:text-white block px-3 py-2 rounded-md text-base font-medium items-center hover:text-blue-600 dark:hover:text-white hover:underline group">
+                <Link to="/tasks" className="text-blue-600 dark:text-white block px-3 py-2 rounded-md text-base font-medium items-center hover:scale-105 group">
                   <UserCircle className="h-5 w-5 mr-2 text-blue-600 dark:text-white transition-all duration-200 group-hover:text-blue-600 dark:group-hover:text-white group-hover:scale-125 group-hover:drop-shadow-[0_0_18px_rgba(59,130,246,0.9)] dark:group-hover:drop-shadow-[0_0_16px_rgba(255,255,255,0.8)]" />
-                  <span className="ml-1">{user?.user || user?.username || user?.email || ''}</span>
+                  <span className="ml-1">{user?.user || (typeof user === 'object' && user?.userdata?.user) || ''}</span>
                 </Link>
                 <button
                   onClick={handleLogout}
