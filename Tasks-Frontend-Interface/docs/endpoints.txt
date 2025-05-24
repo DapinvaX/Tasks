@@ -1,9 +1,0 @@
-Registrar Usuario:                    POST /api/register
-Logearse como Usuario:                POST /api/login
-Deslogearse:                          POST /api/logout
-Obtener el Perfil de Usuario:         GET /api/profile
-Obtener TODAS las Tasks:              GET /api/tasks
-Obtener Task:                         GET /api/tasks/:id
-Añadir Task:                          POST /api/tasks
-Editar Task:                          PUT /api/tasks/:id
-Eliminar Task:                        DELETE /api/tasks/:id
