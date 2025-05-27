@@ -44,7 +44,7 @@ export function Navbar() {
         <div className="flex justify-between h-16">
           {/* Branding combinado: icono y título en un solo enlace */}
           <div className="flex items-center">
-            <Link to={isAuthenticated ? "/tasks" : "/"} className="flex items-center transition-all duration-200 group hover:scale-105">
+            <Link to={isAuthenticated ? "/" : "/"} className="flex items-center transition-all duration-200 group hover:scale-105">
               <CheckSquare className="h-6 w-6 text-blue-600 dark:text-white transition-all duration-200 group-hover:text-blue-600 dark:group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(59,130,246,0.6)] dark:group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]" />
               <span className="ml-2 text-blue-600 dark:text-white font-bold text-xl transition-all duration-200 group-hover:text-blue-600 dark:group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(59,130,246,0.6)] dark:group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">
                 TaskAPP
