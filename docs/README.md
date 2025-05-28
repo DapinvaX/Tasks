@@ -1,299 +1,258 @@
-# Proyecto Final
+# Proyecto Final: Gestor de Tareas Fullstack
 
-Author: @DapinvaX
-### By Daniel Pintado Várez
+**Autor:** Daniel Pintado Várez  
+**Fecha:** 28 de mayo de 2025
 
-## Backend
+---
 
-### Dependencias
-- Node.js
-- Express
-- MongoDB
-- Mongoose
-- Morgan
-- JWT (JsonWebToken)
-- Bcrypt
-- Cookie Parser
-- CSURF (Cross-Site Request Forgery)
+## 1. Descripción General
 
-### Guía para el Programador
-1. **Instalación de Dependencias**:
-    ```bash
-    npm install
-    ```
-2. **Configuración del Entorno**:
-    - Crear un archivo `.env` con las siguientes variables:
-        ```
-        PORT=5173
-        MONGO_URI=your_mongo_uri
-        JWT_SECRET=your_jwt_secret
-        ```
-3. **Ejecución del Servidor**:
-    ```bash
-    npm start
-    ```
+Este proyecto es una aplicación web fullstack para la gestión de tareas, desarrollada con React en el frontend y Node.js/Express en el backend, utilizando MongoDB como base de datos. Incluye autenticación segura, protección CSRF, validación robusta y una interfaz moderna y responsiva.
 
-### Arquitectura Backend
-- **Runtime**: Node.js
-- **Framework**: Express
-- **Base de Datos**: MongoDB
-- **Autenticación**: JWT
-- **Seguridad**: CSRF, CORS
-- **Validación**: Zod
+---
 
-### Middleware de Validación
-- Esquemas Zod para validación estructurada
-- Sanitización de entradas
-- Manejo de errores consistente
+## 2. Manual de Usuario
 
-### Seguridad Implementada
-#### Protección CSRF
-```javascript
-const csrfProtection = csrf({
-    cookie: {
-        key: 'XSRF-TOKEN',
-        httpOnly: false,
-        sameSite: 'lax'
-    }
-});
-```
+### 2.1 Frontend (Usuario Final)
 
-#### CORS Configurado
-```javascript
-app.use(cors({
-    origin: 'http://localhost:5173',
-    credentials: true
-}));
-```
+**Registro de Usuario**
+- Accede a la página de registro.
+- Completa el formulario con tu nombre de usuario, correo y contraseña.
+- Recibirás un mensaje de confirmación y podrás iniciar sesión.
 
-#### Autenticación JWT
-- Tokens seguros
-- Almacenamiento en cookies httpOnly
-- Renovación automática
+**Inicio de Sesión**
+- Ingresa tu usuario o correo y contraseña en la página de login.
+- Si los datos son correctos, accederás a tu panel de tareas.
 
-### Guía para el Usuario
-- **Registro**: Enviar una solicitud POST a `/api/register` con los datos del usuario.
-- **Inicio de Sesión**: Enviar una solicitud POST a `/api/login` con las credenciales del usuario.
-- **Operaciones CRUD**: Utilizar los endpoints `/api/tasks` para crear, leer, actualizar y eliminar tareas.
+**Gestión de Tareas**
+- Puedes crear nuevas tareas desde el panel principal.
+- Edita el título, descripción o marca como completada cualquier tarea.
+- Elimina tareas que ya no necesites.
+- Todas las acciones muestran notificaciones de éxito o error.
 
-## Frontend
+**Navegación y Temas**
+- Usa la barra de navegación para moverte entre secciones.
+- Cambia entre modo claro y oscuro desde el menú.
+- El menú es responsivo y se adapta a móviles y escritorio.
 
-### Arquitectura Frontend
-- **Framework**: React con JavaScript
-- **Estilos**: Tailwind CSS
-- **Iconografía**: Lucide React
-- **Estado Global**: Context API
-- **Enrutamiento**: React Router DOM
-- **Cliente HTTP**: Axios con interceptores personalizados
+**Cerrar Sesión**
+- Haz clic en el botón de cerrar sesión en el Navbar para salir de forma segura.
 
-### Estructura de Carpetas
+### 2.2 Backend (Usuario Administrador)
+
+**Inicio y Configuración**
+- Instala las dependencias con `npm install`.
+- Configura el archivo `.env` con las variables necesarias.
+- Inicia el servidor con `npm start`.
+
+**Gestión de Usuarios y Tareas**
+- Los usuarios se gestionan automáticamente mediante los endpoints de registro y login.
+- Las tareas se almacenan y gestionan en MongoDB.
+- Puedes consultar, editar o eliminar usuarios/tareas directamente en la base de datos si tienes permisos de administrador.
+
+**Seguridad y Logs**
+- El backend registra todas las peticiones importantes.
+- Los errores y accesos no autorizados quedan registrados en consola.
+- El sistema está protegido contra CSRF y requiere autenticación para acceder a datos sensibles.
+
+---
+
+## 3. Manual para el Programador
+
+### 3.1 Frontend
+
+- **Estructura:** Un componente por archivo, imports organizados, uso de Context API para estado global.
+- **Estilos:** Utiliza Tailwind CSS, prioriza utilidades sobre CSS personalizado.
+- **Buenas prácticas:** Nombres consistentes, documentación en componentes reutilizables.
+- **Extensión:** Puedes añadir nuevas páginas, componentes o hooks siguiendo la estructura existente.
+- **Validación:** Los formularios usan validación en frontend y backend.
+- **Notificaciones:** Usa React Toastify para feedback visual.
+- **Autenticación:** El contexto de autenticación gestiona el estado global y la persistencia de sesión.
+
+### 3.2 Backend
+
+- **Estructura:** Código modular, rutas separadas, controladores claros y modelos Mongoose bien definidos.
+- **Seguridad:** Implementa CSRF, CORS, JWT y validación de datos con Zod.
+- **Extensión:** Puedes añadir nuevos endpoints, modelos o middlewares siguiendo la arquitectura actual.
+- **Manejo de errores:** Usa respuestas claras y consistentes, captura errores en controladores y middlewares.
+- **Documentación:** Comenta funciones complejas y mantén el README actualizado.
+- **Pruebas:** Se recomienda añadir tests para endpoints críticos y lógica de negocio.
+
+---
+
+## 4. Backend
+
+### 4.1 Tecnologías y Dependencias
+- **Node.js:** Entorno de ejecución para JavaScript en el servidor.
+- **Express:** Framework web para Node.js.
+- **MongoDB:** Base de datos NoSQL.
+- **Mongoose:** ODM para MongoDB.
+- **Morgan:** Middleware de logging para peticiones HTTP.
+- **JWT (JsonWebToken):** Autenticación basada en tokens.
+- **Bcrypt:** Hasheo de contraseñas (opcional, preparado para producción).
+- **Cookie Parser:** Manejo de cookies en Express.
+- **CSURF:** Protección contra ataques CSRF.
+
+### 4.2 Instalación y Configuración
+1. **Instalación de dependencias**
+   ```bash
+   npm install
+   ```
+2. **Variables de entorno**
+   Crear un archivo `.env` en la raíz del backend con:
+   ```
+   PORT=4000
+   MONGO_URI=tu_mongo_uri
+   JWT_SECRET=tu_jwt_secret
+   ```
+3. **Ejecución del servidor**
+   ```bash
+   npm start
+   ```
+
+### 4.3 Arquitectura y Estructura
+- **src/app.js:** Configuración principal de Express, middlewares y rutas.
+- **src/routes/:** Rutas de autenticación (`auth.routes.js`) y tareas (`task.routes.js`).
+- **src/controllers/:** Lógica de negocio para autenticación y tareas.
+- **src/models/:** Modelos de datos Mongoose (`user.model.js`, `task.model.js`).
+- **src/middlewares/:** Validación de esquemas y autenticación de tokens.
+- **src/libs/jwt.js:** Utilidades para generación y verificación de JWT.
+- **src/schemas/:** Esquemas de validación con Zod.
+
+### 4.4 Seguridad y Buenas Prácticas
+- **CSRF:** Implementado con CSURF y cookies.
+- **CORS:** Solo permite origen del frontend (`http://localhost:5173`).
+- **JWT:** Tokens seguros, almacenados en cookies httpOnly.
+- **Validación:** Uso de Zod para validar y sanear entradas.
+- **Manejo de errores:** Respuestas claras y consistentes.
+
+### 4.5 Endpoints Principales
+- **/api/register:** Registro de usuario (POST)
+- **/api/login:** Inicio de sesión (POST)
+- **/api/logout:** Cierre de sesión (POST)
+- **/api/profile:** Perfil de usuario autenticado (GET, requiere token)
+- **/api/tasks:** CRUD de tareas (GET, POST, PUT, DELETE, requiere token)
+
+### 4.6 Flujo de Autenticación
+1. El usuario se registra y recibe un token JWT en una cookie segura.
+2. El login valida credenciales y renueva el token.
+3. El token se verifica en cada petición protegida.
+4. Logout elimina la cookie del token.
+
+---
+
+## 5. Frontend
+
+### 5.1 Tecnologías y Dependencias
+- **React:** Librería para construir interfaces de usuario.
+- **Tailwind CSS:** Utilidades para estilos rápidos y responsivos.
+- **Axios:** Cliente HTTP con interceptores personalizados.
+- **React Router DOM:** Enrutamiento SPA.
+- **React Toastify:** Notificaciones.
+- **Lucide React:** Iconografía moderna.
+- **Context API:** Estado global para autenticación, tareas y tema.
+
+### 5.2 Instalación y Configuración
+1. **Instalación de dependencias**
+   ```bash
+   npm install
+   ```
+2. **Variables de entorno**
+   Crear un archivo `.env` en la raíz del frontend con:
+   ```
+   VITE_API_URL=http://localhost:4000/api
+   ```
+3. **Ejecución de la aplicación**
+   ```bash
+   npm start
+   ```
+
+### 5.3 Estructura de Carpetas
 ```
 src/
 ├── api/          # Servicios y llamadas API
 ├── components/   # Componentes reutilizables
-├── context/     # Contextos globales
-└── pages/       # Componentes de página
+├── context/      # Contextos globales
+├── pages/        # Componentes de página
+├── services/     # Servicios utilitarios (hash, etc)
+├── styles/       # Estilos globales y personalizados
 ```
 
-### Dependencias y Librerías Utilizadas
-- React: Librería para construir interfaces de usuario.
-- Axios: Cliente HTTP para realizar peticiones.
-- CSURF: Protección contra ataques de falsificación de solicitudes.
-- React Router: Manejo de rutas en la aplicación.
-- Lucide: Librería de componentes para iconos
-- React Toastify: Librería para notificaciones en React
+### 5.4 Componentes y Contextos Clave
+- **AuthContext:** Maneja autenticación, persistencia y verificación de sesión.
+- **ThemeContext:** Alternancia y persistencia de tema claro/oscuro.
+- **TasksContext:** Estado global de tareas del usuario.
+- **Navbar:** Navegación responsiva, muestra usuario y logout.
+- **TaskCard:** Tarjeta editable para cada tarea.
+- **ProtectedRoute:** Protege rutas privadas según autenticación.
 
-### Componentes Principales
+### 5.5 Funcionalidades Principales
+- **Registro/Login:** Formularios validados, feedback visual, hash de contraseña en frontend.
+- **Gestión de Tareas:** CRUD completo, edición inline, feedback inmediato.
+- **Notificaciones:** Toasts para éxito/error en todas las acciones.
+- **Responsive:** Layouts adaptativos, menú móvil, dark mode.
+- **Seguridad:** CSRF automático, manejo de tokens, validación robusta.
 
-#### Autenticación (`AuthContext.jsx`)
-- Gestión de estado de autenticación
-- Verificación de tokens
-- Persistencia de sesión
-- Manejo automático de tokens CSRF
-
-#### Sistema de Temas (`ThemeContext.jsx`)
-- Alternancia entre temas claro/oscuro
-- Persistencia de preferencias en localStorage
-- Detección automática de preferencias del sistema
-- Transiciones suaves entre temas
-
-#### Navegación Responsive (`Navbar.jsx`)
-- Diseño adaptativo para múltiples dispositivos
-- Menú hamburguesa para móviles
-- Transiciones suaves
-- Soporte para modo oscuro
-- Breakpoints optimizados:
-  - Móvil (< 768px)
-  - Tablet (≥ 768px)
-  - Desktop (≥ 1024px)
-
-### API y Servicios
-
-#### Cliente HTTP
+### 5.6 Ejemplo de Uso de la API
 ```javascript
-// Configuración base
-const instance = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
-    withCredentials: true
-});
-
-// Interceptores para CSRF
-instance.interceptors.request.use(config => {
-    // Añadir token CSRF
-});
-
-instance.interceptors.response.use(
-    response => response,
-    error => {
-        // Manejar errores y renovar token CSRF
-    }
-);
+// Registro
+await register({ user, email, password });
+// Login
+await login({ user, password });
+// Obtener tareas
+await fetchUserTasks();
 ```
 
-#### Autenticación
-```javascript
-register(credentials)    // Registro de usuarios
-login(credentials)      // Inicio de sesión
-logout()               // Cierre de sesión
-verifyToken()          // Verificación de token
-```
+---
 
-#### Gestión de Tareas
-```javascript
-fetchUserTasks()       // Obtener todas las tareas
-getTaskById(id)        // Obtener tarea específica
-addTaskReq(task)       // Crear nueva tarea
-updateTaskReq(id, task) // Actualizar tarea
-deleteTaskReq(id)      // Eliminar tarea
-```
+## 6. Seguridad
 
-## Seguridad
+### 6.1 Medidas Implementadas
+- **CSRF:** Protección automática en todas las rutas sensibles.
+- **CORS:** Solo permite origen del frontend.
+- **JWT:** Tokens httpOnly, verificación en cada request.
+- **Validación:** Esquemas Zod en backend, validación en frontend.
+- **Hash de Contraseña:** SHA-256 en frontend, preparado para bcrypt en backend.
 
-### Protección CSRF
-1. **Configuración del Servidor**
-   ```javascript
-   const csrfProtection = csrf({
-       cookie: {
-           key: 'XSRF-TOKEN',
-           httpOnly: false,
-           sameSite: 'lax'
-       }
-   });
-   ```
+### 6.2 Buenas Prácticas
+- Sanitización de entradas
+- Manejo de errores consistente
+- Renovación automática de tokens
+- Logout seguro
 
-2. **Manejo en el Cliente**
-   - Token automático en cookies
-   - Interceptores Axios para requests
-   - Renovación automática de tokens
+---
 
-### Medidas Adicionales
-1. **CORS Configurado**
-   ```javascript
-   app.use(cors({
-       origin: 'http://localhost:5173',
-       credentials: true
-   }));
-   ```
+## 7. Responsive Design
 
-2. **Autenticación JWT**
-   - Tokens seguros
-   - Almacenamiento en cookies httpOnly
-   - Renovación automática
+### 7.1 Breakpoints y Adaptabilidad
+- **sm:** 640px (móviles grandes)
+- **md:** 768px (tablets)
+- **lg:** 1024px (desktop)
+- **xl:** 1280px (desktop grande)
 
-3. **Validación de Datos**
-   - Esquemas Zod
-   - Sanitización de entradas
-   - Manejo de errores consistente
+### 7.2 Características
+- Menú hamburguesa en móvil
+- Layouts fluidos y tarjetas adaptativas
+- Tipografía y botones escalables
+- Soporte completo para dark mode
 
-## Diseño Responsive
+---
 
-#### Breakpoints
-```css
-sm: '640px'   // Móviles grandes
-md: '768px'   // Tablets
-lg: '1024px'  // Desktop
-xl: '1280px'  // Desktop grande
-```
+## 8. Cambios y Mejoras Recientes
 
-#### Características Responsive
-1. **Navegación**
-   - Menú hamburguesa en móvil
-   - Navegación horizontal en desktop
-   - Transiciones suaves
+- Navbar muestra el usuario autenticado y permite logout seguro.
+- Unificación de perfil y tareas en `TasksPage`.
+- Edición inline de tareas y feedback visual inmediato.
+- Mejoras en validación y feedback de formularios.
+- Refactorización de la arquitectura para mayor escalabilidad.
 
-2. **Contenido**
-   - Layouts fluidos
-   - Imágenes responsivas
-   - Tipografía adaptativa
+---
 
-3. **Interacciones**
-   - Touch-friendly en móvil
-   - Hover states en desktop
-   - Feedback visual consistente
+## 9. Notas Finales
 
-### Convenciones de Código
-1. **Nombrado**
-   - PascalCase para componentes
-   - camelCase para funciones y variables
-   - UPPER_CASE para constantes
+- El servicio de hasheado en frontend utiliza la API Web Crypto para SHA-256.
+- El backend está preparado para usar bcrypt en producción.
+- El sistema es fácilmente extensible para nuevas funcionalidades (roles, adjuntos, etc).
+- El código está listo para ser convertido a formato DOC o PDF para entrega o documentación formal.
 
-2. **Organización**
-   - Un componente por archivo
-   - Imports agrupados por tipo
-   - Exports nombrados preferidos
-
-3. **Estilos**
-   - Clases Tailwind organizadas por categoría
-   - Preferir utilidades sobre CSS personalizado
-   - Mantener consistencia en espaciado
-
-### Guía para el Programador
-1. **Instalación de Dependencias**:
-    ```bash
-    npm install
-    ```
-2. **Configuración del Entorno**:
-    - Crear un archivo `.env` con las siguientes variables:
-        ```
-        REACT_APP_API_URL=http://localhost:4000/api
-        ```
-3. **Ejecución de la Aplicación**:
-    ```bash
-    npm start
-    ```
-
-### Guía para el Usuario
-- **Navegación**: Utilizar la barra de navegación para acceder a las diferentes secciones de la aplicación.
-- **Gestión de Tareas**: Crear, editar y eliminar tareas desde la interfaz de usuario.
-- **Autenticación**: Registrarse e iniciar sesión para acceder a las funcionalidades protegidas.
-
-### Servicio de Hasheado
-El servicio de hasheado (hashService.js) para el frontend utiliza la API Web Crypto para generar un hash SHA-256 de las contraseñas de forma asincrónica.  
-El resultado es una cadena hexadecimal que representa el hash de la contraseña.  
-Se recomienda emplear este servicio junto con medidas de seguridad en el backend para proteger la autenticidad y confidencialidad de las contraseñas.
-
-### Mejores Prácticas
-1. **Rendimiento**
-   - Usar React.memo para componentes pesados
-   - Implementar lazy loading
-   - Optimizar re-renders
-
-2. **Accesibilidad**
-   - Mantener estructura semántica
-   - Incluir atributos ARIA
-   - Asegurar contraste de colores
-
-3. **Seguridad**
-   - Validar todas las entradas
-   - Implementar CSRF en todas las rutas
-   - Mantener dependencias actualizadas
-
-4. **Mantenimiento**
-   - Documentar componentes complejos
-   - Mantener código limpio y organizado
-   - Seguir principios SOLID
-
-## Cambios y mejoras recientes
-
-- El Navbar ahora muestra el nombre del usuario autenticado como enlace a su perfil/tareas (`/tasks`) y un botón de cerrar sesión que desautentica y redirige a la página principal.
-- La página de perfil del usuario y la gestión de tareas se unifican en `TasksPage`, donde se muestran las tareas en tarjetas editables (título, descripción, checkbox de completada, botones de editar y eliminar).
+---
