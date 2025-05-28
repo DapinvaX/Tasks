@@ -20,40 +20,6 @@ export function RegisterPage() {
   const { setUser, setIsAuthenticated } = useAuth(); // Obtenemos todo el objeto de contexto para mayor seguridad
   const navigate = useNavigate();
 
- /*  // Función para verificar si el usuario ya existe al terminar de escribir en el campo Usuario
-  const handleUserBlur = async () => {
-    if (name) {
-      try {
-        const exists = await checkUserExists({ user: name });
-        if (exists) {
-          toast.info('El usuario ya existe', {
-            position: "top-center",
-            autoClose: 2000
-          });
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-
-  // Función para verificar si el usuario ya existe al terminar de escribir en el campo Correo electrónico
-  const handleEmailBlur = async () => {
-    if (email) {
-      try {
-        const exists = await checkUserExists({ email: email });
-        if (exists) {
-          toast.info('El usuario ya existe', {
-            position: "top-center",
-            autoClose: 2000
-          });
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }; */
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -87,9 +53,7 @@ export function RegisterPage() {
       
       console.log('Respuesta del backend:', response);
 
-      // Adaptación: aceptar cualquier status 200 o 201, aunque la estructura varíe
-      if (response.status === 200 || response.status === 201 || (response && response.data && !response.error)) {
-        toast.success("Usuario registrado con éxito! Por favor inicia sesión.", {
+      toast.success(`Usuario registrado con éxito!\nBienvenido a su página de tareas ${name}!`, {
           position: "top-center",
           autoClose: 2000,
           hideProgressBar: false,
@@ -98,16 +62,37 @@ export function RegisterPage() {
           draggable: true,
           progress: undefined
         });
+
         setError(null); // Limpiar error si lo había
         setName('');
         setEmail('');
         setPassword('');
         setConfirmPassword('');
+        
+        // Actualizar el contexto de autenticación
+        if (typeof setUser === 'function') {
+          setUser(response);
+          if (typeof setIsAuthenticated === 'function') {
+            setIsAuthenticated(true);
+          }
+        } else {
+          console.error("setUser no es una función o no está disponible");
+        }
+        
         setTimeout(() => {
-          navigate('/login');
-        }, 1700);
+
+          //Redireccionar al login después de 1.7 segundos
+          //console.log("Redirigiendo al login...");
+          //navigate('/login');
+        
+          // Redireccionar a la página de tareas después de 1.7 segundos
+          console.log('Redirigiendo a la página de tareas...');
+          navigate('/tasks');
+        
+        });
         return;
-      }
+
+      
     } catch (error) {
       console.error("Error completo:", error);
       
@@ -124,6 +109,13 @@ export function RegisterPage() {
           draggable: true,
           progress: undefined
         });
+        
+        setError(null); // Limpiar error si lo había
+        setName('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword(''); 
+        
       } else {
         toast.error("Error al registrar! Inténtelo de nuevo.", {
           position: "top-center",
@@ -135,7 +127,9 @@ export function RegisterPage() {
           progress: undefined
         });
       }
+
     }
+
   };
 
   return (
@@ -219,15 +213,18 @@ export function RegisterPage() {
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 mt-6"
-          >
-            Registrarse
-          </button>
+          <div className="flex justify-center mt-6">
+            <button
+              type="submit"
+              className="px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+              style={{ width: 'auto', minWidth: 'unset' }}
+            >
+              Registrarse
+            </button>
+          </div>
           
           {/* Opción para probar sin hasheo (movida debajo del botón) */}
-          <div className="flex items-center justify-center mt-4">
+         {/*  <div className="flex items-center justify-center mt-4">
             <input
               id="hashPassword"
               type="checkbox"
@@ -238,7 +235,7 @@ export function RegisterPage() {
             <label htmlFor="hashPassword" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
               Usar contraseña hasheada (desmarcar solo para pruebas)
             </label>
-          </div>
+          </div> */}
         </form>
       </div>
     </div>
