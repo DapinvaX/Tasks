@@ -86,34 +86,27 @@ export function RegisterPage() {
       const response = await registerReq(userData);
       
       console.log('Respuesta del backend:', response);
-      
-      if(response.status === 200) {
-        console.log("Usuario registrado con éxito");
-        toast.success("Usuario registrado con éxito. Redirigiendo a la página de inicio...", {
+
+      // Adaptación: aceptar cualquier status 200 o 201, aunque la estructura varíe
+      if (response.status === 200 || response.status === 201 || (response && response.data && !response.error)) {
+        toast.success("Usuario registrado con éxito! Por favor inicia sesión.", {
           position: "top-center",
-          autoClose: 1500,
+          autoClose: 2000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined
         });
-        // Autenticar y logear directamente tras registro
-        if (typeof setUser === 'function') {
-          setUser(response);
-        }
-        if (typeof setIsAuthenticated === 'function') {
-          setIsAuthenticated(true);
-        }
-        // Limpiar los campos
+        setError(null); // Limpiar error si lo había
         setName('');
         setEmail('');
         setPassword('');
         setConfirmPassword('');
-        // Redirigir a la página de tareas
         setTimeout(() => {
-          navigate('/tasks');
-        }, 2000);
+          navigate('/login');
+        }, 1700);
+        return;
       }
     } catch (error) {
       console.error("Error completo:", error);
@@ -122,8 +115,6 @@ export function RegisterPage() {
       const res = error.response;
       
       if(res && res.status === 505) {
-        console.error("El usuario ya existe");
-        
         toast.error("El usuario ya existe", {
           position: "top-center",
           autoClose: 2000,

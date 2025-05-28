@@ -4,6 +4,7 @@ import { addTaskReq } from '../api/tasks';
 import { Plus } from 'lucide-react';
 import { TextInput } from '../components/UI/TextInput';
 import { TextArea } from '../components/UI/TextArea';
+import { toast } from 'react-toastify';
 
 export function AddTaskPage() {
   const navigate = useNavigate();
@@ -16,17 +17,36 @@ export function AddTaskPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
-
+    setLoading(true);
     try {
-      const now = new Date();
-      const createdAt = now.toISOString();
-      const finalDate = date || (now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0') + ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ':' + String(now.getSeconds()).padStart(2, '0'));
-      await addTaskReq({ title, description, completed, createdAt, date: finalDate });
+      await addTaskReq({
+        title,
+        description,
+        done: completed,
+        date: date || null,
+      });
+      toast.success('Tarea añadida correctamente', {
+        position: 'top-center',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       navigate('/tasks');
     } catch (err) {
       setError('Error al crear la tarea. Por favor, intenta de nuevo.');
+      toast.error('Error al crear la tarea', {
+        position: 'top-center',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } finally {
       setLoading(false);
     }
@@ -108,7 +128,7 @@ export function AddTaskPage() {
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700"
                 />
                 <label htmlFor="completed" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                  Realizada
+                  Completada
                 </label>
               </div>
             </div>

@@ -15,13 +15,12 @@ export function TasksPage() {
 
   const loadTasks = async () => {
     try {
-      const userTasks = await getTasksReq();
-      console.log('Respuesta de getTasksReq:', userTasks);
-      // Si la respuesta es { tasks: [...] } o un array directo
-      if (Array.isArray(userTasks)) {
-        setTasks(userTasks);
-      } else if (userTasks && Array.isArray(userTasks.tasks)) {
-        setTasks(userTasks.tasks);
+      const response = await getTasksReq();
+      const data = response.data;
+      if (Array.isArray(data)) {
+        setTasks(data);
+      } else if (data && Array.isArray(data.tasks)) {
+        setTasks(data.tasks);
       } else {
         setTasks([]);
       }
