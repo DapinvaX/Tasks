@@ -109,7 +109,11 @@ export const register = async (req, res) => {
                 });
 
                 //Imprimimos el token en la consola
-                console.log('Token generado: ', token);
+                //console.log('Token generado: ', token);
+                
+                // En vez de imprimir el token, lo ocultamos por seguridad
+                console.log('Token generado: **************');
+                //Mostramos un mensaje para confirmar que el usuario se ha registrado correctamente
                 console.log('Usuario registrado con éxito!');
                 
 
@@ -218,8 +222,9 @@ export const login = async (req, res) => {
                 });
 
                 //Imprimimos el token en la consola
-                console.log('Token generado: ', token);
-                
+                //console.log('Token generado: ', token);
+                console.log('Token generado: **************');
+                //Mostramos un mensaje para confirmar que el usuario se ha logueado correctamente
                 console.log('Usuario Logueado con éxito!');
 
                 // Imprimimos el nuevo usuario en la consola

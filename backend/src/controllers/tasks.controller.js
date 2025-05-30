@@ -7,8 +7,6 @@ import Task from "../models/task.model.js";
 export const obtenerTaks = async (req, res) => {
    
   try {
-       
-    
         //Obtenemos todas las tareas
         const tasks = await Task.find({
           //Buscamos las tareas que pertenezcan al usuario autenticado
@@ -21,9 +19,20 @@ export const obtenerTaks = async (req, res) => {
           return res.status(404).json({ message: "No hay tareas" });
         }
     
-        //Sino, me devuelves las tareas por consola y en formato JSON
-        console.log("Tareas: " + tasks);
-        res.status(200).json(tasks);
+        // Ocultar password en cada tarea
+        const tasksSanitizadas = tasks.map(task => {
+          const taskObj = task.toObject();
+          if (taskObj.user) {
+            taskObj.user = {
+              ...taskObj.user,
+              password: "************"
+            };
+          }
+          return taskObj;
+        });
+    
+        console.log("Tareas: ", tasksSanitizadas);
+        res.status(200).json(tasksSanitizadas);
       } catch (error) {
         res.status(500).json({ error: error.message });
       }

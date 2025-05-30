@@ -10,7 +10,7 @@ const cnx = async () => {
             return;
         }
 
-        //const password = "DapinvaX77MongoDB";
+        //const password = "Clave1";
 
         // Obtenemos la contraseña de la base de datos desde las variables de entorno
         // Asegúrate de que la variable de entorno MONGO_PASSWORD esté configurada correctamente
