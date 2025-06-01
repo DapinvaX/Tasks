@@ -4,7 +4,9 @@ import { Router } from 'express';
 //Importamos el middleware de autenticación
 import { authRequired } from '../middlewares/validateToken.js';
 
-//Importamos el middleware de validación de esquemas
+/* import csrf from 'csurf'; */
+import csrf from 'csurf';
+
 import {
     validateSchema
 } from '../middlewares/validateMiddleware.js';
@@ -25,6 +27,7 @@ import { crearTaskSchema } from '../schemas/task.schema.js';
 const router = Router();
 
 
+
 //CRUD de tareas
 
 //Definimos las rutas
@@ -32,7 +35,9 @@ const router = Router();
 
 
 //Obtener todas las tareas de un usuario
-router.get('/tasks', authRequired, obtenerTaks,() =>{
+router.get('/tasks', authRequired, obtenerTaks,(req, res) =>{
+
+    
 
 });
 
@@ -40,13 +45,22 @@ router.get('/tasks', authRequired, obtenerTaks,() =>{
 router.get('/tasks/:id', authRequired, obtenerTaskID, () =>{});
 
 //Crear una tarea
-router.post('/tasks', authRequired, crearTask, validateSchema(crearTaskSchema));
+router.post('/tasks', authRequired, crearTask, validateSchema(crearTaskSchema), (req, res, next) =>{
+    res.cookie('XSRF-TOKEN' );
+    next();
+});
 
 //Actualizar/Modificar una tarea
-router.put('/tasks/:id', authRequired, modificarTask);
+router.put('/tasks/:id', authRequired, modificarTask, ( res, next) =>{
+    res.cookie('XSRF-TOKEN');
+    next();
+});
 
 //Eliminar una tarea
-router.delete('/tasks/:id', authRequired, eliminarTask);
+router.delete('/tasks/:id', authRequired, eliminarTask, ( res, next) =>{
+    res.cookie('XSRF-TOKEN');
+    next(); 
+});
 
 //Exportamos router
 export default router;

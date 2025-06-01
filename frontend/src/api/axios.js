@@ -17,23 +17,4 @@ const instance = axios.create({
     }
 });
 
-// Utilidad para leer cookies
-function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-}
-
-// Interceptor para añadir el token CSRF a las peticiones protegidas
-instance.interceptors.request.use((config) => {
-  const method = config.method && config.method.toUpperCase();
-  if (["POST", "PUT", "DELETE"].includes(method)) {
-    const csrfToken = getCookie("XSRF-TOKEN");
-    if (csrfToken) {
-      config.headers["x-csrf-token"] = csrfToken;
-    }
-  }
-  return config;
-}, (error) => Promise.reject(error));
-
 export default instance;
