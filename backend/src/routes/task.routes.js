@@ -4,9 +4,7 @@ import { Router } from 'express';
 //Importamos el middleware de autenticación
 import { authRequired } from '../middlewares/validateToken.js';
 
-/* import csrf from 'csurf'; */
-import csrf from 'csurf';
-
+//Importamos el middleware de validación de esquemas
 import {
     validateSchema
 } from '../middlewares/validateMiddleware.js';
@@ -27,23 +25,19 @@ import { crearTaskSchema } from '../schemas/task.schema.js';
 const router = Router();
 
 
-
 //CRUD de tareas
-
 
 //Definimos las rutas
 //A estas riuas solo se puede acceder si se está autenticado
 
 
 //Obtener todas las tareas de un usuario
-router.get('/tasks', authRequired, obtenerTaks,(req, res) =>{
-
-    
+router.get('/tasks', authRequired, obtenerTaks,() =>{
 
 });
 
 //Obtener una tarea por id de un usuario
-router.get('/tasks/:id', authRequired, obtenerTaskID, (req, res) =>{});
+router.get('/tasks/:id', authRequired, obtenerTaskID, () =>{});
 
 //Crear una tarea
 router.post('/tasks', authRequired, crearTask, validateSchema(crearTaskSchema));

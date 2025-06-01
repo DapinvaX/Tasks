@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import {login, logout, profile, register} from '../controllers/auth.controller.js';
+import {login, logout, profile, register, verifyToken} from '../controllers/auth.controller.js';
 
 //Importamos el middleware authRequired para verificar si el token es válido de la ruta de autenticación
 import { authRequired } from '../middlewares/validateToken.js';
@@ -27,7 +27,8 @@ router.post('/logout', logout);
 // Ruta protegida con token
 // Ejecutamos antes authRequired para verificar si el token es válido y si lo es, se ejecutará la función profile
 router.get('/profile', authRequired, profile);
-  
+
+// Ruta para verificar el token
 router.get('/verify', verifyToken);
   
 // Exportamos el router para poder utilizarlo en otros archivos
