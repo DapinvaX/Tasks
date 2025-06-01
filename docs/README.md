@@ -7,7 +7,7 @@
 
 ## 1. Descripción General
 
-Este proyecto es una aplicación web fullstack para la gestión de tareas, desarrollada con React en el frontend y Node.js/Express en el backend, utilizando MongoDB como base de datos. Incluye autenticación segura, protección CSRF, validación robusta y una interfaz moderna y responsiva.
+Este proyecto es una aplicación web fullstack para la gestión de tareas, desarrollada con React en el frontend y Node.js/Express en el backend, utilizando MongoDB como base de datos. Incluye autenticación segura, validación robusta y una interfaz moderna y responsiva.
 
 ---
 
@@ -53,7 +53,7 @@ Este proyecto es una aplicación web fullstack para la gestión de tareas, desar
 **Seguridad y Logs**
 - El backend registra todas las peticiones importantes.
 - Los errores y accesos no autorizados quedan registrados en consola.
-- El sistema está protegido contra CSRF y requiere autenticación para acceder a datos sensibles.
+- El sistema requiere autenticación para acceder a datos sensibles.
 
 ---
 
@@ -72,7 +72,7 @@ Este proyecto es una aplicación web fullstack para la gestión de tareas, desar
 ### 3.2 Backend
 
 - **Estructura:** Código modular, rutas separadas, controladores claros y modelos Mongoose bien definidos.
-- **Seguridad:** Implementa CSRF, CORS, JWT y validación de datos con Zod.
+- **Seguridad:** Implementa CORS, JWT y validación de datos con Zod.
 - **Extensión:** Puedes añadir nuevos endpoints, modelos o middlewares siguiendo la arquitectura actual.
 - **Manejo de errores:** Usa respuestas claras y consistentes, captura errores en controladores y middlewares.
 - **Documentación:** Comenta funciones complejas y mantén el README actualizado.
@@ -91,7 +91,6 @@ Este proyecto es una aplicación web fullstack para la gestión de tareas, desar
 - **JWT (JsonWebToken):** Autenticación basada en tokens.
 - **Bcrypt:** Hasheo de contraseñas (opcional, preparado para producción).
 - **Cookie Parser:** Manejo de cookies en Express.
-- **CSURF:** Protección contra ataques CSRF.
 
 ### 4.2 Instalación y Configuración
 1. **Instalación de dependencias**
@@ -101,6 +100,7 @@ Este proyecto es una aplicación web fullstack para la gestión de tareas, desar
 2. **Variables de entorno**
    Crear un archivo `.env` en la raíz del backend con:
    ```
+   # Ejemplo de variables
    PORT=4000
    MONGO_URI=tu_mongo_uri
    JWT_SECRET=tu_jwt_secret
@@ -120,7 +120,6 @@ Este proyecto es una aplicación web fullstack para la gestión de tareas, desar
 - **src/schemas/:** Esquemas de validación con Zod.
 
 ### 4.4 Seguridad y Buenas Prácticas
-- **CSRF:** Implementado con CSURF y cookies.
 - **CORS:** Solo permite origen del frontend (`http://localhost:5173`).
 - **JWT:** Tokens seguros, almacenados en cookies httpOnly.
 - **Validación:** Uso de Zod para validar y sanear entradas.
@@ -191,7 +190,7 @@ src/
 - **Gestión de Tareas:** CRUD completo, edición inline, feedback inmediato.
 - **Notificaciones:** Toasts para éxito/error en todas las acciones.
 - **Responsive:** Layouts adaptativos, menú móvil, dark mode.
-- **Seguridad:** CSRF automático, manejo de tokens, validación robusta.
+- **Seguridad:** Manejo de tokens, validación robusta.
 
 ### 5.6 Ejemplo de Uso de la API
 ```javascript
@@ -208,7 +207,6 @@ await fetchUserTasks();
 ## 6. Seguridad
 
 ### 6.1 Medidas Implementadas
-- **CSRF:** Protección automática en todas las rutas sensibles.
 - **CORS:** Solo permite origen del frontend.
 - **JWT:** Tokens httpOnly, verificación en cada request.
 - **Validación:** Esquemas Zod en backend, validación en frontend.

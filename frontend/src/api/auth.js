@@ -1,4 +1,5 @@
 import axios from 'axios';
+import api from './axios';
 
 // Modo de desarrollo - cambiar a false cuando el backend esté listo
 const DEV_MODE = false; 
@@ -8,7 +9,7 @@ const API_URL = 'http://localhost:4000/api'; // Cambiado de 3000 a 4000
 const DEV_API_URL = 'http://localhost:2000/api'; // URL alternativa (ya tiene el puerto correcto)
 
 // Crear una instancia de axios con la URL base
-const api = axios.create({
+const instance = axios.create({
   baseURL: API_URL,
   withCredentials: true,
   timeout: 5000, // Timeout de 5 segundos para detectar problemas rápidamente
@@ -49,8 +50,18 @@ const mockResponse = (type) => {
   });
 };
 
+// Función para obtener el token CSRF antes de peticiones protegidas
+const fetchCsrfToken = async () => {
+  try {
+    await api.get('/csrf-token'); // Usar la instancia configurada
+  } catch (e) {
+    // No importa si da error, solo queremos la cookie
+  }
+};
+
 // Función para login
 export const loginReq = async (userData) => {
+  await fetchCsrfToken();
   try {
     // Log para depuración
     console.log('Intentando login en:', `${API_URL}/login`);
@@ -70,7 +81,7 @@ export const loginReq = async (userData) => {
       username: userData.user
     };
     
-    const response = await api.post('/login', dataToSend);
+    const response = await instance.post('/login', dataToSend);
     return response.data;
   } catch (error) {
     console.error('Error en loginReq:', error);
@@ -96,6 +107,7 @@ export const loginReq = async (userData) => {
 
 // Función para logout
 export const logoutReq = async () => {
+  await fetchCsrfToken();
   try {
     // En modo desarrollo, devuelve una respuesta simulada
     if (DEV_MODE) {
@@ -103,7 +115,7 @@ export const logoutReq = async () => {
       return await mockResponse('logout');
     }
     
-    const response = await api.post('/logout');
+    const response = await instance.post('/logout');
     return response.data;
   } catch (error) {
     console.error('Error en logoutReq:', error);
@@ -113,6 +125,7 @@ export const logoutReq = async () => {
 
 // Función para registro
 export const registerReq = async (user) => {
+  await fetchCsrfToken();
   try {
     // En modo desarrollo, devuelve una respuesta simulada
     if (DEV_MODE) {
@@ -120,7 +133,7 @@ export const registerReq = async (user) => {
       return await mockResponse('register');
     }
     
-    const response = await api.post('/register', user);
+    const response = await instance.post('/register', user);
     return response.data;
   } catch (error) {
     console.error('Error en registerReq:', error);
@@ -137,7 +150,7 @@ export const getProfileReq = async () => {
       return await mockResponse('profile');
     }
     
-    const response = await api.get('/profile');
+    const response = await instance.get('/profile');
     return response.data;
   } catch (error) {
     console.error('Error en getProfileReq:', error);
@@ -154,7 +167,7 @@ export const verifyTokenReq = async () => {
       return { valid: true };
     }
     
-    const response = await api.get('/verify');
+    const response = await instance.get('/verify');
     return response.data;
   } catch (error) {
     console.error('Error en verifyTokenReq:', error);
