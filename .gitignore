@@ -6,3 +6,5 @@ package-lock.json
 .vscode/
 backend/.env
 backend/NOTAS.txt
+thunder-collection_Task API.json
+
