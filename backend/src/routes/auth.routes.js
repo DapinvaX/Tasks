@@ -15,9 +15,6 @@ import { loginSchema, registerSchema } from '../schemas/auth.validate.schema.js'
 const router = Router();
 
 
-
-
-
 // Definimos las rutas de autenticación con sus respectivos controladores
 // Ejecutamos antes validateSchema para validar los datos de entrada de los usuarios tanto en el registro como en el login
 
