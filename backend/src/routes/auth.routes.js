@@ -10,9 +10,6 @@ import { validateSchema } from '../middlewares/validateMiddleware.js';
 //Importamos los esquemas de validación para el registro y el login de usuarios
 import { loginSchema, registerSchema } from '../schemas/auth.validate.schema.js';
 
-//import csrf from 'csurf';
-
-import { verifyToken } from '../controllers/auth.controller.js';
 
 //Importamos el middleware de protección CSRF
 /* const csrfProtection = csrf({ cookie: true }); */

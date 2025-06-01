@@ -4,9 +4,7 @@ import { Router } from 'express';
 //Importamos el middleware de autenticación
 import { authRequired } from '../middlewares/validateToken.js';
 
-/* import csrf from 'csurf'; */
-import csrf from 'csurf';
-
+//Importamos el middleware de validación de esquemas
 import {
     validateSchema
 } from '../middlewares/validateMiddleware.js';
