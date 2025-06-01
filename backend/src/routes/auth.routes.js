@@ -11,14 +11,11 @@ import { validateSchema } from '../middlewares/validateMiddleware.js';
 import { loginSchema, registerSchema } from '../schemas/auth.validate.schema.js';
 
 
-//Importamos el middleware de protección CSRF
-/* const csrfProtection = csrf({ cookie: true }); */
-
 // Declaramos el router para manejar las rutas de autenticación
 const router = Router();
 
 
-//router.use(csrfProtection);
+
 
 
 // Definimos las rutas de autenticación con sus respectivos controladores
@@ -32,19 +29,18 @@ router.post('/login', validateSchema(loginSchema), (req, res, next) => {
   
   // Cuando se ejecute un registro, lo valida comparandolo con el registerSchema
   router.post('/register', validateSchema(registerSchema), (req, res, next) => {
-   /*  res.cookie('XSRF-TOKEN', req.csrfToken()); */
     next();
   }, register);
   
   router.post('/logout', (req, res, next) => {
-   /*  res.cookie('XSRF-TOKEN', req.csrfToken()); */
     next();
   }, logout);
   
 // Ruta protegida con token
 // Ejecutamos antes authRequired para verificar si el token es válido y si lo es, se ejecutará la función profile
 router.get('/profile', authRequired, profile);
-  
+
+// Ruta para verificar el token
 router.get('/verify', verifyToken);
   
   // Exportamos el router para poder utilizarlo en otros archivos
