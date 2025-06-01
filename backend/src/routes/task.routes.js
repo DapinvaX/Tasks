@@ -22,10 +22,6 @@ import {
 import { crearTaskSchema } from '../schemas/task.schema.js';
 
 
-//Importamos el middleware de protección CSRF
-/* const csrfProtection = csrf({ cookie: true }); */
-
-
 //Inicializamos router
 const router = Router();
 
@@ -41,29 +37,29 @@ const router = Router();
 
 
 //Obtener todas las tareas de un usuario
-router.get('/tasks', authRequired, obtenerTaks,(req, res) =>{
+router.get('/tasks', authRequired, obtenerTaks,() =>{
 
     
 
 });
 
 //Obtener una tarea por id de un usuario
-router.get('/tasks/:id', authRequired, obtenerTaskID, (req, res) =>{});
+router.get('/tasks/:id', authRequired, obtenerTaskID, () =>{});
 
 //Crear una tarea
 router.post('/tasks', authRequired, crearTask, validateSchema(crearTaskSchema), (req, res, next) =>{
-    res.cookie('XSRF-TOKEN', /* req.csrfToken() */);
+    res.cookie('XSRF-TOKEN' );
     next();
 });
 
 //Actualizar/Modificar una tarea
-router.put('/tasks/:id', authRequired, modificarTask, (req, res, next) =>{
-    res.cookie('XSRF-TOKEN', req.csrfToken());
+router.put('/tasks/:id', authRequired, modificarTask, ( res, next) =>{
+    res.cookie('XSRF-TOKEN');
     next();
 });
 
 //Eliminar una tarea
-router.delete('/tasks/:id', authRequired, eliminarTask, (req, res, next) =>{
+router.delete('/tasks/:id', authRequired, eliminarTask, ( res, next) =>{
     res.cookie('XSRF-TOKEN');
     next(); 
 });
