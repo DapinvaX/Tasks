@@ -164,8 +164,15 @@ export function LoginPage() {
             required
           />
 
+          <button
+            type="submit"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+          >
+            Iniciar Sesión
+          </button>
+
           {/* Opción para probar sin hasheo (solo para depuración) */}
-          {/* <div className="flex items-center">
+          <div className="flex items-center">
             <input
               id="hashPassword"
               type="checkbox"
@@ -176,14 +183,8 @@ export function LoginPage() {
             <label htmlFor="hashPassword" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
               Usar contraseña hasheada (desmarcar solo para pruebas)
             </label>
-          </div> */}
+          </div>
 
-          <button
-            type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
-          >
-            Iniciar Sesión
-          </button>
         </form>
       </div>
     </div>

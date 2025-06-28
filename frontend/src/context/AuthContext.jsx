@@ -16,6 +16,7 @@ export const useAuth = () => {
 
 // Proveedor del contexto
 export function AuthProvider({ children }) {
+  
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
