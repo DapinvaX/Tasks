@@ -34,7 +34,10 @@ app.use(cookieParser());
 // Habilitamos CORS
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? [process.env.FRONTEND_URL] 
+    ? [
+        process.env.FRONTEND_URL,
+        'https://vercel.com/dapinvaxs-projects/tasks-frontend/3e2N1oPJzqrwgmxEjJ54FABtykwf'
+      ] 
     : ['http://localhost:5173', 'http://localhost:3000'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
