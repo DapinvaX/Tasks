@@ -224,7 +224,7 @@ export function RegisterPage() {
           </div>
           
           {/* Opción para probar sin hasheo (movida debajo del botón) */}
-         { <div className="flex items-center justify-center mt-4">
+         {/* { <div className="flex items-center justify-center mt-4">
             <input
               id="hashPassword"
               type="checkbox"
@@ -235,7 +235,7 @@ export function RegisterPage() {
             <label htmlFor="hashPassword" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
               Usar contraseña hasheada (desmarcar solo para pruebas)
             </label>
-          </div>}
+          </div>} */}
         </form>
       </div>
     </div>

@@ -172,7 +172,7 @@ export function LoginPage() {
           </button>
 
           {/* Opción para probar sin hasheo (solo para depuración) */}
-          <div className="flex items-center">
+          {/* <div className="flex items-center">
             <input
               id="hashPassword"
               type="checkbox"
@@ -183,7 +183,7 @@ export function LoginPage() {
             <label htmlFor="hashPassword" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
               Usar contraseña hasheada (desmarcar solo para pruebas)
             </label>
-          </div>
+          </div> */}
 
         </form>
       </div>

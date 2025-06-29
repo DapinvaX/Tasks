@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { getBotResponse } from '../../api/chatbot';
 
@@ -10,18 +10,44 @@ export default function ChatbotButton() {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const chatbotRef = useRef(null);
+  const messagesEndRef = useRef(null);
 
   // Definir estilos según el tema
   const isDark = theme === 'dark';
   // Fondo igual que el de la app: bg-gray-900 (#18181b)
   const chatBg = isDark ? '#18181b' : '#fff';
   const chatText = isDark ? '#e5e7eb' : '#222';
-  const chatHeaderBg = '#2563eb';
+  const chatHeaderBg = isDark ? '#3b82f6' : '#2563eb';
   const chatHeaderText = '#fff';
   const chatShadow = '0 4px 24px rgba(0,0,0,0.15)';
 
   // Estado para hover
   const [hover, setHover] = useState(false);
+
+  // Cerrar chatbot al hacer clic fuera
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (chatbotRef.current && !chatbotRef.current.contains(event.target) && open) {
+        setOpen(false);
+      }
+    };
+
+    if (open) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [open]);
+
+  // Scroll automático hacia abajo cuando se añaden mensajes
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, loading]);
 
   const handleSend = (e) => {
     e.preventDefault();
@@ -38,7 +64,7 @@ export default function ChatbotButton() {
   };
 
   return (
-    <div style={{ position: 'fixed', bottom: 24, left: 24, zIndex: 1000 }}>
+    <div ref={chatbotRef} style={{ position: 'fixed', bottom: 24, left: 24, zIndex: 1000 }}>
       <div
         style={{
           width: 320,
@@ -64,8 +90,8 @@ export default function ChatbotButton() {
           {messages.map((msg, i) => (
             <div key={i} style={{
               alignSelf: msg.from === 'user' ? 'flex-end' : 'flex-start',
-              background: msg.from === 'user' ? (isDark ? '#2563eb' : '#2563eb') : (isDark ? '#23272f' : '#f3f4f6'),
-              color: msg.from === 'user' ? '#fff' : (isDark ? '#e5e7eb' : '#222'),
+              background: msg.from === 'user' ? '#a5b4fc' : (isDark ? '#23272f' : '#f3f4f6'),
+              color: msg.from === 'user' ? '#1e1b4b' : (isDark ? '#e5e7eb' : '#222'),
               borderRadius: 16,
               padding: '8px 14px',
               maxWidth: '80%',
@@ -79,6 +105,7 @@ export default function ChatbotButton() {
               El bot está escribiendo...
             </div>
           )}
+          <div ref={messagesEndRef} />
         </div>
         <form onSubmit={handleSend} style={{ display: 'flex', borderTop: isDark ? '1px solid #23272f' : '1px solid #e5e7eb', background: chatBg }}>
           <input
@@ -111,7 +138,7 @@ export default function ChatbotButton() {
           width: hover ? 63 : 56,
           height: hover ? 63 : 56,
           borderRadius: '50%',
-          background: isDark ? '#2563eb' : '#2563eb',
+          background: isDark ? '#3b82f6' : '#2563eb',
           color: '#fff',
           border: 'none',
           boxShadow: hover
@@ -128,8 +155,8 @@ export default function ChatbotButton() {
         }}
         aria-label="Abrir chatbot"
       >
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="#2563eb" xmlns="http://www.w3.org/2000/svg" style={{ background: 'none', borderRadius: '50%' }}>
-          <circle cx="12" cy="12" r="12" fill="#2563eb" />
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ background: 'none', borderRadius: '50%' }}>
+          <circle cx="12" cy="12" r="12" fill={isDark ? '#3b82f6' : '#2563eb'} />
           <path d="M7 8h10M7 12h6M12 20c-4.418 0-8-2.91-8-6.5C4 7.91 7.582 5 12 5s8 2.91 8 6.5c0 1.61-1.01 3.06-2.67 4.09-.19.12-.33.32-.33.54v1.22c0 .89-1.08 1.34-1.71.71L14.59 17.3c-.19-.19-.44-.3-.71-.3H12z" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </button>
