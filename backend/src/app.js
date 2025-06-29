@@ -1,5 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
+import cnx from './db.js';
+import 'dotenv/config';
 
 // Importamos las rutas de autenticación
 import authRoutes from './routes/auth.routes.js';
@@ -13,6 +15,8 @@ import cookieParser from 'cookie-parser';
 //Importamos CORS
 import cors from 'cors';
 
+// Inicializar conexión a la base de datos
+cnx();
 
 // Inicialización de express
 const app = express();
@@ -28,10 +32,16 @@ app.use(cookieParser());
 
 
 // Habilitamos CORS
-app.use(cors({
-    origin: 'http://localhost:5173',
-    credentials: true
-}));
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? [process.env.FRONTEND_URL] 
+    : ['http://localhost:5173', 'http://localhost:3000'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
+};
+
+app.use(cors(corsOptions));
 
 // Rutas
 //Establecemos la ruta base para las rutas de autenticación "/api"
