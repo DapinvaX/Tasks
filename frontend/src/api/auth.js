@@ -4,12 +4,13 @@ import axios from 'axios';
 const DEV_MODE = false; 
 
 // Definir URLs del backend
-const API_URL = 'http://localhost:4000/api'; // Cambiado de 3000 a 4000
+const LOCAL_API_URL = 'http://localhost:4000/api'; // Cambiado de 3000 a 4000
+const API_URL = 'https://tasks-backend-ozlijt3qj-dapinvaxs-projects.vercel.app/api'; // URL de producción (ejemplo)
 const DEV_API_URL = 'http://localhost:2000/api'; // URL alternativa (ya tiene el puerto correcto)
 
 // Crear una instancia de axios con la URL base
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: WEB_API_URL,
   withCredentials: true,
   timeout: 5000, // Timeout de 5 segundos para detectar problemas rápidamente
 });
