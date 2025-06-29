@@ -97,15 +97,15 @@ export const register = async (req, res) => {
 
                 //En vez de enviar el token al cliente (mala práctica), lo guardamos en una cookie
                 //Cookie que guarda el token de sesión
-                res.cookie('token', token,
-                    //Configuramos la cookie para que se envíe en solicitudes de sitios cruzados y no solo en solicitudes del mismo sitio
-                    //Esto es para que la cookie sea accesible desde cualquier sitio aunque no sea el mismo sitio que la generó
-                    //Configuramos la cookie para que solo se envíe por HTTPS y no por HTTP y aparte que 
-                    //Esto es para que la cookie sea segura y no pueda ser interceptada por un atacante
-                    {
-                        samesite: 'none',
-                        httpOnly: true,
-                        secure: false,
+                res.cookie('token', token, {
+                    //Configuramos la cookie para que se envíe en solicitudes de sitios cruzados
+                    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+                    //Solo accessible desde el servidor (no desde JavaScript del cliente)
+                    httpOnly: true,
+                    //Solo se envía por HTTPS en producción
+                    secure: process.env.NODE_ENV === 'production',
+                    //Tiempo de vida de la cookie (7 días)
+                    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días en milisegundos
                 });
 
                 //Imprimimos el token en la consola
@@ -210,15 +210,15 @@ export const login = async (req, res) => {
 
                 //En vez de enviar el token al cliente (mala práctica), lo guardamos en una cookie
                 //Cookie que guarda el token de sesión
-                res.cookie('token', token,
-                    //Configuramos la cookie para que se envíe en solicitudes de sitios cruzados y no solo en solicitudes del mismo sitio
-                    //Esto es para que la cookie sea accesible desde cualquier sitio aunque no sea el mismo sitio que la generó
-                    //Configuramos la cookie para que solo se envíe por HTTPS y no por HTTP y aparte que 
-                    //Esto es para que la cookie sea segura y no pueda ser interceptada por un atacante
-                    {
-                        samesite: 'none',
-                        secure: false,
-                        httpOnly: true,
+                res.cookie('token', token, {
+                    //Configuramos la cookie para que se envíe en solicitudes de sitios cruzados
+                    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+                    //Solo accessible desde el servidor (no desde JavaScript del cliente)
+                    httpOnly: true,
+                    //Solo se envía por HTTPS en producción
+                    secure: process.env.NODE_ENV === 'production',
+                    //Tiempo de vida de la cookie (7 días)
+                    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días en milisegundos
                 });
 
                 //Imprimimos el token en la consola

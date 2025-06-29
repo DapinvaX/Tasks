@@ -1,9 +1,14 @@
-import axios from 'axios';
+import api from './axios';
 
 // Modo de desarrollo - cambiar a false cuando el backend esté listo
-const DEV_MODE = false; 
+const DEV_MODE = false;
 
-// Definir URLs del backend
+/**
+ * 
+ * @param {*} type 
+ * @returns 
+ * 
+ * // Definir URLs del backend
 const LOCAL_API_URL = 'http://localhost:4000/api'; // Cambiado de 3000 a 4000
 const API_URL = 'https://tasks-backend-j0qh.onrender.com/api'; // URL de producción
 const DEV_API_URL = 'http://localhost:2000/api'; // URL alternativa
@@ -17,6 +22,7 @@ const api = axios.create({
   withCredentials: true,
   timeout: 10000, // Aumentar timeout para Vercel
 });
+ */
 
 // Función para simular respuestas en modo desarrollo
 const mockResponse = (type) => {
@@ -57,7 +63,7 @@ const mockResponse = (type) => {
 export const loginReq = async (userData) => {
   try {
     // Log para depuración
-    console.log('Intentando login en:', `${API_URL}/login`);
+    console.log('Intentando login...');
     console.log('Con datos:', JSON.stringify(userData, null, 2));
     
     // En modo desarrollo, devuelve una respuesta simulada
@@ -83,7 +89,7 @@ export const loginReq = async (userData) => {
     if (error.code === 'ERR_NETWORK') {
       console.error(`
         ⚠️ ERROR DE CONEXIÓN ⚠️
-        No se pudo conectar al servidor en ${API_URL}.
+        No se pudo conectar al servidor.
         Verifica que:
         1. El servidor backend esté ejecutándose
         2. La URL y puerto sean correctos
