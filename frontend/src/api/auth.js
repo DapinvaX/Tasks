@@ -13,7 +13,7 @@ const API_URL = import.meta.env.PROD ? PROD_API_URL : LOCAL_API_URL;
 
 // Crear una instancia de axios con la URL base
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: PROD_API_URL,
   withCredentials: true,
   timeout: 10000, // Aumentar timeout para Vercel
 });
