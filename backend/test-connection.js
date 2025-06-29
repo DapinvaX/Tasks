@@ -3,7 +3,7 @@
 // Script para probar la conectividad con el backend desde terminal
 // Ejecutar con: node test-connection.js
 
-const https = require('https');
+import https from 'https';
 
 const BACKEND_URL = 'https://tasks-backend-j0qh.onrender.com';
 const FRONTEND_URL = 'https://tasks-frontend-blue.vercel.app';

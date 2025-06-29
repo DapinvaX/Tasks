@@ -86,10 +86,13 @@ app.options('*', (req, res) => {
 // Rutas
 // Endpoint de prueba para verificar conectividad
 app.get('/api/test', (req, res) => {
+  console.log('🧪 Endpoint de prueba accedido');
   res.json({
     message: 'Backend funcionando correctamente',
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
+    environment: process.env.NODE_ENV || 'development',
+    cors_origin: req.headers.origin,
+    deployment_version: '2.0'
   });
 });
 
