@@ -5,14 +5,17 @@ const DEV_MODE = false;
 
 // Definir URLs del backend
 const LOCAL_API_URL = 'http://localhost:4000/api'; // Cambiado de 3000 a 4000
-const API_URL = 'https://tasks-backend-ozlijt3qj-dapinvaxs-projects.vercel.app/api'; // URL de producción (ejemplo)
-const DEV_API_URL = 'http://localhost:2000/api'; // URL alternativa (ya tiene el puerto correcto)
+const PROD_API_URL = 'https://tasks-backend-j0qh.onrender.com/api'; // URL de producción
+const DEV_API_URL = 'http://localhost:2000/api'; // URL alternativa
+
+// Determinar qué URL usar
+const API_URL = import.meta.env.PROD ? PROD_API_URL : LOCAL_API_URL;
 
 // Crear una instancia de axios con la URL base
 const api = axios.create({
-  baseURL: WEB_API_URL,
+  baseURL: API_URL,
   withCredentials: true,
-  timeout: 5000, // Timeout de 5 segundos para detectar problemas rápidamente
+  timeout: 10000, // Aumentar timeout para Vercel
 });
 
 // Función para simular respuestas en modo desarrollo
