@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { logoutReq } from '../api/auth';
 import { Moon, Sun, Menu, X, LogOut, UserCircle, Home, Plus, CheckSquare } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { toast } from 'react-toastify';
 
@@ -10,27 +10,9 @@ export function Navbar() {
   const [showMenu, setShowMenu] = useState(false);
   const { isAuthenticated, user, setUser, setIsAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const navbarRef = useRef(null);
   
   // Uso seguro del contexto de tema
   const { theme, toggleTheme } = useTheme();
-
-  // Cerrar menú al hacer clic fuera
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (navbarRef.current && !navbarRef.current.contains(event.target) && showMenu) {
-        setShowMenu(false);
-      }
-    };
-
-    if (showMenu) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [showMenu]);
 
   const handleLogout = async () => {
     try {
@@ -57,7 +39,7 @@ export function Navbar() {
   console.log('Usuario en Navbar:', user); // Agregado para depuración
 
   return (
-    <nav ref={navbarRef} className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50 transition-colors duration-200">
+    <nav className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Branding combinado: icono y título en un solo enlace */}
@@ -90,10 +72,10 @@ export function Navbar() {
               </>
             ) : (
               <>
-                <Link to="/login" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:scale-105 hover:drop-shadow-[0_0_10px_rgba(59,130,246,0.5)] dark:hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.6)]">
+                <Link to="/login" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:scale-110 hover:drop-shadow-[0_0_10px_rgba(59,130,246,0.5)] dark:hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.6)]">
                   Iniciar Sesión
                 </Link>
-                <Link to="/register" className="bg-blue-600 dark:bg-gray-500 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700 dark:hover:bg-gray-600 transition-all duration-200 hover:scale-105 hover:drop-shadow-[0_0_12px_rgba(29,78,216,0.6)] dark:hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.6)]">
+                <Link to="/register" className="bg-blue-600 dark:bg-gray-500 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700 dark:hover:bg-gray-600 transition-all duration-200 hover:scale-110 hover:drop-shadow-[0_0_12px_rgba(29,78,216,0.6)] dark:hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.6)]">
                   Registro
                 </Link>
               </>
@@ -144,13 +126,10 @@ export function Navbar() {
         </div>
       </div>
       
-      {/* Menú móvil superpuesto */}
-      <div className={`md:hidden absolute top-full left-0 right-0 bg-white dark:bg-gray-800 shadow-lg z-50 transition-all duration-300 ease-in-out ${
-        showMenu 
-          ? 'opacity-100 transform translate-y-0' 
-          : 'opacity-0 transform -translate-y-2 pointer-events-none'
-      }`}>
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      {/* Menú móvil */}
+      {showMenu && (
+        <div className="md:hidden bg-white dark:bg-gray-800 transition-colors duration-200">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {isAuthenticated ? (
               <>
                 <Link to="/tasks" className="text-blue-600 dark:text-white block px-3 py-2 rounded-md text-base font-medium items-center hover:scale-105 group">
@@ -167,16 +146,17 @@ export function Navbar() {
               </>
             ) : (
               <>
-                <Link to="/login" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-all duration-200 hover:scale-[1.02] hover:drop-shadow-[0_0_10px_rgba(59,130,246,0.5)] dark:hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.6)]">
+                <Link to="/login" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-all duration-200 hover:scale-105 hover:drop-shadow-[0_0_10px_rgba(59,130,246,0.5)] dark:hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.6)]">
                   Iniciar Sesión
                 </Link>
-                <Link to="/register" className="bg-blue-600 dark:bg-gray-500 text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-700 dark:hover:bg-gray-600 transition-all duration-200 hover:scale-[1.02] hover:drop-shadow-[0_0_12px_rgba(29,78,216,0.6)] dark:hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.6)]">
+                <Link to="/register" className="bg-blue-600 dark:bg-gray-500 text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-700 dark:hover:bg-gray-600 transition-all duration-200 hover:scale-105 hover:drop-shadow-[0_0_12px_rgba(29,78,216,0.6)] dark:hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.6)]">
                   Registro
                 </Link>
               </>
             )}
           </div>
         </div>
+      )}
     </nav>
   );
 }

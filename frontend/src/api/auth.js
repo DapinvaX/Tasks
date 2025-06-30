@@ -1,28 +1,18 @@
-import api from './axios';
+import axios from 'axios';
 
 // Modo de desarrollo - cambiar a false cuando el backend esté listo
-const DEV_MODE = false;
+const DEV_MODE = false; 
 
-/**
- * 
- * @param {*} type 
- * @returns 
- * 
- * // Definir URLs del backend
-const LOCAL_API_URL = 'http://localhost:4000/api'; // Cambiado de 3000 a 4000
-const API_URL = 'https://tasks-backend-j0qh.onrender.com/api'; // URL de producción
-const DEV_API_URL = 'http://localhost:2000/api'; // URL alternativa
-
-// Determinar qué URL usar
-//const API_URL = import.meta.env.PROD ? PROD_API_URL : LOCAL_API_URL;
+// Definir URLs del backend
+const API_URL = 'http://localhost:4000/api'; // Cambiado de 3000 a 4000
+const DEV_API_URL = 'http://localhost:2000/api'; // URL alternativa (ya tiene el puerto correcto)
 
 // Crear una instancia de axios con la URL base
 const api = axios.create({
   baseURL: API_URL,
   withCredentials: true,
-  timeout: 10000, // Aumentar timeout para Vercel
+  timeout: 5000, // Timeout de 5 segundos para detectar problemas rápidamente
 });
- */
 
 // Función para simular respuestas en modo desarrollo
 const mockResponse = (type) => {
@@ -63,7 +53,7 @@ const mockResponse = (type) => {
 export const loginReq = async (userData) => {
   try {
     // Log para depuración
-    console.log('Intentando login...');
+    console.log('Intentando login en:', `${API_URL}/login`);
     console.log('Con datos:', JSON.stringify(userData, null, 2));
     
     // En modo desarrollo, devuelve una respuesta simulada
@@ -89,7 +79,7 @@ export const loginReq = async (userData) => {
     if (error.code === 'ERR_NETWORK') {
       console.error(`
         ⚠️ ERROR DE CONEXIÓN ⚠️
-        No se pudo conectar al servidor.
+        No se pudo conectar al servidor en ${API_URL}.
         Verifica que:
         1. El servidor backend esté ejecutándose
         2. La URL y puerto sean correctos
@@ -173,7 +163,7 @@ export const verifyTokenReq = async () => {
 };
 
 // Agregar función para verificar existencia de usuario
-/* export const checkUserExists = async (data) => {
+export const checkUserExists = async (data) => {
   try {
     if (DEV_MODE) {
       if ((data.user && data.user === 'usuario_prueba') || (data.email && data.email === 'usuario@ejemplo.com')) {
@@ -187,4 +177,4 @@ export const verifyTokenReq = async () => {
     console.error('Error en checkUserExists:', error);
     throw error;
   }
-}; */
+}; 

@@ -97,15 +97,15 @@ export const register = async (req, res) => {
 
                 //En vez de enviar el token al cliente (mala práctica), lo guardamos en una cookie
                 //Cookie que guarda el token de sesión
-                res.cookie('token', token, {
-                    //Configuramos la cookie para que se envíe en solicitudes de sitios cruzados
-                    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-                    //Solo accessible desde el servidor (no desde JavaScript del cliente)
-                    httpOnly: true,
-                    //Solo se envía por HTTPS en producción
-                    secure: process.env.NODE_ENV === 'production',
-                    //Tiempo de vida de la cookie (7 días)
-                    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días en milisegundos
+                res.cookie('token', token,
+                    //Configuramos la cookie para que se envíe en solicitudes de sitios cruzados y no solo en solicitudes del mismo sitio
+                    //Esto es para que la cookie sea accesible desde cualquier sitio aunque no sea el mismo sitio que la generó
+                    //Configuramos la cookie para que solo se envíe por HTTPS y no por HTTP y aparte que 
+                    //Esto es para que la cookie sea segura y no pueda ser interceptada por un atacante
+                    {
+                        samesite: 'none',
+                        httpOnly: true,
+                        secure: false,
                 });
 
                 //Imprimimos el token en la consola
@@ -179,27 +179,11 @@ export const login = async (req, res) => {
         //El método findOne recibe un objeto con el usuario o email de la persona que ha hecho el login 
         const userFound = await User.findOne({ $or: [{ user: user }, { email: user }] });
 
-        //Comparar la contraseña introducida con la contraseña encriptada de la base de datos
-        //const coincidencia = await bcrypt.compare(password, userFound.password);
-        
-        //Comparamos las contraseña que me llega desde el frontend con la que está en la base de datos pero será el frontend quien se encargue de hashear la contraseña
-        const coincidencia = password === userFound.password;
-
-
-            //Si el usuario no existe, mostramos un mensaje diciendo que no existe
-            if (!userFound) {
-
-                // Si el usuario no existe, mostrar un mensaje diciendo que no existe
-                console.log('El usuario no existe');
-                return res.status(501).json({message: 'El usuario no existe'});
-                
-            }
-            else if (!coincidencia) {
-                
-                console.log('Contraseña incorrecta! Intentelo de nuevo.');
-                return res.status(505).json({message: 'Contraseña incorrecta! Intentelo de nuevo.'});
-            
-            }
+        //Si el usuario no existe o la contraseña no coincide, mostrar el mismo mensaje y status 401
+        if (!userFound || password !== userFound.password) {
+            console.log('Usuario o contraseña incorrectos');
+            return res.status(401).json({ message: 'Usuario o contraseña incorrectos' });
+        }
 
             else{
                     
@@ -210,15 +194,15 @@ export const login = async (req, res) => {
 
                 //En vez de enviar el token al cliente (mala práctica), lo guardamos en una cookie
                 //Cookie que guarda el token de sesión
-                res.cookie('token', token, {
-                    //Configuramos la cookie para que se envíe en solicitudes de sitios cruzados
-                    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-                    //Solo accessible desde el servidor (no desde JavaScript del cliente)
-                    httpOnly: true,
-                    //Solo se envía por HTTPS en producción
-                    secure: process.env.NODE_ENV === 'production',
-                    //Tiempo de vida de la cookie (7 días)
-                    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días en milisegundos
+                res.cookie('token', token,
+                    //Configuramos la cookie para que se envíe en solicitudes de sitios cruzados y no solo en solicitudes del mismo sitio
+                    //Esto es para que la cookie sea accesible desde cualquier sitio aunque no sea el mismo sitio que la generó
+                    //Configuramos la cookie para que solo se envíe por HTTPS y no por HTTP y aparte que 
+                    //Esto es para que la cookie sea segura y no pueda ser interceptada por un atacante
+                    {
+                        samesite: 'none',
+                        secure: false,
+                        httpOnly: true,
                 });
 
                 //Imprimimos el token en la consola
@@ -372,7 +356,7 @@ export const profile = async (req, res) => {
 export const logout = async (req, res) => {
 
     //JWT
-    //Eliminamos la cookie token
+    //Eliminamos la cookie con el token de sesión del local storage del navegador
     //La cookie token se elimina asignando un valor vacío y un tiempo de vida de 1 milisegundo
     res.cookie('token', '', {
         maxAge: 1
@@ -382,3 +366,30 @@ export const logout = async (req, res) => {
     console.log('Usuario deslogueado con éxito!');
 
 }
+
+// Endpoint para comprobar existencia de usuario o email
+export const checkUserExists = async (req, res) => {
+    try {
+        const { user, email } = req.body;
+        
+        let query = {};
+
+        // Validar que al menos uno de los campos esté presente
+        if (user) query.user = user.toLowerCase();
+        if (email) query.email = email.toLowerCase();
+        
+        // Validar que al menos uno de los campos esté presente
+        if (!query.user && !query.email) {
+            return res.status(400).json({ exists: false, message: 'Faltan parámetros' });
+        }
+
+        // Buscar en la base de datos si existe un usuario con el user o email proporcionado
+        // Usamos findOne para buscar un usuario que coincida con el user o email
+        const existingUser = await User.findOne(query);
+        // Devolver respuesta indicando si el usuario existe o no
+        res.json({ exists: !!existingUser });
+    } catch (error) {
+        // Si ocurre un error, lo registramos y respondemos con un error genérico
+        res.status(500).json({ exists: false, message: 'Error en el servidor' });
+    }
+};

@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { registerReq } from '../api/auth';
-//import { checkUserExists } from '../api/auth';
+import { checkUserExists } from '../api/auth';
 import { useAuth } from '../context/AuthContext';
 import { UserPlus } from 'lucide-react';
 import { hashPassword } from '../services/hashService';
@@ -17,6 +17,10 @@ export function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [useHashedPassword, setUseHashedPassword] = useState(true); // Nuevo estado para hasheo
+  const [userExists, setUserExists] = useState(false);
+  const [emailExists, setEmailExists] = useState(false);
+  const debounceUser = useRef();
+  const debounceEmail = useRef();
   const { setUser, setIsAuthenticated } = useAuth(); // Obtenemos todo el objeto de contexto para mayor seguridad
   const navigate = useNavigate();
 
@@ -132,6 +136,70 @@ export function RegisterPage() {
 
   };
 
+  // Comprobación en tiempo real de usuario existente
+  const handleNameChange = (e) => {
+    const value = e.target.value;
+    setName(value);
+    setError(null);
+    clearTimeout(debounceUser.current);
+    debounceUser.current = setTimeout(async () => {
+      if (value) {
+        const exists = await checkUserExists({ user: value });
+        setUserExists(exists);
+        if (exists) {
+          setError('El usuario ya existe');
+        } else if (emailExists) {
+          setError('El correo ya está registrado');
+        } else if (password && confirmPassword && password !== confirmPassword) {
+          setError('Las contraseñas no coinciden');
+        } else {
+          setError(null);
+        }
+      } else {
+        setUserExists(false);
+        if (emailExists) {
+          setError('El correo ya está registrado');
+        } else if (password && confirmPassword && password !== confirmPassword) {
+          setError('Las contraseñas no coinciden');
+        } else {
+          setError(null);
+        }
+      }
+    }, 400);
+  };
+
+  // Comprobación en tiempo real de email existente
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+    setError(null);
+    clearTimeout(debounceEmail.current);
+    debounceEmail.current = setTimeout(async () => {
+      if (value) {
+        const exists = await checkUserExists({ email: value });
+        setEmailExists(exists);
+        if (exists) {
+          setError('El correo ya está registrado');
+        } else if (userExists) {
+          setError('El usuario ya existe');
+        } else if (password && confirmPassword && password !== confirmPassword) {
+          setError('Las contraseñas no coinciden');
+        } else {
+          setError(null);
+        }
+      } else {
+        setEmailExists(false);
+        if (userExists) {
+          setError('El usuario ya existe');
+        } else if (password && confirmPassword && password !== confirmPassword) {
+          setError('Las contraseñas no coinciden');
+        } else {
+          setError(null);
+        }
+      }
+    }, 400);
+  };
+
   return (
     <div className="flex items-center justify-center pt-16 md:pt-20 lg:pt-24 px-4 min-h-[calc(100vh-64px)] bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
       <div className="max-w-xl w-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 my-8">
@@ -160,7 +228,7 @@ export function RegisterPage() {
                   label="Usuario"
                   placeholder="Introduce tu nombre de usuario"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={handleNameChange}
                   required
                 />
               </div>
@@ -170,7 +238,7 @@ export function RegisterPage() {
                   label="Correo electrónico"
                   placeholder="Introduce tu correo"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleEmailChange}
                   required
                 />
               </div>
@@ -201,6 +269,10 @@ export function RegisterPage() {
                     setConfirmPassword(value);
                     if (password && value !== password) {
                       setError('Las contraseñas no coinciden');
+                    } else if (userExists) {
+                      setError('El usuario ya existe');
+                    } else if (emailExists) {
+                      setError('El correo ya está registrado');
                     } else {
                       setError(null);
                     }
@@ -224,7 +296,7 @@ export function RegisterPage() {
           </div>
           
           {/* Opción para probar sin hasheo (movida debajo del botón) */}
-         {/* { <div className="flex items-center justify-center mt-4">
+         {/*  <div className="flex items-center justify-center mt-4">
             <input
               id="hashPassword"
               type="checkbox"
@@ -235,7 +307,7 @@ export function RegisterPage() {
             <label htmlFor="hashPassword" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
               Usar contraseña hasheada (desmarcar solo para pruebas)
             </label>
-          </div>} */}
+          </div> */}
         </form>
       </div>
     </div>

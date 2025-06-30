@@ -17,39 +17,34 @@ import user from '../models/user.model.js';
 //Exportamos el middleware para poder utilizarlo en otros archivos (authRoutes).
 export const authRequired = (req, res, next) => {
 
-    console.log("🔐 Validando Token ...");
-    console.log("📄 Headers recibidos:", req.headers);
-    console.log("🍪 Cookies recibidas:", req.cookies);
+    console.log("Validando Token ...");
     
     //Obtenemos el token de las cookies
     const { token } = req.cookies;
 
     //Si no hay token, se enviará un mensaje de error al cliente
     if(!token){
-        console.log("❌ No hay token. Acceso denegado.");
-        console.log("🔍 Cookies disponibles:", Object.keys(req.cookies));
+        
+        console.log("No hay token. Acceso denegado.");
         return res.status(401).json({message: "No hay token. Acceso denegado."});
         
     }else{
-        console.log("✅ Token encontrado:", token.substring(0, 20) + "...");
-        
         jwt.verify(token, TOKEN_SECRET, (err, decoded) => {
 
             //y se enviará un mensaje de error al cliente
             if(err){
-                console.log("❌ Token inválido. Acceso denegado.");
-                console.log("📝 Error de verificación:", err.message);
+                console.log("Token inválido. Acceso denegado.");
                 return res.status(401).json({message: "Token inválido. Acceso denegado."});
             }else{
                 //Si el token es válido, se ejecutará la siguiente función
-                console.log("✅ Token válido. Acceso permitido.");
+                console.log("Token válido. Acceso permitido.");
 
                 //Guardamos el usuario decodificado en una variable user
                 req.user = decoded;
-                console.log("👤 Usuario decodificado:", req.user);
+                console.log("Usuario decodificado:", req.user);
                 
                 req.username = user;
-                console.log("🏷️ Usuario: ", req.username);
+                console.log("Usuario: ", req.username);
 
 
                 //Se ejecuta la siguiente función

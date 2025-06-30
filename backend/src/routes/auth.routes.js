@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {login, logout, profile, register, verifyToken} from '../controllers/auth.controller.js';
+import { checkUserExists } from '../controllers/auth.controller.js';
 
 //Importamos el middleware authRequired para verificar si el token es válido de la ruta de autenticación
 import { authRequired } from '../middlewares/validateToken.js';
@@ -39,6 +40,9 @@ router.get('/profile', authRequired, profile);
 
 // Ruta para verificar el token
 router.get('/verify', verifyToken);
+  
+  // Ruta para comprobar si el usuario existe
+router.post('/checkUserExists', checkUserExists);
   
   // Exportamos el router para poder utilizarlo en otros archivos
   export default router;

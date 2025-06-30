@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { loginReq } from '../api/auth';
 import { useAuth } from '../context/AuthContext';
-import { LogIn, Bug, Wifi } from 'lucide-react';
+import { LogIn } from 'lucide-react';
 import { hashPassword } from '../services/hashService';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { TextInput, PasswordInput } from '../components/UI/TextInput';
 import { useTheme } from '../context/ThemeContext'; // Nueva importación
-import { runAllTests, showEnvironmentInfo } from '../utils/debug'; // Herramientas de debug
 
 // Importamos el CSS de toastify con los estilos personalizados
 import '../styles/toast.css';
@@ -18,23 +17,9 @@ export function LoginPage() {
   const [error, setError] = useState(null);
   const [useHashedPassword, setUseHashedPassword] = useState(true); // Nueva opción para probar sin hasheo
   const [showPassword, setShowPassword] = useState(false); // Nuevo estado para controlar la visibilidad de la contraseña
-  const [showDebugTools, setShowDebugTools] = useState(false); // Control para mostrar herramientas de debug
   const { setUser, setIsAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { theme } = useTheme(); // Usar el tema actual
-
-  // Función para ejecutar tests de conectividad
-  const handleDebugTests = async () => {
-    console.clear();
-    showEnvironmentInfo();
-    await runAllTests();
-    
-    toast.info('Revisa la consola para ver los resultados de las pruebas', {
-      position: "top-center",
-      autoClose: 3000,
-      className: theme === 'dark' ? 'custom-toast-dark' : 'custom-toast-light',
-    });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -106,10 +91,34 @@ export function LoginPage() {
         errorMessage = err.userMessage;
       } else if (err.response) {
         // El servidor respondió con un código de estado fuera del rango 2xx
-        if (err.response.status === 404) {
-          errorMessage = 'La URL de login no existe. Verifica la configuración del backend.';
+        if (err.response.status === 404 && err.response.data?.message === 'Usuario no encontrado o no existe') {
+          errorMessage = 'Usuario o contraseña incorrectos';
+          toast.error('Usuario o contraseña incorrectos', {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            className: theme === 'dark' ? 'custom-toast-dark' : 'custom-toast-light',
+            progressClassName: 'custom-progress-neutral'
+          });
+          return;
         } else if (err.response.status === 401) {
           errorMessage = 'Usuario o contraseña incorrectos';
+          toast.error('Usuario o contraseña incorrectos', {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            className: theme === 'dark' ? 'custom-toast-dark' : 'custom-toast-light',
+            progressClassName: 'custom-progress-neutral'
+          });
+          return;
         } else {
           errorMessage = `Error ${err.response.status}: ${err.response.data?.message || JSON.stringify(err.response.data) || 'Error del servidor'}`;
         }
@@ -179,62 +188,26 @@ export function LoginPage() {
             required
           />
 
+          {/* Opción para probar sin hasheo (solo para depuración) */}
+          {/* <div className="flex items-center">
+            <input
+              id="hashPassword"
+              type="checkbox"
+              checked={useHashedPassword}
+              onChange={() => setUseHashedPassword(!useHashedPassword)}
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            />
+            <label htmlFor="hashPassword" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+              Usar contraseña hasheada (desmarcar solo para pruebas)
+            </label>
+          </div> */}
+
           <button
             type="submit"
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
           >
-            <LogIn className="w-4 h-4 mr-2" />
             Iniciar Sesión
           </button>
-
-          {/* Botón para mostrar/ocultar herramientas de debug */}
-          <button
-            type="button"
-            onClick={() => setShowDebugTools(!showDebugTools)}
-            className="w-full flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
-          >
-            <Bug className="w-4 h-4 mr-2" />
-            {showDebugTools ? 'Ocultar' : 'Mostrar'} Herramientas de Debug
-          </button>
-
-          {/* Panel de herramientas de debug */}
-          {showDebugTools && (
-            <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700">
-              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                🔧 Herramientas de Depuración
-              </h3>
-              
-              <button
-                type="button"
-                onClick={handleDebugTests}
-                className="w-full flex justify-center py-2 px-3 border border-orange-300 dark:border-orange-600 rounded-md shadow-sm text-sm font-medium text-orange-700 dark:text-orange-300 bg-orange-50 dark:bg-orange-900/20 hover:bg-orange-100 dark:hover:bg-orange-900/40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors duration-200 mb-2"
-              >
-                <Wifi className="w-4 h-4 mr-2" />
-                Probar Conectividad con Backend
-              </button>
-              
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                💡 Abre la consola del navegador (F12) para ver los resultados detallados
-              </p>
-            </div>
-          )}
-
-          {/* Opción para probar sin hasheo (solo para depuración) */}
-          {showDebugTools && (
-            <div className="flex items-center mt-3">
-              <input
-                id="hashPassword"
-                type="checkbox"
-                checked={useHashedPassword}
-                onChange={() => setUseHashedPassword(!useHashedPassword)}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <label htmlFor="hashPassword" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                Usar contraseña hasheada (desmarcar solo para pruebas)
-              </label>
-            </div>
-          )}
-
         </form>
       </div>
     </div>

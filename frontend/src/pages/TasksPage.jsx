@@ -15,9 +15,6 @@ export function TasksPage() {
 
   const loadTasks = async () => {
     try {
-      // Delay de 5 segundos antes de cargar las tareas
-      await new Promise(resolve => setTimeout(resolve, 5000));
-      
       const response = await getTasksReq();
       const data = response.data;
       if (Array.isArray(data)) {

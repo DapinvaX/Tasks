@@ -2,6 +2,12 @@
 //Zod es una librería de validación de esquemas que nos permite validar los datos que se envían desde el cliente
 import {z} from 'zod';
 
+// Regex para usuario y contraseña (ahora permite @ en usuario)
+const SAFE_USER_REGEX = /^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ _@-]*$/;
+const SAFE_TEXT_REGEX = /^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ _-]*$/;
+// Regex para email: permite letras, números, guion bajo, guion y arroba
+const SAFE_EMAIL_REGEX = /^[a-zA-Z0-9._@-]+$/;
+
 //Creamos el esquema de validación para el registro de usuarios
 export const registerSchema = z.object({
 
@@ -14,12 +20,9 @@ export const registerSchema = z.object({
         }
 
     ).min(3).max(50)
-    /* .regex(/^[^-<>$]$/,
-        
-        { 
-        
-        required_error: "Los caracteres especiales no están permitidos en el nombre."
-    }) */,
+    .regex(SAFE_USER_REGEX, {
+        message: "El usuario solo puede contener letras, números, espacios, guion bajo (_), guion (-) y arroba (@)."
+    }),
 
 
     //El email debe ser un string y estar en formato email
@@ -37,13 +40,11 @@ export const registerSchema = z.object({
         message: "Por favor, introduzca un email válido."
     }
 )
-    /* .regex(/^[<>$-]$/,
-        //console.error("Los caracteres especiales no están permitidos en el email."),
-        {
-
-        message: "Los caracteres especiales no están permitidos en el email."
-
-    }) */,
+    .min(5)
+    .max(100)
+    .regex(SAFE_EMAIL_REGEX, {
+        message: "El email solo puede contener letras, números, guion bajo (_), guion (-), punto (.) y arroba (@)."
+    }),
 
     //La contraseña debe ser un string y tener una longitud mínima de 6 y máxima de 20 y contener al menos un número, una minúscula y una mayúscula
     //Explicación de la expresión regular:
@@ -60,14 +61,11 @@ export const registerSchema = z.object({
         {
         required_error : "Contraseña: Este campo es obligatorio. Por favor, introduzca una contraseña válida."
     })
-    /* .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}[^-<>$]*$/,
-        
-        
-        {
-        
-        required_error : "La contraseña debe tener al menos 6 caracteres, una mayúscula, una minúscula y un número. Los caracteres especiales no están permitidos."
-    
-    }) */,
+    .min(6)
+    .max(20)
+    .regex(SAFE_TEXT_REGEX, {
+        message: "La contraseña no puede contener caracteres especiales."
+    }),
 });
 
 //Creamos el esquema de validación para el login de usuarios
@@ -81,7 +79,10 @@ export const loginSchema = z.object({
             required_error: "Usuario: Este campo es obligatorio."
         }
 
-    ).min(3).max(50),
+    ).min(3)
+    .regex(SAFE_USER_REGEX, {
+        message: "El usuario solo puede contener letras, números, espacios, guion bajo (_), guion (-) y arroba (@)."
+    }),
 
 
     //La contraseña debe ser un string y tener una longitud mínima de 6 y máxima de 20 y contener al menos un número, 
@@ -94,9 +95,9 @@ export const loginSchema = z.object({
     }
 
 )
-    /* .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}[^-<>$]*$/,{
-        
-        required_error : "La contraseña debe tener al menos 6 caracteres, una mayúscula, una minúscula y un número.Los caracteres especiales no están permitidos."
-    
-    }) */,
+    .min(6)
+    .max(20)
+    .regex(SAFE_TEXT_REGEX, {
+        message: "La contraseña no puede contener caracteres especiales."
+    }),
 });

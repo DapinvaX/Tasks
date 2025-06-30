@@ -16,7 +16,6 @@ import { ToastContainer } from 'react-toastify';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import PageTransition from './components/PageTransition';
 import 'react-toastify/dist/ReactToastify.css';
-import ChatbotButton from './components/UI/ChatbotButton';
 
 function App() {
   return (
@@ -68,7 +67,6 @@ function App() {
                 </Routes>
               </main>
               <ToastContainer />
-              <ChatbotButton />
             </div>
           </BrowserRouter>
         </ThemeProvider>

@@ -1,5 +1,8 @@
 import React, { useRef, useState } from 'react';
 
+// Regex para evitar caracteres especiales peligrosos (XSS)
+const SAFE_TEXT_REGEX = /^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ _-]*$/;
+
 export function TextInput({
   id,
   label,
@@ -12,7 +15,19 @@ export function TextInput({
   ...props
 }) {
   const [focused, setFocused] = useState(false);
+  const [inputError, setInputError] = useState('');
   const inputPlaceholder = placeholder || (label ? label : '');
+
+  // Validación anti-XSS en el input
+  const handleChange = (e) => {
+    const val = e.target.value;
+    if (!SAFE_TEXT_REGEX.test(val)) {
+      setInputError('No se permiten caracteres especiales.');
+    } else {
+      setInputError('');
+    }
+    onChange && onChange(e);
+  };
 
   return (
     <div className="mb-4">
@@ -28,16 +43,17 @@ export function TextInput({
         id={id}
         type={type}
         value={value}
-        onChange={onChange}
+        onChange={handleChange}
         placeholder={inputPlaceholder}
         required={required}
+        maxLength={20}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         className="w-full bg-transparent border-0 border-b-2 border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none focus:ring-0 transition-all duration-300 ease-in-out pb-1 px-1 text-gray-800 dark:text-white text-sm focus:text-base focus:pb-2 focus:border-b-3 focus:drop-shadow-sm"
         {...props}
       />
-      {error && (
-        <p className="mt-1 text-sm text-red-600 dark:text-red-400">{error}</p>
+      {(error || inputError) && (
+        <p className="mt-1 text-sm text-red-600 dark:text-red-400">{error || inputError}</p>
       )}
     </div>
   );

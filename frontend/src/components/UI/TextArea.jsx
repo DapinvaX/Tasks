@@ -1,8 +1,23 @@
 import React, { useRef, useState } from 'react';
 
+// Regex para evitar caracteres especiales peligrosos (XSS)
+const SAFE_TEXT_REGEX = /^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ _-]*$/;
+
 export function TextArea({ id, label, value, onChange, placeholder, rows = 4, required = false, ...props }) {
   const labelRef = useRef(null);
   const [focused, setFocused] = useState(false);
+  const [inputError, setInputError] = useState('');
+
+  // Validación anti-XSS en el textarea
+  const handleChange = (e) => {
+    const val = e.target.value;
+    if (!SAFE_TEXT_REGEX.test(val)) {
+      setInputError('No se permiten caracteres especiales.');
+    } else {
+      setInputError('');
+      onChange && onChange(e);
+    }
+  };
 
   return (
     <div className="relative">
@@ -18,7 +33,7 @@ export function TextArea({ id, label, value, onChange, placeholder, rows = 4, re
       <textarea
         id={id}
         value={value}
-        onChange={onChange}
+        onChange={handleChange}
         placeholder={placeholder}
         rows={rows}
         required={required}
@@ -51,6 +66,9 @@ export function TextArea({ id, label, value, onChange, placeholder, rows = 4, re
         style={{ transition: 'all 0.25s cubic-bezier(0.4,0,0.2,1)' }}
         {...props}
       />
+      {inputError && (
+        <p className="mt-1 text-sm text-red-600 dark:text-red-400">{inputError}</p>
+      )}
     </div>
   );
 }

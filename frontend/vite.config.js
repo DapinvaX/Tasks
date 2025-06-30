@@ -6,4 +6,7 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
+  server: {
+    allowedHosts: ['devserver-preview--tasks-frontend-dapinvax.netlify.app'],
+  },
 });

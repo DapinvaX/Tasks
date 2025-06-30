@@ -1,0 +1,7 @@
+Variable eliminada en db.js (password de la bd)
+
+En db.js
+//const password = "DapinvaX77MongoDB";
+
+En jwt
+//const TOKEN_SECRET = "MySecretKeyDPX";

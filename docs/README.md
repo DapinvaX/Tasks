@@ -213,6 +213,7 @@ await fetchUserTasks();
 - **JWT:** Tokens httpOnly, verificación en cada request.
 - **Validación:** Esquemas Zod en backend, validación en frontend.
 - **Hash de Contraseña:** SHA-256 en frontend, preparado para bcrypt en backend.
+- **Anti-XSS:** Todos los campos de texto en formularios (frontend y backend) validan mediante una expresión regular que impide la introducción de caracteres especiales peligrosos (`<`, `>`, `"`, `'`, `/`, `;`, etc), evitando la ejecución de código malicioso.
 
 ### 6.2 Buenas Prácticas
 - Sanitización de entradas
@@ -256,3 +257,5 @@ await fetchUserTasks();
 - El código está listo para ser convertido a formato DOC o PDF para entrega o documentación formal.
 
 ---
+
+### FIN!

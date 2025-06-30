@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 // Crear el contexto de tema
 const ThemeContext = createContext(null);
 
-// Creamos un Hook personalizado para usar el tema
+// Hook personalizado para usar el tema
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (context === null || context === undefined) {
@@ -14,17 +14,11 @@ export const useTheme = () => {
 
 // Proveedor del contexto de tema
 export function ThemeProvider({ children }) {
-
   // Obtener tema inicial de localStorage o usar 'light' como predeterminado
   const getInitialTheme = () => {
     try {
-      // Verificar si estamos en el navegador y localStorage está disponible
       if (typeof window !== 'undefined' && window.localStorage) {
-        
-        // Si es así intentar obtener el tema guardado en localStorage
         const storedTheme = window.localStorage.getItem('theme');
-        
-        // Si hay un tema guardado, usarlo
         if (storedTheme === 'dark' || storedTheme === 'light') {
           return storedTheme;
         }
@@ -42,10 +36,7 @@ export function ThemeProvider({ children }) {
     return 'light'; // tema por defecto
   };
 
-  // Estado para manejar el tema actual
   const [theme, setTheme] = useState(getInitialTheme);
-  
-  // Estado para manejar el montaje del componente
   const [mounted, setMounted] = useState(false);
 
   // Aplicar clases al documento según el tema
@@ -54,7 +45,6 @@ export function ThemeProvider({ children }) {
     setMounted(true);
     
     try {
-      // Si el componente no está montado, no hacer nada
       const root = window.document.documentElement;
       
       // Remover la clase anterior
