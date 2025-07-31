@@ -1,17 +1,17 @@
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { logoutReq } from '../api/auth';
-import { Moon, Sun, Menu, X, LogOut, UserCircle, Home, Plus, CheckSquare } from 'lucide-react';
-import { useState } from 'react';
+import { Moon, Sun, Menu, X, LogOut, UserCircle, CheckSquare } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { toast } from 'react-toastify';
 
 export function Navbar() {
   const [showMenu, setShowMenu] = useState(false);
+  const navbarRef = useRef(null);
+  const menuRef = useRef(null);
   const { isAuthenticated, user, setUser, setIsAuthenticated } = useAuth();
   const navigate = useNavigate();
-  
-  // Uso seguro del contexto de tema
   const { theme, toggleTheme } = useTheme();
 
   const handleLogout = async () => {
@@ -19,7 +19,6 @@ export function Navbar() {
       await logoutReq();
       setUser(null);
       setIsAuthenticated(false);
-      
       toast.success("Sesión cerrada correctamente", {
         position: "top-center",
         autoClose: 2000,
@@ -30,16 +29,32 @@ export function Navbar() {
         className: theme === 'dark' ? 'custom-toast-dark' : 'custom-toast-light',
         progressClassName: 'custom-progress-neutral'
       });
-      navigate('/'); // Redirigir a la página principal tras logout
+      navigate('/');
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
     }
   };
 
-  console.log('Usuario en Navbar:', user); // Agregado para depuración
+  useEffect(() => {
+    if (!showMenu) return;
+    const handleClickOutside = (event) => {
+      if (
+        navbarRef.current &&
+        !navbarRef.current.contains(event.target) &&
+        menuRef.current &&
+        !menuRef.current.contains(event.target)
+      ) {
+        setShowMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showMenu]);
 
   return (
-    <nav className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50 transition-colors duration-200">
+    <nav ref={navbarRef} className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Branding combinado: icono y título en un solo enlace */}
@@ -128,7 +143,7 @@ export function Navbar() {
       
       {/* Menú móvil */}
       {showMenu && (
-        <div className="md:hidden bg-white dark:bg-gray-800 transition-colors duration-200">
+        <div ref={menuRef} className="md:hidden bg-white dark:bg-gray-800 transition-colors duration-200">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {isAuthenticated ? (
               <>
@@ -160,3 +175,4 @@ export function Navbar() {
     </nav>
   );
 }
+

@@ -3,10 +3,10 @@
 import {z} from 'zod';
 
 // Regex para usuario y contraseña (ahora permite @ en usuario)
-const SAFE_USER_REGEX = /^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ _@-]*$/;
-const SAFE_TEXT_REGEX = /^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ _-]*$/;
+const SAFE_USER_REGEX = /^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ _@.-]*$/;
+const SAFE_TEXT_REGEX = /^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ _@-]*$/;
 // Regex para email: permite letras, números, guion bajo, guion y arroba
-const SAFE_EMAIL_REGEX = /^[a-zA-Z0-9._@-]+$/;
+const SAFE_EMAIL_REGEX = /^[a-zA-Z0-9_.@-]+$/;
 
 //Creamos el esquema de validación para el registro de usuarios
 export const registerSchema = z.object({
@@ -21,7 +21,7 @@ export const registerSchema = z.object({
 
     ).min(3).max(70)
     .regex(SAFE_USER_REGEX, {
-        message: "El usuario solo puede contener letras, números, espacios, guion bajo (_), guion (-) y arroba (@)."
+        message: "El usuario solo puede contener letras, números, espacios, guion bajo (_), guion (-), arroba (@) y punto (.)."
     }),
 
 
@@ -57,16 +57,15 @@ export const registerSchema = z.object({
     // $: Hasta el fin de la cadena
 
     password: z.string(
-        
-        {
-        required_error : "Contraseña: Este campo es obligatorio. Por favor, introduzca una contraseña válida."
-    })
-    .min(6)
-    .max(70)
-    .regex(SAFE_TEXT_REGEX, {
+            {
+                required_error: "Usuario: Este campo es obligatorio."
+            }
+        ).min(3)
+        .regex(/^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ _@.-]*$/, {
+            message: "El usuario solo puede contener letras, números, espacios, guion bajo (_), guion (-), arroba (@) y punto (.)."
+        }),
         message: "La contraseña no puede contener caracteres especiales."
-    }),
-});
+    });
 
 //Creamos el esquema de validación para el login de usuarios
 
@@ -79,7 +78,9 @@ export const loginSchema = z.object({
             required_error: "Usuario: Este campo es obligatorio."
         }
 
-    ).min(3)
+    )
+    .min(3)
+    .max(70)
     .regex(SAFE_USER_REGEX, {
         message: "El usuario solo puede contener letras, números, espacios, guion bajo (_), guion (-) y arroba (@)."
     }),

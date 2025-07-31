@@ -175,6 +175,8 @@ export function LoginPage() {
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
             required
+            maxLength={50}
+            type={identifier.includes('@') ? 'email' : 'text'}
           />
 
           <PasswordInput
@@ -186,6 +188,7 @@ export function LoginPage() {
             showPassword={showPassword}
             setShowPassword={setShowPassword}
             required
+            maxLength={50}
           />
 
           {/* Opción para probar sin hasheo (solo para depuración) */}
