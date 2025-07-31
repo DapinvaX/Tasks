@@ -102,8 +102,18 @@ export function RegisterPage() {
       
       // Manejo de errores
       const res = error.response;
-      
-      if(res && res.status === 505) {
+      if (res && res.data && res.data.message) {
+        toast.error(res.data.message, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        });
+        setError(res.data.message);
+      } else if(res && res.status === 505) {
         toast.error("El usuario ya existe", {
           position: "top-center",
           autoClose: 2000,
@@ -113,13 +123,11 @@ export function RegisterPage() {
           draggable: true,
           progress: undefined
         });
-        
         setError(null); // Limpiar error si lo había
         setName('');
         setEmail('');
         setPassword('');
         setConfirmPassword(''); 
-        
       } else {
         toast.error("Error al registrar! Inténtelo de nuevo.", {
           position: "top-center",
@@ -240,6 +248,7 @@ export function RegisterPage() {
                   value={email}
                   onChange={handleEmailChange}
                   required
+                  type="email"
                 />
               </div>
             </div>

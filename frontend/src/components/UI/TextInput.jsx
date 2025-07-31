@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
 
 // Regex para evitar caracteres especiales peligrosos (XSS)
-const SAFE_TEXT_REGEX = /^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ _-]*$/;
+const SAFE_TEXT_REGEX = /^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ _@-]*$/;
+const SAFE_EMAIL_REGEX = /^[a-zA-Z0-9._@-]+$/;
 
 export function TextInput({
   id,
@@ -21,7 +22,13 @@ export function TextInput({
   // Validación anti-XSS en el input
   const handleChange = (e) => {
     const val = e.target.value;
-    if (!SAFE_TEXT_REGEX.test(val)) {
+    let isValid = true;
+    if (type === 'email') {
+      isValid = SAFE_EMAIL_REGEX.test(val);
+    } else {
+      isValid = SAFE_TEXT_REGEX.test(val);
+    }
+    if (!isValid) {
       setInputError('No se permiten caracteres especiales.');
     } else {
       setInputError('');

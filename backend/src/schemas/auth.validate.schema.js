@@ -19,7 +19,7 @@ export const registerSchema = z.object({
             required_error: "Usuario: Este campo es obligatorio."
         }
 
-    ).min(3).max(50)
+    ).min(3).max(70)
     .regex(SAFE_USER_REGEX, {
         message: "El usuario solo puede contener letras, números, espacios, guion bajo (_), guion (-) y arroba (@)."
     }),
@@ -62,7 +62,7 @@ export const registerSchema = z.object({
         required_error : "Contraseña: Este campo es obligatorio. Por favor, introduzca una contraseña válida."
     })
     .min(6)
-    .max(20)
+    .max(70)
     .regex(SAFE_TEXT_REGEX, {
         message: "La contraseña no puede contener caracteres especiales."
     }),
@@ -96,7 +96,7 @@ export const loginSchema = z.object({
 
 )
     .min(6)
-    .max(20)
+    .max(70)
     .regex(SAFE_TEXT_REGEX, {
         message: "La contraseña no puede contener caracteres especiales."
     }),
