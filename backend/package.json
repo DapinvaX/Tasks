@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js",
-    "startnm": "nodemon src/index.js"
+    "start:node": "node src/index.js",
+    "start": "nodemon src/index.js"
   },
   "author": "DapinvaX Becquer Gates",
   "license": "ISC",
@@ -16,7 +16,6 @@
     "nodemon": "^3.1.4"
   },
   "dependencies": {
-    "@nextui-org/react": "^2.4.6",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -26,7 +25,6 @@
     "mongodb": "^6.15.0",
     "mongoose": "^8.4.4",
     "morgan": "^1.10.0",
-    "react-hook-form": "^7.53.0",
     "zod": "^3.23.8"
   }
 }
